@@ -10,39 +10,42 @@ import {
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignUpSchemaType, SignUpSchema } from "@/validation/auth-sign-up";
 import { Button } from "../ui/button";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import {
+  AccountConfirmation,
+  AccountConfirmationType,
+} from "@/validation/verify-email";
 
-export const SignUpForm = () => {
-  const { signUp } = useSignUp();
+export const VerifyCodeForm = () => {
+  const { signUp, setActive } = useSignUp();
   const router = useRouter();
   const [isPending, setIsPending] = useTransition();
-  const form = useForm<SignUpSchemaType>({
-    resolver: zodResolver(SignUpSchema),
+  const form = useForm<AccountConfirmationType>({
+    resolver: zodResolver(AccountConfirmation),
   });
-  const onSubmit = (data: SignUpSchemaType) => {
+  const onSubmit = (data: AccountConfirmationType) => {
     setIsPending(async () => {
-      const { email, password } = data;
-      console.log(data);
+      const { code } = data;
       try {
-        await signUp?.create({
-          emailAddress: email,
-          password: password,
+        const completeSignUp = await signUp?.attemptEmailAddressVerification({
+          code: code,
         });
-        await signUp?.prepareEmailAddressVerification({
-          strategy: "email_code",
-        });
+        if (completeSignUp?.status !== "complete") {
+          /*  investigate the response, to see if there was an error
+             or if the user needs to complete more steps.*/
+          console.log(JSON.stringify(completeSignUp, null, 2));
+        }
+        if (completeSignUp?.status === "complete") {
+          await setActive!({ session: completeSignUp.createdSessionId });
 
-        router.push("/sign-up/verify-code");
-        toast.message("Check your email", {
-          description: "We sent you a 6-digit verification code.",
-        });
+          router.push(`${window.location.origin}/`);
+        }
       } catch (error) {
-        alert(error);
+        toast.error("Something went wrong");
       }
     });
   };
@@ -54,32 +57,15 @@ export const SignUpForm = () => {
       >
         <FormField
           control={form.control}
-          name="email"
+          name="code"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="code">Code</FormLabel>
               <FormControl>
                 <Input
-                  type="email"
+                  type="text"
                   className="rounded-lg"
                   placeholder="ex@exe.com"
-                  {...field}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  className="rounded-lg"
-                  placeholder="*******"
                   {...field}
                 />
               </FormControl>
@@ -91,7 +77,7 @@ export const SignUpForm = () => {
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending ? "Loading..." : "Sign Up"}
+          {isPending ? "Loading..." : "Create Account"}
         </Button>
       </form>
     </Form>

@@ -46,7 +46,7 @@ export default function SignInPage() {
         </div>
         <Link
           aria-label="Reset password"
-          href="/sign-in/reset-password"
+          href="/sign-in/verify-email"
           className="text-sm text-[#EB5757] underline-offset-4 transition-colors hover:underline  "
         >
           Reset password

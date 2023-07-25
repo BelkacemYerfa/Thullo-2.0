@@ -10,39 +10,44 @@ import {
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignUpSchemaType, SignUpSchema } from "@/validation/auth-sign-up";
 import { Button } from "../ui/button";
-import { useSignUp } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import {
+  ResetPasswordSchema,
+  ResetPasswordSchemaType,
+} from "@/validation/reset-password";
 
-export const SignUpForm = () => {
-  const { signUp } = useSignUp();
+export const ResetPasswordForm = () => {
+  const { signIn, setActive } = useSignIn();
   const router = useRouter();
   const [isPending, setIsPending] = useTransition();
-  const form = useForm<SignUpSchemaType>({
-    resolver: zodResolver(SignUpSchema),
+  const form = useForm<ResetPasswordSchemaType>({
+    resolver: zodResolver(ResetPasswordSchema),
   });
-  const onSubmit = (data: SignUpSchemaType) => {
+  const onSubmit = (data: ResetPasswordSchemaType) => {
     setIsPending(async () => {
-      const { email, password } = data;
-      console.log(data);
+      const { password, confirm_password, code } = data;
       try {
-        await signUp?.create({
-          emailAddress: email,
-          password: password,
-        });
-        await signUp?.prepareEmailAddressVerification({
-          strategy: "email_code",
+        const attemptFirstFactor = await signIn?.attemptFirstFactor({
+          strategy: "reset_password_email_code",
+          code: data.code,
+          password: data.password,
         });
 
-        router.push("/sign-up/verify-code");
-        toast.message("Check your email", {
-          description: "We sent you a 6-digit verification code.",
-        });
+        if (attemptFirstFactor?.status === "complete") {
+          await setActive!({
+            session: attemptFirstFactor?.createdSessionId,
+          });
+          router.push(`${window.location.origin}/`);
+          toast.success("Password reset successfully.");
+        } else {
+          console.error(attemptFirstFactor);
+        }
       } catch (error) {
-        alert(error);
+        toast.error("Something went wrong");
       }
     });
   };
@@ -54,10 +59,10 @@ export const SignUpForm = () => {
       >
         <FormField
           control={form.control}
-          name="email"
+          name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="password">Password</FormLabel>
               <FormControl>
                 <Input
                   type="email"
@@ -74,7 +79,7 @@ export const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Confirm Password</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -86,12 +91,29 @@ export const SignUpForm = () => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="code"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="code">code</FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  className="rounded-lg"
+                  placeholder="123456"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         <Button
           type="submit"
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending ? "Loading..." : "Sign Up"}
+          {isPending ? "Loading..." : "Reset Password"}
         </Button>
       </form>
     </Form>

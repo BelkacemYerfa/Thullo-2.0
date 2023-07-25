@@ -10,39 +10,40 @@ import {
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignUpSchemaType, SignUpSchema } from "@/validation/auth-sign-up";
 import { Button } from "../ui/button";
-import { useSignUp } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import {
+  VerifyEmailSchema,
+  VerifyEmailSchemaType,
+} from "@/validation/verify-email";
 
-export const SignUpForm = () => {
-  const { signUp } = useSignUp();
+export const VerifyEmailForm = () => {
+  const { signIn } = useSignIn();
   const router = useRouter();
   const [isPending, setIsPending] = useTransition();
-  const form = useForm<SignUpSchemaType>({
-    resolver: zodResolver(SignUpSchema),
+  const form = useForm<VerifyEmailSchemaType>({
+    resolver: zodResolver(VerifyEmailSchema),
   });
-  const onSubmit = (data: SignUpSchemaType) => {
+  const onSubmit = (data: VerifyEmailSchemaType) => {
     setIsPending(async () => {
-      const { email, password } = data;
-      console.log(data);
+      const { email } = data;
       try {
-        await signUp?.create({
-          emailAddress: email,
-          password: password,
-        });
-        await signUp?.prepareEmailAddressVerification({
-          strategy: "email_code",
+        const result = await signIn?.create({
+          strategy: "reset_password_email_code",
+          identifier: email,
         });
 
-        router.push("/sign-up/verify-code");
-        toast.message("Check your email", {
-          description: "We sent you a 6-digit verification code.",
-        });
+        if (result?.status === "needs_first_factor") {
+          router.push("/sign-in/verify-email/step2");
+          toast.message("Check your email", {
+            description: "We sent you a 6-digit verification code.",
+          });
+        }
       } catch (error) {
-        alert(error);
+        toast.error("Something went wrong");
       }
     });
   };
@@ -69,29 +70,12 @@ export const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  className="rounded-lg"
-                  placeholder="*******"
-                  {...field}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
         <Button
           type="submit"
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending ? "Loading..." : "Sign Up"}
+          {isPending ? "Loading..." : "Send"}
         </Button>
       </form>
     </Form>
