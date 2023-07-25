@@ -12,38 +12,45 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSchemaType, SignUpSchema } from "@/validation/auth-sign-up";
 import { Button } from "../ui/button";
-import { useSignIn, useSignUp } from "@clerk/nextjs";
+import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useTransition } from "react";
 
 export const SignUpForm = () => {
-  const { signUp, setActive } = useSignUp();
+  const { signUp } = useSignUp();
   const router = useRouter();
+  const [isPending, setIsPending] = useTransition();
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
   });
-  const onSubmit = async (data: SignUpSchemaType) => {
-    const { email, password } = data;
-    try {
-      await signUp?.create({
-        emailAddress: email,
-        password: password,
-      });
-      await signUp?.prepareEmailAddressVerification({
-        strategy: "email_code",
-      });
+  const onSubmit = (data: SignUpSchemaType) => {
+    setIsPending(async () => {
+      const { email, password } = data;
+      try {
+        await signUp?.create({
+          emailAddress: email,
+          password: password,
+        });
+        await signUp?.prepareEmailAddressVerification({
+          strategy: "email_code",
+        });
 
-      /* router.push("/signup/verify-email"); */
-      toast.message("Check your email", {
-        description: "We sent you a 6-digit verification code.",
-      });
-    } catch (error) {
-      alert(error);
-    }
+        /* router.push("/sign-up/verify-email"); */
+        toast.message("Check your email", {
+          description: "We sent you a 6-digit verification code.",
+        });
+      } catch (error) {
+        alert(error);
+      }
+    });
   };
   return (
     <Form {...form}>
-      <form className="" onSubmit={() => form.handleSubmit(onSubmit)}>
+      <form
+        className="grid gap-4"
+        onSubmit={() => void form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="email"
@@ -51,7 +58,12 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel htmlFor="email">Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="ex@exe.com" {...field} />
+                <Input
+                  type="email"
+                  className="rounded-lg"
+                  placeholder="ex@exe.com"
+                  {...field}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -63,12 +75,23 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel htmlFor="password">Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="*******" {...field} />
+                <Input
+                  type="password"
+                  className="rounded-lg"
+                  placeholder="*******"
+                  {...field}
+                />
               </FormControl>
             </FormItem>
           )}
         />
-        <Button type="submit">Sign Up</Button>
+        <Button
+          type="submit"
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
+          disabled={isPending || !form.formState.isValid}
+        >
+          {isPending ? "Loading..." : "Sign Up"}
+        </Button>
       </form>
     </Form>
   );
