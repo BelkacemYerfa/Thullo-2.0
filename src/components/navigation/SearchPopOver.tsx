@@ -1,14 +1,6 @@
 "use client";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTrigger,
-} from "../ui/dialog";
-import {
-  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -21,37 +13,59 @@ import { useCallback, useEffect, useState, useTransition } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useDebounce } from "use-debounce";
+import { Icons } from "../Icons";
 
 export const SearchPopOver = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [isPending, setIsPending] = useTransition();
-  const [data, setData] = useState<any[]>([]);
+  const [value] = useDebounce(search, 500);
+  const [data, setData] = useState<
+    | {
+        category: string;
+        items: { id: number; name: string; image: string }[];
+      }[]
+    | null
+  >([]);
   const searchHandler = () => {
     setIsPending(async () => {
       console.log(search);
-      const response = await fetch(
-        `https://api.github.com/search/repositories?q=${search}&sort=stars&order=desc`
+      /* const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${Math.floor(
+          Math.random() * 100
+        )}`
       );
-      const data = await response.json();
-      setData(data.items);
+      console.log(await response.json()); */
+      /* const data = await response.json();
+      setData(data.items); */
     });
   };
+  const handleSectionClick = useCallback((callback: () => void) => {
+    setIsOpen(false);
+    callback();
+  }, []);
   useEffect(() => {
-    searchHandler();
-  }, [search]);
+    if (!value) setData(null);
+    if (value) {
+      searchHandler();
+    }
+  }, [value]);
   return (
     <>
       <div
-        className="p-1 rounded-lg flex items-center justify-between text-sm font-medium w-96 border-[#E0E0E0] border-solid border "
+        className="p-1 rounded-lg flex items-center justify-between text-sm font-medium w-fit xl:w-80 border-[#E0E0E0] border-solid border "
         onClick={() => setIsOpen(true)}
       >
         <span className="px-3">
           <p className="text-[#BDBDBD]">Keyword...</p>
         </span>
-        <span className="bg-[#2F80ED] text-white rounded-lg py-2 px-4">
+        <span className="hidden md:flex bg-[#2F80ED] text-white rounded-lg py-2 px-4">
           Search
+        </span>
+        <span className="flex md:hidden bg-[#2F80ED] text-white rounded-lg p-2">
+          <Icons.SearchIcon className="h-5 w-5" />
         </span>
       </div>
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -74,16 +88,22 @@ export const SearchPopOver = () => {
               <Skeleton className="h-8 rounded-sm" />
             </div>
           ) : (
-            <CommandGroup heading="repositories">
-              {data?.map((item) => (
-                <CommandItem
-                  key={item.id}
-                  onSelect={() => router.push(`/board/${item.id}`)}
-                >
-                  {item.name}
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            data?.map((category) => (
+              <CommandGroup heading="repositories" key={category.category}>
+                {category.items.map((item) => (
+                  <CommandItem
+                    key={item.id}
+                    onSelect={() =>
+                      handleSectionClick(() => router.push(`board/${item.id}`))
+                    }
+                    className="flex items-center gap-x-2"
+                  >
+                    <Image src={""} alt="" height={32} width={32} />
+                    {item.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            ))
           )}
         </CommandList>
       </CommandDialog>

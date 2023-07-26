@@ -1,9 +1,9 @@
-import { User, Loader2, Grid, GridIcon, type LucideProps } from "lucide-react";
+import { User, Loader2, Grid, SearchIcon, type LucideProps } from "lucide-react";
 
 export const Icons = {
   Loader2,
   Grid,
-  GridIcon,
+  SearchIcon,
   logo: (props: LucideProps) => (
     <svg
       width="98"

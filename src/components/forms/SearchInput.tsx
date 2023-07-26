@@ -10,16 +10,21 @@ export const SearchInput = () => {
   const form = useForm<searchSchemaType>({
     resolver: zodResolver(searchSchema),
   });
-  const onSubmit = () => {};
+  const onSubmit = (data: searchSchemaType) => {
+    const { search } = data;
+    console.log(search);
+  };
   return (
     <Form {...form}>
-      <form action="">
+      <form
+        className="grid"
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+      >
         <FormField
           control={form.control}
           name="search"
           render={({ field }) => (
             <FormItem>
-              <FormLabel></FormLabel>
               <FormControl>
                 <Input placeholder="keyword..." {...field} />
               </FormControl>
