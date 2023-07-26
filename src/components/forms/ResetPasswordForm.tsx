@@ -19,6 +19,7 @@ import {
   ResetPasswordSchema,
   ResetPasswordSchemaType,
 } from "@/validation/reset-password";
+import { Icons } from "../Icons";
 
 export const ResetPasswordForm = () => {
   const { signIn, setActive } = useSignIn();
@@ -55,17 +56,17 @@ export const ResetPasswordForm = () => {
     <Form {...form}>
       <form
         className="grid gap-4"
-        onSubmit={() => void form.handleSubmit(onSubmit)}
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
-                  type="email"
+                  type="password"
                   className="rounded-lg"
                   placeholder="ex@exe.com"
                   {...field}
@@ -76,10 +77,10 @@ export const ResetPasswordForm = () => {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="confirm_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="password">Confirm Password</FormLabel>
+              <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -96,14 +97,9 @@ export const ResetPasswordForm = () => {
           name="code"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="code">code</FormLabel>
+              <FormLabel>code</FormLabel>
               <FormControl>
-                <Input
-                  type="text"
-                  className="rounded-lg"
-                  placeholder="123456"
-                  {...field}
-                />
+                <Input className="rounded-lg" placeholder="123456" {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -113,7 +109,10 @@ export const ResetPasswordForm = () => {
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending ? "Loading..." : "Reset Password"}
+          {isPending && (
+            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+          )}
+          Reset Password
         </Button>
       </form>
     </Form>

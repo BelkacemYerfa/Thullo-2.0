@@ -16,16 +16,21 @@ import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import { Icons } from "../Icons";
 
 export const SignUpForm = () => {
   const { signUp } = useSignUp();
   const router = useRouter();
-  const [isPending, setIsPending] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
   const onSubmit = (data: SignUpSchemaType) => {
-    setIsPending(async () => {
+    startTransition(async () => {
       const { email, password } = data;
       console.log(data);
       try {
@@ -42,7 +47,7 @@ export const SignUpForm = () => {
           description: "We sent you a 6-digit verification code.",
         });
       } catch (error) {
-        alert(error);
+        toast.error("Something went wrong , try again later");
       }
     });
   };
@@ -50,17 +55,16 @@ export const SignUpForm = () => {
     <Form {...form}>
       <form
         className="grid gap-4"
-        onSubmit={() => void form.handleSubmit(onSubmit)}
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  type="email"
                   className="rounded-lg"
                   placeholder="ex@exe.com"
                   {...field}
@@ -74,7 +78,7 @@ export const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -91,7 +95,8 @@ export const SignUpForm = () => {
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending ? "Loading..." : "Sign Up"}
+          {isPending && <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />}
+          Sign Up
         </Button>
       </form>
     </Form>

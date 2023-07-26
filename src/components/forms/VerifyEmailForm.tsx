@@ -19,6 +19,7 @@ import {
   VerifyEmailSchema,
   VerifyEmailSchemaType,
 } from "@/validation/verify-email";
+import { Icons } from "../Icons";
 
 export const VerifyEmailForm = () => {
   const { signIn } = useSignIn();
@@ -37,7 +38,7 @@ export const VerifyEmailForm = () => {
         });
 
         if (result?.status === "needs_first_factor") {
-          router.push("/sign-in/verify-email/step2");
+          router.push("/sign-in/verify-email/step-2");
           toast.message("Check your email", {
             description: "We sent you a 6-digit verification code.",
           });
@@ -51,17 +52,16 @@ export const VerifyEmailForm = () => {
     <Form {...form}>
       <form
         className="grid gap-4"
-        onSubmit={() => void form.handleSubmit(onSubmit)}
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  type="email"
                   className="rounded-lg"
                   placeholder="ex@exe.com"
                   {...field}
@@ -75,7 +75,10 @@ export const VerifyEmailForm = () => {
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending ? "Loading..." : "Send"}
+          {isPending && (
+            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+          )}
+          Send Code
         </Button>
       </form>
     </Form>

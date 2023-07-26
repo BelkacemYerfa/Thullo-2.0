@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useSignIn } from "@clerk/nextjs";
 import { useTransition } from "react";
 import { toast } from "sonner";
+import { Icons } from "../Icons";
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -47,17 +48,16 @@ export const SignInForm = () => {
     <Form {...form}>
       <form
         className="grid gap-4"
-        onSubmit={() => void form.handleSubmit(onSubmit)}
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  type="email"
                   className="rounded-lg"
                   placeholder="ex@exe.com"
                   {...field}
@@ -71,7 +71,7 @@ export const SignInForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -88,7 +88,10 @@ export const SignInForm = () => {
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending ? "Loading..." : "Sign In"}
+          {isPending && (
+            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+          )}
+          Sign In
         </Button>
       </form>
     </Form>

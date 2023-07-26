@@ -19,6 +19,7 @@ import {
   AccountConfirmation,
   AccountConfirmationType,
 } from "@/validation/verify-email";
+import { Icons } from "../Icons";
 
 export const VerifyCodeForm = () => {
   const { signUp, setActive } = useSignUp();
@@ -53,21 +54,16 @@ export const VerifyCodeForm = () => {
     <Form {...form}>
       <form
         className="grid gap-4"
-        onSubmit={() => void form.handleSubmit(onSubmit)}
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <FormField
           control={form.control}
           name="code"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="code">Code</FormLabel>
+              <FormLabel>Code</FormLabel>
               <FormControl>
-                <Input
-                  type="text"
-                  className="rounded-lg"
-                  placeholder="ex@exe.com"
-                  {...field}
-                />
+                <Input className="rounded-lg" placeholder="123456" {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -77,7 +73,10 @@ export const VerifyCodeForm = () => {
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending ? "Loading..." : "Create Account"}
+          {isPending && (
+            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+          )}
+          Create Account
         </Button>
       </form>
     </Form>
