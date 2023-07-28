@@ -48,14 +48,14 @@ export const SearchPopOver = () => {
   }, []);
   useEffect(() => {
     if (!value) setData(null);
-    if (value) {
+    else {
       searchHandler();
     }
   }, [value]);
   return (
     <>
       <div
-        className="p-1 rounded-lg flex items-center justify-between text-sm font-medium w-fit xl:w-80 border-[#E0E0E0] border-solid border "
+        className="p-1 rounded-lg flex items-center justify-between text-sm font-medium w-fit xl:w-80 border-[#E0E0E0] border-solid border cursor-pointer "
         onClick={() => setIsOpen(true)}
       >
         <span className="px-3">
