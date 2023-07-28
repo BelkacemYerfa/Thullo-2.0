@@ -11,7 +11,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { User } from "@clerk/nextjs/dist/types/server";
 import { Icons } from "../Icons";
-import { SearchPopOver } from "./SearchPopOver";
+import { SearchPopOver } from "../Popups/SearchPopOver";
 import { LogOutBtn } from "../auth/LogOutBtn";
 import { Skeleton } from "../ui/skeleton";
 
@@ -22,8 +22,8 @@ type NavBarProps = {
 
 export const NavBar = ({ user, boardTitle }: NavBarProps) => {
   return (
-    <div className="sticky top-0 z-[3] backdrop-blur-sm bg-white/80 w-full">
-      <nav className="w-full ">
+    <nav className="sticky top-0 z-[3] backdrop-blur-sm bg-white/80 w-full">
+      <div className="w-full ">
         <div className="flex items-center w-full gap-x-6 py-2 px-3 md:py-3 md:px-6">
           <div className="flex items-center justify-between w-1/3 ">
             <Link href={"/"}>
@@ -67,17 +67,14 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                     <AvatarFallback>{user?.username}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="w-56 rounded-xl px-3 py-[10px] "
-                  align="end"
-                >
+                <DropdownMenuContent className="w-56 rounded-xl " align="end">
                   <DropdownMenuLabel className="hidden md:flex text-sm font-bold text-[#333333]">
                     {user?.username}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     asChild
-                    className=" flex items-center gap-x-[10px] px-3 py-[10px] rounded-lg"
+                    className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
                   >
                     <Link href={"/profile"}>
                       Profile
@@ -86,7 +83,7 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     asChild
-                    className=" flex items-center gap-x-[10px] px-3 py-[10px] rounded-lg"
+                    className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
                   >
                     <Link href={"/settings"}>
                       Belling
@@ -95,7 +92,7 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     asChild
-                    className=" flex items-center gap-x-[10px] px-3 py-[10px] rounded-lg"
+                    className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
                   >
                     <Link href={"/team"}>
                       Team
@@ -109,8 +106,8 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
             </div>
           </div>
         </div>
-      </nav>
+      </div>
       <hr />
-    </div>
+    </nav>
   );
 };

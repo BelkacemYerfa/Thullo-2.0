@@ -1,3 +1,4 @@
+import { AddBoardPopOver } from "@/components/Popups/AddBoardPopOver";
 import { BoardCard } from "@/components/card/BoardCard";
 import { NavBar } from "@/components/navigation/Navbar";
 import { Button } from "@/components/ui/button";
@@ -6,16 +7,14 @@ import { currentUser } from "@clerk/nextjs";
 export default async function Home() {
   const user = await currentUser();
   return (
-    <main className="min-h-screen gap-x-2 p-1 w-full">
+    <main className="min-h-screen w-full">
       <NavBar user={user} />
       <section className="max-w-[80%] m-auto pt-10 space-y-7 ">
         <div className="w-full flex items-center justify-between px-2">
           <h2 className="text-[#333333] font-medium text-lg">All Boards</h2>
-          <Button className="bg-[#2F80ED] rounded-lg font-sm px-3 py-2">
-            + Add
-          </Button>
+          <AddBoardPopOver />
         </div>
-        <div className="flex items-center justify-center xl:justify-start w-full flex-wrap gap-x-8 gap-y-7">
+        <div className="flex items-center justify-center sm:justify-start w-full flex-wrap gap-x-8 gap-y-7">
           <BoardCard
             boardBanner="https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
             title="DeveChallenges BOARD "
