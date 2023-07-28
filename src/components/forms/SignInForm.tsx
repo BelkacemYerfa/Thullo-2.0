@@ -28,9 +28,10 @@ export const SignInForm = () => {
   const onSubmit = (data: SignInSchemaType) => {
     setIsPending(async () => {
       try {
+        const { password, email } = data;
         const result = await signIn?.create({
-          identifier: data.email,
-          password: data.password,
+          identifier: email,
+          password,
         });
         if (result?.status === "complete") {
           setActive!({ session: result?.createdSessionId });

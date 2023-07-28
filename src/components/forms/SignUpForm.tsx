@@ -32,11 +32,10 @@ export const SignUpForm = () => {
   const onSubmit = (data: SignUpSchemaType) => {
     startTransition(async () => {
       const { email, password } = data;
-      console.log(data);
       try {
         await signUp?.create({
           emailAddress: email,
-          password: password,
+          password,
         });
         await signUp?.prepareEmailAddressVerification({
           strategy: "email_code",
@@ -95,7 +94,9 @@ export const SignUpForm = () => {
           className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
           disabled={isPending || !form.formState.isValid}
         >
-          {isPending && <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />}
+          {isPending && (
+            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+          )}
           Sign Up
         </Button>
       </form>
