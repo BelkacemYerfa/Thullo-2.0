@@ -23,12 +23,13 @@ export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
         alt="image"
         height={100}
         width={200}
-        className="w-full rounded-lg"
+        className="w-full h-[300px] rounded-lg"
       />
       <Input
         type="file"
         className="rounded-lg"
         onChange={(e) => handleBannerChange(e)}
+        accept="image/*"
       />
     </div>
   ) : (
@@ -61,6 +62,7 @@ export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
         type="file"
         className="hidden"
         onChange={(e) => handleBannerChange(e)}
+        accept="image/*"
       />
     </label>
   );

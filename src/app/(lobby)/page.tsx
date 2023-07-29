@@ -1,7 +1,6 @@
 import { AddBoardPopOver } from "@/components/Popups/AddBoardPopOver";
 import { BoardCard } from "@/components/card/BoardCard";
 import { NavBar } from "@/components/navigation/Navbar";
-import { Button } from "@/components/ui/button";
 import { currentUser } from "@clerk/nextjs";
 
 export default async function Home() {
