@@ -6,9 +6,16 @@ export const searchSchema = z.object({
 
 export type searchSchemaType = z.infer<typeof searchSchema>;
 
+const MAX_FILE_SIZE = 500000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 export const BoardFormSchema = z.object({
-  img: z.any().optional(),
-  title: z.string().min(1).max(100),
+  title: z.string().min(1).max(100).nonempty(),
 });
 
 export type BoardFormSchemaType = z.infer<typeof BoardFormSchema>;
