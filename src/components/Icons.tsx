@@ -6,6 +6,8 @@ import {
   Loader2,
   Grid,
   Search,
+  Plus,
+  Check,
   SearchIcon,
   type LucideProps,
 } from "lucide-react";
@@ -17,6 +19,8 @@ export const Icons = {
   LockIcon,
   Globe,
   SearchIcon,
+  Plus,
+  Check,
   logo: (props: LucideProps) => (
     <svg
       width="98"

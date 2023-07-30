@@ -56,7 +56,11 @@ export const BoardAccessDropDown = () => {
             return (
               <DropdownMenuItem
                 key={index + access}
-                className="bg-white hover:bg-[#F2F2F2] rounded-lg py-2 px-3 flex flex-col items-start space-y-2"
+                className={`rounded-lg py-2 px-3 flex flex-col items-start space-y-2 ${
+                  boardAccess === access
+                    ? "bg-[#F2F2F2]"
+                    : "bg-white hover:bg-[#F2F2F2]"
+                } `}
                 onClick={() => setBoardAccess(access)}
               >
                 <div className="flex items-center space-x-2">
