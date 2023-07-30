@@ -9,6 +9,7 @@ import {
   Plus,
   Check,
   SearchIcon,
+  MoreHorizontal,
   type LucideProps,
 } from "lucide-react";
 
@@ -21,6 +22,7 @@ export const Icons = {
   SearchIcon,
   Plus,
   Check,
+  MoreHorizontal,
   logo: (props: LucideProps) => (
     <svg
       width="98"

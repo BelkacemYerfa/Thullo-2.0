@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { BoardAccessDropDown } from "../dropdowns/BoardAccessDropDown";
+import { BoardAccessPopOver } from "../Popups/BoardAccessPopOver";
 import { BoardUserInvitePopOver } from "../Popups/BoardUserInvitePopOver";
+import { BoardSheet } from "../sheet/BoardSheet";
 
 export const BoardSettings = ({}) => {
   const boardUser = [
@@ -12,7 +13,7 @@ export const BoardSettings = ({}) => {
   return (
     <section className="flex items-center justify-between w-full">
       <div className="flex items-center gap-x-5">
-        <BoardAccessDropDown />
+        <BoardAccessPopOver />
         <div className="flex items-center gap-x-4">
           {boardUser.map((user, index) =>
             index < 3 ? (
@@ -46,6 +47,7 @@ export const BoardSettings = ({}) => {
           <BoardUserInvitePopOver />
         </div>
       </div>
+      <BoardSheet />
     </section>
   );
 };
