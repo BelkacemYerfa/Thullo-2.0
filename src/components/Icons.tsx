@@ -1,11 +1,14 @@
 import {
-  User,
+  User2,
   LockIcon,
   Lock,
   Globe,
   Loader2,
   Grid,
   Search,
+  File,
+  Users2,
+  Pencil,
   Plus,
   Check,
   SearchIcon,
@@ -21,8 +24,12 @@ export const Icons = {
   Globe,
   SearchIcon,
   Plus,
+  File,
   Check,
   MoreHorizontal,
+  Pencil,
+  User2,
+  Users2,
   logo: (props: LucideProps) => (
     <svg
       width="98"

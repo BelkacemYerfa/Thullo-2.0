@@ -7,6 +7,7 @@ const nextConfig = {
       "www.goodmorningimagesdownload.com",
       "1.bp.blogspot.com",
       "e1.pxfuel.com",
+      "img.clerk.com",
     ],
   },
 };
