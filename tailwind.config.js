@@ -32,6 +32,7 @@ module.exports = {
       },
       boxShadow: {
         "outline-black": "0px 4px 12px rgba(0, 0, 0, 0.05)",
+        "outline-navigation": "0px 2px 2px rgba(0, 0, 0, 0.05)",
       },
     },
   },

@@ -1,4 +1,5 @@
 import { NavBar } from "@/components/navigation/Navbar";
+import { BoardSettings } from "@/components/settings/BoardSettings";
 import { currentUser } from "@clerk/nextjs";
 
 type BoardPageProps = {
@@ -19,10 +20,10 @@ export default async function BoardPage({
 }: BoardPageProps) {
   const user = await currentUser();
   return (
-    <main className="min-h-screen w-full">
+    <main className="min-h-screen w-full space-y-5">
       <NavBar user={user} boardTitle="DevChallenges" />
-      <section className="">
-        <h1>Board {boardId}</h1>
+      <section className="max-w-[95%] m-auto">
+        <BoardSettings />
       </section>
     </main>
   );

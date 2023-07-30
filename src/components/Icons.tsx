@@ -1,8 +1,21 @@
-import { User, Loader2, Grid, SearchIcon, type LucideProps } from "lucide-react";
+import {
+  User,
+  LockIcon,
+  Lock,
+  Globe,
+  Loader2,
+  Grid,
+  Search,
+  SearchIcon,
+  type LucideProps,
+} from "lucide-react";
 
 export const Icons = {
   Loader2,
   Grid,
+  Lock,
+  LockIcon,
+  Globe,
   SearchIcon,
   logo: (props: LucideProps) => (
     <svg
