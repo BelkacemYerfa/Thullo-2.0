@@ -16,8 +16,12 @@ import { useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { useUser } from "@clerk/nextjs";
 
-export const BoardSheet = () => {
-  const boardTitle = "DevChallenges";
+type BoardSheetProps = {
+  boardUsers: string[];
+  boardTitle: string;
+};
+
+export const BoardSheet = ({ boardUsers, boardTitle }: BoardSheetProps) => {
   const [isDescriptionFormOpen, setIsDescriptionFormOpen] =
     useState<boolean>(false);
   const { user } = useUser();

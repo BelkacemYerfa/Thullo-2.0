@@ -64,7 +64,9 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                     ) : (
                       <Skeleton className="h-7 w-7 rounded-lg" />
                     )}
-                    <AvatarFallback>{user?.username}</AvatarFallback>
+                    <AvatarFallback>
+                      {user?.username?.split("")[0]}
+                    </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 rounded-xl " align="end">
@@ -76,7 +78,8 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                     asChild
                     className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
                   >
-                    <Link href={"/profile"}>
+                    <Link href={"/profile"} className="text-sm text-[#BDBDBD]">
+                      <Icons.User2 className="h-4 w-4 " />
                       Profile
                       <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </Link>
@@ -85,17 +88,9 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                     asChild
                     className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
                   >
-                    <Link href={"/settings"}>
-                      Belling
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    asChild
-                    className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
-                  >
-                    <Link href={"/team"}>
-                      Team
+                    <Link href={"/team"} className="text-sm text-[#BDBDBD]">
+                      <Icons.Settings2 className="h-4 w-4" />
+                      Settings
                       <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </Link>
                   </DropdownMenuItem>

@@ -12,24 +12,15 @@ export const BoardSettings = ({}) => {
   ];
   return (
     <section className="flex items-center justify-between w-full">
-      <section className="flex items-center gap-x-5">
+      <div className="flex items-center gap-x-5">
         <BoardAccessPopOver />
-        <section className="flex items-center gap-x-4">
-          {boardUser.map((user, index) =>
-            index < 3 ? (
-              index !== 2 ? (
-                <Image
-                  key={index}
-                  src={user}
-                  alt="user"
-                  height={40}
-                  width={40}
-                  className="rounded-lg"
-                  quality={100}
-                />
-              ) : (
-                <div key={index} className="relative ">
+        <div className="flex items-center gap-x-4">
+          <div className="hidden sm:flex items-center gap-x-4">
+            {boardUser.map((user, index) =>
+              index < 3 ? (
+                index !== 2 ? (
                   <Image
+                    key={index}
                     src={user}
                     alt="user"
                     height={40}
@@ -37,17 +28,28 @@ export const BoardSettings = ({}) => {
                     className="rounded-lg"
                     quality={100}
                   />
-                  <div className="absolute inset-0 flex items-center justify-center rounded-lg h-10 w-10 bg-[#BDBDBD]/70  text-[#4F4F4F] ">
-                    +{boardUser.length - 3}
+                ) : (
+                  <div key={index} className="relative ">
+                    <Image
+                      src={user}
+                      alt="user"
+                      height={40}
+                      width={40}
+                      className="rounded-lg"
+                      quality={100}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center rounded-lg h-10 w-10 bg-[#BDBDBD]/70  text-[#4F4F4F] ">
+                      +{boardUser.length - 3}
+                    </div>
                   </div>
-                </div>
-              )
-            ) : null
-          )}
+                )
+              ) : null
+            )}
+          </div>
           <BoardUserInvitePopOver />
-        </section>
-      </section>
-      <BoardSheet />
+        </div>
+      </div>
+      <BoardSheet boardTitle="Dev" boardUsers={boardUser} />
     </section>
   );
 };

@@ -12,7 +12,10 @@ import {
   Plus,
   Check,
   SearchIcon,
+  Settings2,
   MoreHorizontal,
+  MessageCircle,
+  Paperclip,
   type LucideProps,
 } from "lucide-react";
 
@@ -30,6 +33,9 @@ export const Icons = {
   Pencil,
   User2,
   Users2,
+  Settings2,
+  MessageCircle,
+  Paperclip,
   logo: (props: LucideProps) => (
     <svg
       width="98"

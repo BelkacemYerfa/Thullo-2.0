@@ -60,7 +60,7 @@ export const BoardUserInvitePopOver = () => {
                 else setSelectedUsers([...selectedUsers, "Ahmed"]);
               }}
               className={cn(
-                "p-1 text-[#333333] font-semibold flex items-center justify-between cursor-pointer"
+                "p-1 text-[#333333] font-semibold flex items-center justify-between cursor-pointer aria-selected:bg-transparent "
               )}
             >
               <div className="flex items-center gap-x-3">

@@ -36,7 +36,7 @@ export const BoardDescriptionForm = ({
       ) : (
         <Form {...form}>
           <form
-            className="grid space-y-2"
+            className="grid space-y-2 max-w-[97%] m-auto"
             onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
           >
             <FormField
@@ -44,7 +44,7 @@ export const BoardDescriptionForm = ({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <Textarea className="resize-none h-52" {...field} />
+                  <Textarea className="resize-none h-52 " {...field} />
                 </FormItem>
               )}
             />
