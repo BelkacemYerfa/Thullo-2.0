@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Card, CardContent, CardTitle, CardHeader } from "../ui/card";
 import Link from "next/link";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 type BoardCardProps = {
   title: string;
@@ -35,15 +36,16 @@ export const BoardCard = ({
       <CardContent className="flex items-center gap-x-3 p-3">
         {usersPics.map((pic, index) =>
           index < 3 ? (
-            <Image
-              key={pic + index}
-              src={pic}
-              alt={"user profile pic"}
-              height={32}
-              width={32}
-              className="rounded-lg"
-              quality={100}
-            />
+            <Avatar key={index} className="h-10 w-10 rounded-lg">
+              <AvatarImage
+                src={pic}
+                alt={"pic"}
+                height={40}
+                width={40}
+                loading="lazy"
+              />
+              <AvatarFallback>{pic}</AvatarFallback>
+            </Avatar>
           ) : (
             <p key={pic + index} className="text-[#BDBDBD] text-sm font-medium">
               +{usersPics.length - index} others

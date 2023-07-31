@@ -19,9 +19,7 @@ export const ListNameChangeForm = () => {
     setName(data.name);
     setRename(false);
   };
-  return !rename ? (
-    <h3 className="text-sm text-[#333333] font-medium ">{name}</h3>
-  ) : (
+  return rename ? (
     <Form {...form}>
       <form
         className="flex items-center gap-x-3 w-full"
@@ -36,11 +34,13 @@ export const ListNameChangeForm = () => {
             </FormItem>
           )}
         />
-        <button type="submit">
+        <button disabled={!name} type="submit" className="text-[#219653]">
           <Icons.Check className="h-5 w-5" />
           {""}
         </button>
       </form>
     </Form>
+  ) : (
+    <h3 className="text-sm text-[#333333] font-medium ">{name}</h3>
   );
 };

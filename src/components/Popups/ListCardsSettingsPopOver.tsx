@@ -15,7 +15,11 @@ export const ListCardsSettingsPopOver = () => {
     setRename(true);
     setIsOpen(false);
   };
-  return !rename ? (
+  return rename ? (
+    <div className="cursor-pointer" onClick={() => setRename(false)}>
+      <Icons.X className="h-5 w-5" />
+    </div>
+  ) : (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger>
         <Icons.MoreHorizontal className="h-5 w-5" />
@@ -34,9 +38,5 @@ export const ListCardsSettingsPopOver = () => {
         <ListDeletePopOver />
       </PopoverContent>
     </Popover>
-  ) : (
-    <div className="cursor-pointer" onClick={() => setRename(false)}>
-      <Icons.X className="h-5 w-5" />
-    </div>
   );
 };

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { BoardAccessPopOver } from "../Popups/BoardAccessPopOver";
 import { BoardUserInvitePopOver } from "../Popups/BoardUserInvitePopOver";
 import { BoardSheet } from "../sheet/BoardSheet";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 export const BoardSettings = ({}) => {
   const boardUser = [
@@ -19,25 +20,28 @@ export const BoardSettings = ({}) => {
             {boardUser.map((user, index) =>
               index < 3 ? (
                 index !== 2 ? (
-                  <Image
-                    key={index}
-                    src={user}
-                    alt="user"
-                    height={40}
-                    width={40}
-                    className="rounded-lg"
-                    quality={100}
-                  />
-                ) : (
-                  <div key={index} className="relative ">
-                    <Image
+                  <Avatar key={index + user} className="h-10 w-10 rounded-lg">
+                    <AvatarImage
                       src={user}
-                      alt="user"
+                      alt={"user"}
                       height={40}
                       width={40}
-                      className="rounded-lg"
-                      quality={100}
+                      loading="lazy"
                     />
+                    <AvatarFallback>{user}</AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <div key={index + user} className="relative ">
+                    <Avatar className="h-10 w-10 rounded-lg">
+                      <AvatarImage
+                        src={user}
+                        alt={"user"}
+                        height={40}
+                        width={40}
+                        loading="lazy"
+                      />
+                      <AvatarFallback>{user}</AvatarFallback>
+                    </Avatar>
                     <div className="absolute inset-0 flex items-center justify-center rounded-lg h-10 w-10 bg-[#BDBDBD]/70  text-[#4F4F4F] ">
                       +{boardUser.length - 3}
                     </div>

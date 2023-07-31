@@ -15,6 +15,7 @@ import { BoardDescriptionForm } from "../forms/BoardDescriptionForm";
 import { useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { useUser } from "@clerk/nextjs";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 type BoardSheetProps = {
   boardUsers: string[];
@@ -53,16 +54,18 @@ export const BoardSheet = ({ boardUsers, boardTitle }: BoardSheetProps) => {
                   </p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Image
-                    src={
-                      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
-                    }
-                    alt={"user"}
-                    height={40}
-                    width={40}
-                    className="rounded-lg"
-                    quality={100}
-                  />
+                  <Avatar className="h-10 w-10 rounded-lg">
+                    <AvatarImage
+                      src={
+                        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+                      }
+                      alt={user?.username ?? ""}
+                      height={40}
+                      width={40}
+                      loading="lazy"
+                    />
+                    <AvatarFallback>{user?.username}</AvatarFallback>
+                  </Avatar>
                   <div className="flex items-center flex-col space-y-1">
                     <h3 className="text-sm text-[#333333] font-semibold ">
                       Daniel Jensen
@@ -119,7 +122,7 @@ export const BoardSheet = ({ boardUsers, boardTitle }: BoardSheetProps) => {
                         {user?.username}
                       </h3>
                     </div>
-                    {true ? (
+                    {1 === 1 ? (
                       <p className="text-sm text-[#828282] font-medium ">
                         Admin
                       </p>

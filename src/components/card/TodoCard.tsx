@@ -15,7 +15,8 @@ import { auth } from "@clerk/nextjs";
 
 export const TodoCard = () => {
   const { user } = auth();
-  const img = "";
+  const img =
+    "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg";
   return (
     <Card className="relative shadow-outline-black rounded-xl w-full ">
       <CardHeader className="space-y-3 p-3">
@@ -25,6 +26,7 @@ export const TodoCard = () => {
             alt="img"
             height={130}
             width={220}
+            loading="lazy"
             className="w-full h-[200px] rounded-xl"
             quality={100}
           />
@@ -33,7 +35,7 @@ export const TodoCard = () => {
           Github jobs challenge
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-3 space-y-5 ">
+      <CardContent className="p-3 space-y-3 ">
         <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
           <Badge
             className={cn(
@@ -54,7 +56,7 @@ export const TodoCard = () => {
           <div className="flex items-center gap-x-2">
             <Avatar className="h-10 w-10 rounded-lg">
               <AvatarImage
-                src={user?.imageUrl}
+                src={"https://i.pravatar.cc/150?img=68"}
                 alt={user?.username ?? ""}
                 height={40}
                 width={40}
