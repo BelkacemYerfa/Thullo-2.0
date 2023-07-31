@@ -30,9 +30,9 @@ export const BoardUserInvitePopOver = () => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger>
-        <Button className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg py-2 px-[10px] ">
-          <Icons.Plus className="h-5 w-5 " />
-        </Button>
+        <div className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg h-10 w-10 flex items-center justify-center ">
+          <Icons.Plus className="h-5 w-5 text-white" />
+        </div>
       </PopoverTrigger>
       <PopoverContent className="p-3 space-y-4 rounded-xl" align="start">
         <div className="space-y-2">

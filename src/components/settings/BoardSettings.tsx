@@ -12,9 +12,9 @@ export const BoardSettings = ({}) => {
   ];
   return (
     <section className="flex items-center justify-between w-full">
-      <div className="flex items-center gap-x-5">
+      <section className="flex items-center gap-x-5">
         <BoardAccessPopOver />
-        <div className="flex items-center gap-x-4">
+        <section className="flex items-center gap-x-4">
           {boardUser.map((user, index) =>
             index < 3 ? (
               index !== 2 ? (
@@ -45,8 +45,8 @@ export const BoardSettings = ({}) => {
             ) : null
           )}
           <BoardUserInvitePopOver />
-        </div>
-      </div>
+        </section>
+      </section>
       <BoardSheet />
     </section>
   );

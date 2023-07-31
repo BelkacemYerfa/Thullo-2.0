@@ -24,16 +24,20 @@ export const BoardSheet = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <Button className="flex items-center gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg  text-sm py-3 px-4 ">
+        <div className="flex items-center gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg  text-sm py-3 px-4 ">
           <Icons.MoreHorizontal className="h-5 w-5" />
           Show Menu
-        </Button>
+        </div>
       </SheetTrigger>
-      <SheetContent className="px-5 py-6 flex flex-col space-y-2">
-        <SheetHeader>
-          <SheetTitle>{boardTitle}</SheetTitle>
+      <SheetContent className="px-2 py-6 flex flex-col gap-y-2">
+        <SheetHeader className="px-3">
+          <SheetTitle className="text-sm text-[#333333] font-semibold">
+            {boardTitle}
+          </SheetTitle>
         </SheetHeader>
-        <Separator />
+        <div className="px-3">
+          <Separator />
+        </div>
         <div className=" flex-1  overflow-hidden">
           <ScrollArea className="h-full px-3">
             <div className=" space-y-4">
