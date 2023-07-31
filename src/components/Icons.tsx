@@ -16,6 +16,8 @@ import {
   MoreHorizontal,
   MessageCircle,
   Paperclip,
+  LogOut,
+  X,
   type LucideProps,
 } from "lucide-react";
 
@@ -36,6 +38,8 @@ export const Icons = {
   Settings2,
   MessageCircle,
   Paperclip,
+  LogOut,
+  X,
   logo: (props: LucideProps) => (
     <svg
       width="98"
