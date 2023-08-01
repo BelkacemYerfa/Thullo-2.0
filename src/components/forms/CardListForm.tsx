@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cardSchema, cardSchemaType } from "@/validation/card";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const CardListForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -36,39 +36,45 @@ export const CardListForm = () => {
   };
   return (
     <>
-      <Form {...form}>
-        <motion.form
-          layout="size"
-          ref={formRef}
-          className={`${
-            isOpen ? "max-h-full p-3 border" : "max-h-0 p-0 border-none"
-          } overflow-hidden space-y-2  border border-[#E0E0E0] rounded-xl shadow-outline-black-xs bg-white`}
-          onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
-        >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <Input
-                  className="border-none p-1 h-7"
-                  placeholder="Enter a title for this card..."
-                  {...field}
-                />
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className={cn(
-              "rounded-lg text-white py-1 px-3 bg-[#219653] hover:bg-[#219653] w-fit"
-            )}
-            disabled={!form.formState.isValid}
-          >
-            Save
-          </Button>
-        </motion.form>
-      </Form>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <Form {...form}>
+            <motion.form
+              layout="size"
+              ref={formRef}
+              variants={formVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className={` overflow-hidden p-3 border space-y-2 border-[#E0E0E0] rounded-xl shadow-outline-black-xs bg-white`}
+              onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+            >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <Input
+                      className="border-none p-1 h-7"
+                      placeholder="Enter a title for this card..."
+                      {...field}
+                    />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                className={cn(
+                  "rounded-lg text-white py-1 px-3 bg-[#219653] hover:bg-[#219653] w-fit"
+                )}
+                disabled={!form.formState.isValid}
+              >
+                Save
+              </Button>
+            </motion.form>
+          </Form>
+        )}
+      </AnimatePresence>
       <Button
         className={cn(
           "flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-80 rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed "

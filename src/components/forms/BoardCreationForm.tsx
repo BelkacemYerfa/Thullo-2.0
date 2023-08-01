@@ -5,14 +5,14 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { BoardFormSchema, BoardFormSchemaType } from "@/validation/search";
 import { UploadImageForm } from "./UploadImageForm";
+import { useGenerationStore } from "@/lib/store/Store";
 
 export const BoardCreationForm = () => {
-  const router = useRouter();
+  const { setBoardCard } = useGenerationStore();
   const [isPending, setIsPending] = useTransition();
   const [image, setImage] = useState<string>("");
   const form = useForm<BoardFormSchemaType>({
@@ -22,10 +22,10 @@ export const BoardCreationForm = () => {
     },
   });
   const onSubmit = (data: BoardFormSchemaType) => {
-    console.log("hello");
     setIsPending(async () => {
       console.log({ ...data, image });
     });
+    setBoardCard(false);
   };
   return (
     <Form {...form}>

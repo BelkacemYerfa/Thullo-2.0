@@ -1,3 +1,4 @@
+import { AddNewListPopOver } from "./Popups/AddNewListPopOver";
 import { TasksList } from "./list/TasksList";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
@@ -9,10 +10,11 @@ export const BoardDashboard = () => {
     >
       <ScrollArea className="h-full px-4 py-4 rounded-xl">
         <ScrollBar className="h-2 w-full" orientation="horizontal"></ScrollBar>
-        <div className="flex w-full h-full gap-x-8 overflow-x-auto ">
+        <div className="flex w-full gap-x-8 overflow-x-auto ">
           <TasksList />
           <TasksList />
           <TasksList />
+          <AddNewListPopOver />
         </div>
       </ScrollArea>
     </div>
