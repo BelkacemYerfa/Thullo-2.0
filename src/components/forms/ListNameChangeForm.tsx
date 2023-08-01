@@ -22,7 +22,7 @@ export const ListNameChangeForm = () => {
   return rename ? (
     <Form {...form}>
       <form
-        className="flex items-center gap-x-3 w-full"
+        className="flex items-center gap-x-2 w-full"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <FormField
@@ -30,7 +30,11 @@ export const ListNameChangeForm = () => {
           name="name"
           render={({ field }) => (
             <FormItem className="w-full">
-              <Input placeholder={name} {...field} className="w-full" />
+              <Input
+                placeholder={name}
+                {...field}
+                className="w-full focus:outline-0 focus-visible:ring-0"
+              />
             </FormItem>
           )}
         />

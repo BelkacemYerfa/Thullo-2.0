@@ -16,7 +16,10 @@ export const ListCardsSettingsPopOver = () => {
     setIsOpen(false);
   };
   return rename ? (
-    <div className="cursor-pointer" onClick={() => setRename(false)}>
+    <div
+      className="cursor-pointer text-[#EB5757]"
+      onClick={() => setRename(false)}
+    >
       <Icons.X className="h-5 w-5" />
     </div>
   ) : (

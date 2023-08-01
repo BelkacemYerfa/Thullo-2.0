@@ -37,7 +37,7 @@ export const CardListForm = () => {
   return (
     <>
       <AnimatePresence initial={false}>
-        {isOpen && (
+        {isOpen ? (
           <Form {...form}>
             <motion.form
               layout="size"
@@ -73,7 +73,7 @@ export const CardListForm = () => {
               </Button>
             </motion.form>
           </Form>
-        )}
+        ) : null}
       </AnimatePresence>
       <Button
         className={cn(
