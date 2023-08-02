@@ -28,7 +28,7 @@ export const BoardCard = ({
           blurDataURL={boardBanner}
           height={130}
           width={220}
-          className="w-full h-[200px] rounded-xl"
+          className="w-full h-52  sm:h-[150px] xl:h-[140px] rounded-xl"
           quality={100}
         />
         <CardTitle className="text-base font-medium ">{title}</CardTitle>

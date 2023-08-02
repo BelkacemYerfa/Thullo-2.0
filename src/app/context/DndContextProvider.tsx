@@ -7,7 +7,7 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import db, { InitialData, Task, Column } from "./initialData";
+import db, { InitialData, Column } from "./initialData";
 import { useState, useEffect } from "react";
 
 export const DndContextProvider = () => {
@@ -110,15 +110,20 @@ export const DndContextProvider = () => {
               );
               return (
                 <Draggable key={columnId} draggableId={columnId} index={index}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.dragHandleProps}
-                      {...provided.draggableProps}
-                    >
-                      <TasksList column={column} tasks={tasks} />
-                    </div>
-                  )}
+                  {(provided, snapshot) => {
+                    if (snapshot.isDragging) {
+                      console.log("dragging");
+                    }
+                    return (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.dragHandleProps}
+                        {...provided.draggableProps}
+                      >
+                        <TasksList column={column} tasks={tasks} />
+                      </div>
+                    );
+                  }}
                 </Draggable>
               );
             })}

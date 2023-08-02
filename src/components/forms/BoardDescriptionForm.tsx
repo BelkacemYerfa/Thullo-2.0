@@ -51,13 +51,15 @@ export const BoardDescriptionForm = ({
             <div className="space-x-2">
               <Button
                 type="submit"
-                className="rounded-xl bg-[#219653] hover:bg-[#219653] py-1 px-3"
+                className="rounded-xl bg-[#219653] hover:bg-[#219653] py-1 px-3 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm"
+                disabled={!form.formState.isValid}
               >
                 Save
               </Button>
               <Button
                 type="button"
                 className="rounded-xl text-[#828282] bg-transparent hover:bg-transparent py-1 px-3"
+                disabled={!value}
                 onClick={() => setIsDescriptionFormOpen(true)}
               >
                 Cancel
