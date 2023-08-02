@@ -11,16 +11,20 @@ import { cn } from "@/lib/utils";
 import { BoardUserInvitePopOver } from "../Popups/BoardUserInvitePopOver";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Icons } from "../Icons";
-import { auth } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import { Task } from "@/app/context/initialData";
 
-export const TodoCard = () => {
-  const { user } = auth();
-  const img =
-    "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg";
+type TodoCardProps = {
+  task: Task;
+};
+
+export const TodoCard = ({ task }: TodoCardProps) => {
+  const { user } = useUser();
+  const img = "";
   return (
-    <Card className="relative shadow-outline-black rounded-xl w-full ">
+    <Card>
       <CardHeader className="space-y-3 p-3">
-        {img && (
+        {img ? (
           <Image
             src={img}
             alt="img"
@@ -30,9 +34,9 @@ export const TodoCard = () => {
             className="w-full h-[200px] rounded-xl"
             quality={100}
           />
-        )}
+        ) : null}
         <CardTitle className="text-base font-normal p-0">
-          Github jobs challenge
+          {task.content}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-3 space-y-3 ">

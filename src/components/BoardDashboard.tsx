@@ -1,6 +1,6 @@
 import { AddNewListPopOver } from "./Popups/AddNewListPopOver";
-import { TasksList } from "./list/TasksList";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { DndContextProvider } from "@/app/context/DndContextProvider";
 
 export const BoardDashboard = () => {
   return (
@@ -10,10 +10,8 @@ export const BoardDashboard = () => {
     >
       <ScrollArea className="h-full px-4 py-4 rounded-xl">
         <ScrollBar className="h-2 w-full" orientation="horizontal"></ScrollBar>
-        <div className="flex w-full gap-x-8 overflow-x-auto ">
-          <TasksList />
-          <TasksList />
-          <TasksList />
+        <div className="flex w-full gap-x-8">
+          <DndContextProvider />
           <AddNewListPopOver />
         </div>
       </ScrollArea>

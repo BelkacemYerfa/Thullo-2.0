@@ -82,9 +82,10 @@ export const BoardSheet = ({ boardUsers, boardTitle }: BoardSheetProps) => {
                     <Icons.File className="h-4 w-4" />
                     <h3 className="text-xs font-semibold">Description</h3>
                   </div>
-                  {!isDescriptionFormOpen ? (
+                  {isDescriptionFormOpen ? (
                     <Button
                       className=" flex items-center gap-x-2 px-3 py-1 border border-[#BDBDBD] border-solid rounded-lg bg-transparent hover:bg-transparent text-[#828282]"
+                      disabled={!isDescriptionFormOpen}
                       onClick={() =>
                         setIsDescriptionFormOpen(!isDescriptionFormOpen)
                       }

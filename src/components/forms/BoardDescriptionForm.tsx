@@ -27,11 +27,11 @@ export const BoardDescriptionForm = ({
   const onSubmit = (data: boardDescriptionSchemaType) => {
     const { description } = data;
     setValue(description ?? "");
-    setIsDescriptionFormOpen(false);
+    setIsDescriptionFormOpen(true);
   };
   return (
     <>
-      {value && !isDescriptionFormOpen ? (
+      {value && isDescriptionFormOpen ? (
         <p>{form.getValues("description")}</p>
       ) : (
         <Form {...form}>
@@ -58,7 +58,7 @@ export const BoardDescriptionForm = ({
               <Button
                 type="button"
                 className="rounded-xl text-[#828282] bg-transparent hover:bg-transparent py-1 px-3"
-                onClick={() => setIsDescriptionFormOpen(false)}
+                onClick={() => setIsDescriptionFormOpen(true)}
               >
                 Cancel
               </Button>
