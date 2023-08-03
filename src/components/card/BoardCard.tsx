@@ -28,7 +28,7 @@ export const BoardCard = ({
           blurDataURL={boardBanner}
           height={130}
           width={220}
-          className="w-full h-52  sm:h-[150px] xl:h-[140px] rounded-xl"
+          className="w-full h-52  sm:h-[180px] xl:h-[200px] 2xl:h-[140px] rounded-xl"
           quality={100}
         />
         <CardTitle className="text-base font-medium ">{title}</CardTitle>
@@ -36,12 +36,15 @@ export const BoardCard = ({
       <CardContent className="flex items-center gap-x-3 p-3">
         {usersPics.map((pic, index) =>
           index < 3 ? (
-            <Avatar key={index} className="h-10 w-10 rounded-lg">
+            <Avatar
+              key={index}
+              className="h-8 w-8 2xl:h-8 2xl:w-8 xl:h-10 xl:w-10 rounded-lg"
+            >
               <AvatarImage
                 src={pic}
                 alt={"pic"}
-                height={40}
-                width={40}
+                height={32}
+                width={32}
                 loading="lazy"
               />
               <AvatarFallback>{pic}</AvatarFallback>
