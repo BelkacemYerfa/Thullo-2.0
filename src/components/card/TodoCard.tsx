@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Icons } from "../Icons";
 import { useUser } from "@clerk/nextjs";
 import { Task } from "@/app/context/initialData";
+import { CardDetailedPopOver } from "../Popups/CardDetailedPopOver";
 
 type TodoCardProps = {
   task: Task;
@@ -35,8 +36,9 @@ export const TodoCard = ({ task }: TodoCardProps) => {
             quality={100}
           />
         ) : null}
-        <CardTitle className="text-base font-normal p-0">
-          {task.content}
+        <CardTitle className="text-base font-normal p-0 group w-fit flex flex-col -space-y-[2.5px] items-center">
+          <CardDetailedPopOver taskTitle={task.content} />
+          <div className="w-0 h-[1px] bg-[#828282] group-hover:w-full duration-200 ease-linear"></div>
         </CardTitle>
       </CardHeader>
       <CardContent className="p-3 space-y-3 ">

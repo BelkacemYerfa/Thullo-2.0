@@ -22,7 +22,7 @@ type NavBarProps = {
 
 export const NavBar = ({ user, boardTitle }: NavBarProps) => {
   return (
-    <nav className="sticky top-0 z-[3] backdrop-blur-sm bg-white/80 w-full shadow-outline-navigation ">
+    <nav className=" top-0 z-[3] backdrop-blur-sm bg-white/80 w-full shadow-outline-navigation ">
       <div className="w-full ">
         <div className="flex items-center w-full gap-x-6 py-2 px-3 md:py-3 md:px-6">
           <div className="flex items-center justify-between w-1/3 ">

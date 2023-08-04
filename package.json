@@ -49,6 +49,7 @@
     "typescript": "5.1.6",
     "uploadthing": "^5.2.1",
     "use-debounce": "^9.0.4",
+    "vaul": "^0.1.1",
     "zod": "^3.21.4",
     "zustand": "^4.3.9"
   }
