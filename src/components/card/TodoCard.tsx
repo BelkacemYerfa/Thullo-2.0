@@ -14,12 +14,14 @@ import { Icons } from "../Icons";
 import { useUser } from "@clerk/nextjs";
 import { Task } from "@/app/context/initialData";
 import { CardDetailedPopOver } from "../Popups/CardDetailedPopOver";
+import Link from "next/link";
 
 type TodoCardProps = {
   task: Task;
+  cardId: string;
 };
 
-export const TodoCard = ({ task }: TodoCardProps) => {
+export const TodoCard = ({ task, cardId }: TodoCardProps) => {
   const { user } = useUser();
   const img = "";
   return (
@@ -37,7 +39,9 @@ export const TodoCard = ({ task }: TodoCardProps) => {
           />
         ) : null}
         <CardTitle className="text-base font-normal p-0 group w-fit flex flex-col -space-y-[2.5px] items-center">
-          <CardDetailedPopOver taskTitle={task.content} />
+          <Link scroll={false} href={`?card=${cardId}`}>
+            <CardDetailedPopOver cardId={cardId} taskTitle={task.content} />
+          </Link>
           <div className="w-0 h-[1px] bg-[#828282] group-hover:w-full duration-200 ease-linear"></div>
         </CardTitle>
       </CardHeader>

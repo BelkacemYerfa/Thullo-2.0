@@ -21,8 +21,9 @@ export const CardDescriptionForm = () => {
   });
   const onSubmit = (data: boardDescriptionSchemaType) => {
     console.log(data);
+    console.log("hello");
     setValue(data.description ?? "");
-    setIsDescriptionFormOpen(false);
+    //setIsDescriptionFormOpen(false);
   };
   return (
     <div className="space-y-3">

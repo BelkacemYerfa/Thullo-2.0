@@ -3,29 +3,34 @@ import Link from "next/link";
 import Image from "next/image";
 import { CardDescriptionForm } from "../forms/CardDescriptionForm";
 import { ScrollArea } from "../ui/scroll-area";
+import { Icons } from "../Icons";
+import { Toggle } from "../ui/toggle";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
+  cardId: string;
 };
 
 export const CardDetailedPopOver = ({
   taskTitle,
+  cardId,
 }: CardDetailedPopOverProps) => {
   return (
-    <Drawer.Root shouldScaleBackground>
+    <Drawer.Root>
       <Drawer.Trigger>{taskTitle}</Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 " />
-        <Drawer.Content className="bg-white rounded-t-[10px] mt-24 fixed h-[80%] w-full bottom-0 left-0 right-0 px-1">
-          <ScrollArea className="h-full w-full">
-            <div className="sticky top-0 max-w-full bg-white py-5 ">
-              <div className=" max-w-full m-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300" />
-            </div>
-            <div
-              className="px-4 pb-4 bg-white h-full w-full md:w-[70%] m-auto
-           rounded-t-lg md:rounded-none "
-            >
-              <div className="w-full space-y-6 ">
+        <Drawer.Content className="bg-white fixed h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 md:px-1 rounded-xl ">
+          <ScrollArea className="h-full w-full ">
+            <div className=" px-4 pb-4 bg-white w-full md:w-3/5 m-auto rounded-lg ">
+              <div className="sticky top-0 flex justify-center bg-white py-5 ">
+                <Drawer.Close>
+                  <Link href={"/"} className="text-[#333333]">
+                    <div className="max-w-full mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300" />
+                  </Link>
+                </Drawer.Close>
+              </div>
+              <div className="w-full max-h-full space-y-6 ">
                 <Image
                   src={
                     "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"

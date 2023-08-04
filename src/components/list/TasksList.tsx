@@ -33,7 +33,7 @@ export const TasksList = ({ column, tasks }: TasksListProps) => {
                       {...provided.dragHandleProps}
                       {...provided.draggableProps}
                     >
-                      <TodoCard task={task} />
+                      <TodoCard cardId={task.id} task={task} />
                     </div>
                   )}
                 </Draggable>
