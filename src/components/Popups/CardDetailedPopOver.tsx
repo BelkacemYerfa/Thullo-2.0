@@ -5,6 +5,9 @@ import { CardDescriptionForm } from "../forms/CardDescriptionForm";
 import { ScrollArea } from "../ui/scroll-area";
 import { CardCommentForm } from "../forms/CardCommentForm";
 import { CommentsList } from "../list/CommentsList";
+import { Icons } from "../Icons";
+import { CardAssignedMembersPopOver } from "./CardAssignedMemebersPopOver";
+import { CloseLink } from "../Btns";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -22,17 +25,15 @@ export const CardDetailedPopOver = ({
       </Link>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed z-[5] inset-0 bg-black/40 " />
-        <Drawer.Content className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden">
+        <Drawer.Content className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden ">
           <ScrollArea className="h-full w-full ">
-            <div className=" px-4 h-full pb-4 bg-white w-full md:w-3/5 m-auto ">
-              <div className="sticky top-0 flex justify-center bg-white py-5 ">
+            <div className=" h-full pb-4 bg-white w-full md:w-3/5 m-auto shadow-outline-black ">
+              <div className="sticky top-0 flex justify-center bg-white py-5 shadow-outline-black ">
                 <Drawer.Close>
-                  <Link href={"/"} className="text-[#333333]">
-                    <div className="max-w-full mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300" />
-                  </Link>
+                  <CloseLink />
                 </Drawer.Close>
               </div>
-              <div className="w-full max-h-full space-y-6 ">
+              <div className="px-4 w-full max-h-full space-y-6 mt-2 ">
                 <Image
                   src={
                     "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
@@ -43,8 +44,8 @@ export const CardDetailedPopOver = ({
                   className="w-full h-[200px] rounded-xl object-cover "
                   quality={100}
                 />
-                <div className="flex gap-x-5">
-                  <div className="basis-3/4 space-y-3 ">
+                <div className="flex flex-col-reverse md:flex-row gap-5">
+                  <div className=" basis-full md:basis-3/4 space-y-5 ">
                     <div className="space-y-2">
                       <Drawer.Title className="text-base ">
                         {taskTitle}
@@ -60,7 +61,15 @@ export const CardDetailedPopOver = ({
                       <CommentsList />
                     </div>
                   </div>
-                  <div className="basis-1/4">hi</div>
+                  <div className="basis-full md:basis-1/4 space-y-2">
+                    <h3 className="flex items-center text-xs gap-x-2 text-[#BDBDBD] font-semibold">
+                      <Icons.User2 className="h-4 w-4" />
+                      Actions
+                    </h3>
+                    <div className="flex flex-row items-center md:flex-col gap-3 ">
+                      <CardAssignedMembersPopOver />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
