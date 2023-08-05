@@ -18,6 +18,7 @@ import {
   Paperclip,
   LogOut,
   X,
+  Github,
   type LucideProps,
 } from "lucide-react";
 
@@ -40,6 +41,7 @@ export const Icons = {
   Paperclip,
   LogOut,
   X,
+  Github,
   logo: (props: LucideProps) => (
     <svg
       width="98"

@@ -22,7 +22,7 @@ type NavBarProps = {
 
 export const NavBar = ({ user, boardTitle }: NavBarProps) => {
   return (
-    <nav className=" top-0 z-[3] backdrop-blur-sm bg-white/80 w-full shadow-outline-navigation ">
+    <nav className=" sticky top-0 z-[3] backdrop-blur-sm bg-white/80 w-full shadow-outline-navigation ">
       <div className="w-full ">
         <div className="flex items-center w-full gap-x-6 py-2 px-3 md:py-3 md:px-6">
           <div className="flex items-center justify-between w-1/3 ">
@@ -81,7 +81,7 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                     <Link href={"/profile"} className="text-sm text-[#BDBDBD]">
                       <Icons.User2 className="h-4 w-4 " />
                       Profile
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                      <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -92,6 +92,20 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                       <Icons.Settings2 className="h-4 w-4" />
                       Settings
                       <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
+                  >
+                    <Link
+                      href={"https://github.com/BelkacemYerfa"}
+                      className="text-sm text-[#BDBDBD]"
+                      target="_blank"
+                    >
+                      <Icons.Github className="h-4 w-4" />
+                      Github
+                      <DropdownMenuShortcut>⌘G</DropdownMenuShortcut>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />

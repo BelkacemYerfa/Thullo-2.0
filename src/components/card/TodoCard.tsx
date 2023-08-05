@@ -39,9 +39,8 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
           />
         ) : null}
         <CardTitle className="text-base font-normal p-0 group w-fit flex flex-col -space-y-[2.5px] items-center">
-          <Link scroll={false} href={`?card=${cardId}`}>
-            <CardDetailedPopOver cardId={cardId} taskTitle={task.content} />
-          </Link>
+          <CardDetailedPopOver cardId={cardId} taskTitle={task.content} />
+
           <div className="w-0 h-[1px] bg-[#828282] group-hover:w-full duration-200 ease-linear"></div>
         </CardTitle>
       </CardHeader>

@@ -17,7 +17,7 @@ export const BoardSettings = ({}) => {
         <BoardAccessPopOver />
         <div className="flex items-center gap-x-4">
           <div className="hidden sm:flex items-center gap-x-4">
-            {boardUser.map((user, index) =>
+            {boardUser.slice(0, 4).map((user, index) =>
               index < 3 ? (
                 index !== 2 ? (
                   <Avatar key={index + user} className="h-10 w-10 rounded-lg">

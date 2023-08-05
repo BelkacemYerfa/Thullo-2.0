@@ -34,7 +34,7 @@ export const BoardCard = ({
         <CardTitle className="text-base font-medium ">{title}</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center gap-x-3 p-3">
-        {usersPics.map((pic, index) =>
+        {usersPics.slice(0, 4).map((pic, index) =>
           index < 3 ? (
             <Avatar
               key={index}
@@ -51,7 +51,7 @@ export const BoardCard = ({
             </Avatar>
           ) : (
             <p key={pic + index} className="text-[#BDBDBD] text-sm font-medium">
-              +{usersPics.length - index} others
+              +{usersPics.length - 3} others
             </p>
           )
         )}

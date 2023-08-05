@@ -23,7 +23,7 @@ export const CardDescriptionForm = () => {
     console.log(data);
     console.log("hello");
     setValue(data.description ?? "");
-    //setIsDescriptionFormOpen(false);
+    setIsDescriptionFormOpen(false);
   };
   return (
     <div className="space-y-3">
@@ -42,13 +42,13 @@ export const CardDescriptionForm = () => {
           </Button>
         )}
       </div>
-      <div className="">
+      <>
         {value && !isDescriptionFormOpen ? (
           <p>{form.getValues("description")}</p>
         ) : (
           <Form {...form}>
             <form
-              className="grid space-y-2 "
+              className="grid space-y-2 max-w-[97%] m-auto"
               onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
             >
               <FormField
@@ -56,11 +56,7 @@ export const CardDescriptionForm = () => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <Textarea
-                      placeholder={value ? value : "Description..."}
-                      className="resize-none h-[200px]"
-                      {...field}
-                    />
+                    <Textarea className="resize-none h-52 " {...field} />
                   </FormItem>
                 )}
               />
@@ -75,7 +71,8 @@ export const CardDescriptionForm = () => {
                 <Button
                   type="button"
                   className="rounded-xl text-[#828282] bg-transparent hover:bg-transparent py-1 px-3"
-                  onClick={() => setIsDescriptionFormOpen(false)}
+                  disabled={!value}
+                  onClick={() => setIsDescriptionFormOpen(true)}
                 >
                   Cancel
                 </Button>
@@ -83,7 +80,7 @@ export const CardDescriptionForm = () => {
             </form>
           </Form>
         )}
-      </div>
+      </>
     </div>
   );
 };
