@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { CardDescriptionForm } from "../forms/CardDescriptionForm";
 import { ScrollArea } from "../ui/scroll-area";
+import { CardCommentForm } from "../forms/CardCommentForm";
+import { CommentsList } from "../list/CommentsList";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -22,7 +24,7 @@ export const CardDetailedPopOver = ({
         <Drawer.Overlay className="fixed z-[5] inset-0 bg-black/40 " />
         <Drawer.Content className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden">
           <ScrollArea className="h-full w-full ">
-            <div className=" px-4 pb-4 bg-white w-full md:w-3/5 m-auto ">
+            <div className=" px-4 h-full pb-4 bg-white w-full md:w-3/5 m-auto ">
               <div className="sticky top-0 flex justify-center bg-white py-5 ">
                 <Drawer.Close>
                   <Link href={"/"} className="text-[#333333]">
@@ -53,7 +55,10 @@ export const CardDetailedPopOver = ({
                       </p>
                     </div>
                     <CardDescriptionForm />
-                    <div></div>
+                    <div className="space-y-4">
+                      <CardCommentForm />
+                      <CommentsList />
+                    </div>
                   </div>
                   <div className="basis-1/4">hi</div>
                 </div>

@@ -19,6 +19,9 @@ import {
   LogOut,
   X,
   Github,
+  Edit2,
+  Trash2,
+  Minus,
   type LucideProps,
 } from "lucide-react";
 
@@ -42,6 +45,9 @@ export const Icons = {
   LogOut,
   X,
   Github,
+  Edit2, 
+  Trash2,
+  Minus,
   logo: (props: LucideProps) => (
     <svg
       width="98"

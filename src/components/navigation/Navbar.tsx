@@ -55,15 +55,12 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center gap-x-[10px]">
                   <Avatar className="rounded-lg">
-                    {user?.imageUrl ? (
-                      <AvatarImage
-                        src={user?.imageUrl ?? ""}
-                        alt={user?.username ?? ""}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <Skeleton className="h-7 w-7 rounded-lg" />
-                    )}
+                    <AvatarImage
+                      src={user?.imageUrl ?? ""}
+                      alt={user?.username ?? ""}
+                      loading="lazy"
+                    />
+
                     <AvatarFallback>
                       {user?.username?.split("")[0]}
                     </AvatarFallback>
