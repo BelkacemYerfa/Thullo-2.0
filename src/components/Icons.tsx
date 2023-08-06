@@ -22,6 +22,8 @@ import {
   Edit2,
   Trash2,
   Minus,
+  Wallpaper,
+  Tags,
   type LucideProps,
 } from "lucide-react";
 
@@ -48,6 +50,8 @@ export const Icons = {
   Edit2, 
   Trash2,
   Minus,
+  Wallpaper,
+  Tags,
   logo: (props: LucideProps) => (
     <svg
       width="98"
