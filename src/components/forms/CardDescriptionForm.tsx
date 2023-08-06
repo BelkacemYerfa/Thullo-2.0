@@ -23,7 +23,7 @@ export const CardDescriptionForm = () => {
     console.log(data);
     console.log("hello");
     setValue(data.description ?? "");
-    setIsDescriptionFormOpen(false);
+    setIsDescriptionFormOpen(true);
   };
   return (
     <div className="space-y-3">
@@ -32,18 +32,18 @@ export const CardDescriptionForm = () => {
           <Icons.File className="h-4 w-4" />
           <h3 className="text-xs font-semibold">Description</h3>
         </div>
-        {isDescriptionFormOpen ? null : (
+        {isDescriptionFormOpen ? (
           <Button
             className=" flex items-center gap-x-2 px-3 py-1 border border-[#BDBDBD] border-solid rounded-lg bg-transparent hover:bg-transparent text-[#828282]"
-            onClick={() => setIsDescriptionFormOpen(true)}
+            onClick={() => setIsDescriptionFormOpen(!isDescriptionFormOpen)}
           >
             <Icons.Pencil className="h-4 w-4" />
             Edit
           </Button>
-        )}
+        ) : null}
       </div>
       <>
-        {value && !isDescriptionFormOpen ? (
+        {value && isDescriptionFormOpen ? (
           <p>{form.getValues("description")}</p>
         ) : (
           <Form {...form}>

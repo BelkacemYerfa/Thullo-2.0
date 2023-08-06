@@ -50,7 +50,7 @@ export const CardAssignedMembersPopOver = () => {
         {isMembersPopOverOpen ? (
           <motion.div
             layout="size"
-            className="absolute top-12 md:top-0 left-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3"
+            className="absolute top-12 md:top-0 left-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3 "
             variants={MembersVariants}
             initial="closed"
             animate="open"
