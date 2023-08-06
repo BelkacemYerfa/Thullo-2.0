@@ -1,6 +1,3 @@
-" use client";
-
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -8,9 +5,14 @@ import {
   CommandItem,
   CommandGroup,
 } from "../ui/command";
+import {
+  DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+} from "../ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Icons } from "../Icons";
@@ -31,36 +33,50 @@ const Users = [
 ];
 
 export const AssignedMembers = () => {
+  const [isMembersOpen, setIsMembersOpen] = useState<boolean>(false);
   const MembersVariants = {
     open: { opacity: 1, height: "auto" },
     closed: { opacity: 0, height: 0 },
   };
   return (
-    <motion.div
-      layout="size"
-      className="absolute top-12 md:top-0 left-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3 "
-      variants={MembersVariants}
-      initial="closed"
-      animate="open"
-      exit="closed"
-    >
-      {Users.map((user) => (
-        <div key={user.id} className="flex items-center gap-x-4">
-          <Avatar className="rounded-lg">
-            <AvatarImage
-              src={user.profilePic}
-              alt={user.username}
-              loading="lazy"
-            />
-            <AvatarFallback>{user.username}</AvatarFallback>
-          </Avatar>
-          <p className="text-sm text-[#333333] font-semibold">
-            {user.username}
-          </p>
-        </div>
-      ))}
-      <AddUserPopOver />
-    </motion.div>
+    <div className="absolute top-12 md:top-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3 ">
+      <Button
+        className="flex items-center w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4"
+        onClick={() => setIsMembersOpen(!isMembersOpen)}
+      >
+        <Icons.Users2 className="h-5 w-5" />
+        Members
+      </Button>
+      <AnimatePresence initial={false}>
+        {isMembersOpen && (
+          <motion.div
+            layout="size"
+            className="w-full space-y-3"
+            variants={MembersVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            {Users.map((user) => (
+              <div key={user.id} className="flex items-center gap-x-4">
+                <Avatar className="rounded-lg">
+                  <AvatarImage
+                    src={user.profilePic}
+                    alt={user.username}
+                    loading="lazy"
+                  />
+                  <AvatarFallback>{user.username}</AvatarFallback>
+                </Avatar>
+                <p className="text-sm text-[#333333] font-semibold">
+                  {user.username}
+                </p>
+              </div>
+            ))}
+            <AddUserPopOver />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
@@ -73,14 +89,14 @@ export const AddUserPopOver = () => {
     setIsOpen(false);
   };
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>
         <Button className="flex items-center w-full justify-between text-sm h-fit text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD]  rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed ">
           Assign a member
           <Icons.Plus className="h-4 w-4" />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="p-3 space-y-4 rounded-xl" align="start">
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-3 space-y-4 rounded-xl" align="start">
         <div className="space-y-2">
           <h3 className="text-sm text-[#4F4F4F] font-semibold">
             Invite to Board
@@ -130,7 +146,7 @@ export const AddUserPopOver = () => {
             Invite
           </Button>
         </div>
-      </PopoverContent>
-    </Popover>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
