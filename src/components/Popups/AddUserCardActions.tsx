@@ -39,7 +39,7 @@ export const AssignedMembers = () => {
     closed: { opacity: 0, height: 0 },
   };
   return (
-    <div className="absolute top-12 md:top-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3 ">
+    <>
       <Button
         className="flex items-center w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4"
         onClick={() => setIsMembersOpen(!isMembersOpen)}
@@ -49,34 +49,36 @@ export const AssignedMembers = () => {
       </Button>
       <AnimatePresence initial={false}>
         {isMembersOpen && (
-          <motion.div
-            layout="size"
-            className="w-full space-y-3"
-            variants={MembersVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
-          >
-            {Users.map((user) => (
-              <div key={user.id} className="flex items-center gap-x-4">
-                <Avatar className="rounded-lg">
-                  <AvatarImage
-                    src={user.profilePic}
-                    alt={user.username}
-                    loading="lazy"
-                  />
-                  <AvatarFallback>{user.username}</AvatarFallback>
-                </Avatar>
-                <p className="text-sm text-[#333333] font-semibold">
-                  {user.username}
-                </p>
-              </div>
-            ))}
-            <AddUserPopOver />
-          </motion.div>
+          <div className="absolute top-12 md:top-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3 ">
+            <motion.div
+              layout="size"
+              className="w-full space-y-3"
+              variants={MembersVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+            >
+              {Users.map((user) => (
+                <div key={user.id} className="flex items-center gap-x-4">
+                  <Avatar className="rounded-lg">
+                    <AvatarImage
+                      src={user.profilePic}
+                      alt={user.username}
+                      loading="lazy"
+                    />
+                    <AvatarFallback>{user.username}</AvatarFallback>
+                  </Avatar>
+                  <p className="text-sm text-[#333333] font-semibold">
+                    {user.username}
+                  </p>
+                </div>
+              ))}
+              <AddUserPopOver />
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 };
 
