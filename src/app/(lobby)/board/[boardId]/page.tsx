@@ -9,7 +9,9 @@ type BoardPageProps = {
   };
 };
 
-export async function getMetadata({ params: { boardId } }: BoardPageProps) {
+export async function generateMetadata({
+  params: { boardId },
+}: BoardPageProps) {
   return {
     title: `board ${boardId}`,
     description: `board ${boardId} description`,

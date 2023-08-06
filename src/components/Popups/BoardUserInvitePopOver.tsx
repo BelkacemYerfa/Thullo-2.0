@@ -15,7 +15,7 @@ import {
   CommandItem,
 } from "../ui/command";
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 export const BoardUserInvitePopOver = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

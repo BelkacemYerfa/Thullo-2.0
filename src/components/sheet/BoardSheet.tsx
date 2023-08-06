@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { Icons } from "../Icons";
 import { Button } from "../ui/button";
@@ -12,9 +10,8 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { BoardDescriptionForm } from "../forms/BoardDescriptionForm";
-import { useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-import { useUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 type BoardSheetProps = {
@@ -22,10 +19,11 @@ type BoardSheetProps = {
   boardTitle: string;
 };
 
-export const BoardSheet = ({ boardUsers, boardTitle }: BoardSheetProps) => {
-  const [isDescriptionFormOpen, setIsDescriptionFormOpen] =
-    useState<boolean>(false);
-  const { user } = useUser();
+export const BoardSheet = async ({
+  boardUsers,
+  boardTitle,
+}: BoardSheetProps) => {
+  const user = await currentUser();
   return (
     <Sheet>
       <SheetTrigger>
@@ -76,30 +74,7 @@ export const BoardSheet = ({ boardUsers, boardTitle }: BoardSheetProps) => {
                   </div>
                 </div>
               </div>
-              <div className="space-y-2 ">
-                <div className="flex items-center gap-x-3">
-                  <div className="text-[#BDBDBD] flex items-center gap-x-[6px]">
-                    <Icons.File className="h-4 w-4" />
-                    <h3 className="text-xs font-semibold">Description</h3>
-                  </div>
-                  {isDescriptionFormOpen ? (
-                    <Button
-                      className=" flex items-center gap-x-2 px-3 py-1 border border-[#BDBDBD] border-solid rounded-lg bg-transparent hover:bg-transparent text-[#828282]"
-                      disabled={!isDescriptionFormOpen}
-                      onClick={() =>
-                        setIsDescriptionFormOpen(!isDescriptionFormOpen)
-                      }
-                    >
-                      <Icons.Pencil className="h-4 w-4" />
-                      Edit
-                    </Button>
-                  ) : null}
-                </div>
-                <BoardDescriptionForm
-                  isDescriptionFormOpen={isDescriptionFormOpen}
-                  setIsDescriptionFormOpen={setIsDescriptionFormOpen}
-                />
-              </div>
+              <BoardDescriptionForm />
               <div className="space-y-5">
                 <div className="text-[#BDBDBD] flex items-center gap-x-[6px]">
                   <Icons.Users2 className="h-4 w-4" />

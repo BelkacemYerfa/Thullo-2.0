@@ -10,17 +10,12 @@ import {
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import { Icons } from "../Icons";
 
-type BoardDescriptionFormProps = {
-  isDescriptionFormOpen: boolean;
-  setIsDescriptionFormOpen: (value: boolean) => void;
-};
-
-export const BoardDescriptionForm = ({
-  isDescriptionFormOpen,
-  setIsDescriptionFormOpen,
-}: BoardDescriptionFormProps) => {
+export const BoardDescriptionForm = () => {
   const [value, setValue] = useState<string>("");
+  const [isDescriptionFormOpen, setIsDescriptionFormOpen] =
+    useState<boolean>(false);
   const form = useForm<boardDescriptionSchemaType>({
     resolver: zodResolver(boardDescriptionSchema),
   });
@@ -30,7 +25,23 @@ export const BoardDescriptionForm = ({
     setIsDescriptionFormOpen(true);
   };
   return (
-    <>
+    <div className="space-y-2 ">
+      <div className="flex items-center gap-x-3">
+        <div className="text-[#BDBDBD] flex items-center gap-x-[6px]">
+          <Icons.File className="h-4 w-4" />
+          <h3 className="text-xs font-semibold">Description</h3>
+        </div>
+        {isDescriptionFormOpen ? (
+          <Button
+            className=" flex items-center gap-x-2 px-3 py-1 border border-[#BDBDBD] border-solid rounded-lg bg-transparent hover:bg-transparent text-[#828282]"
+            disabled={!isDescriptionFormOpen}
+            onClick={() => setIsDescriptionFormOpen(!isDescriptionFormOpen)}
+          >
+            <Icons.Pencil className="h-4 w-4" />
+            Edit
+          </Button>
+        ) : null}
+      </div>
       {value && isDescriptionFormOpen ? (
         <p>{form.getValues("description")}</p>
       ) : (
@@ -68,6 +79,6 @@ export const BoardDescriptionForm = ({
           </form>
         </Form>
       )}
-    </>
+    </div>
   );
 };
