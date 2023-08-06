@@ -36,7 +36,7 @@ export const CardCoverPopOver = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"
-        className="w-72 rounded-xl py-2 px-3 space-y-3 "
+        className="rounded-xl py-2 px-3 space-y-3 w-64"
       >
         <div className="space-y-1 text-sm">
           <h3 className="text-[#4F4F4F] font-semibold">Photo Search</h3>

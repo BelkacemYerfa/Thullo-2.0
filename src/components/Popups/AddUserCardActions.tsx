@@ -96,7 +96,10 @@ export const AddUserPopOver = () => {
           <Icons.Plus className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-3 space-y-4 rounded-xl" align="start">
+      <DropdownMenuContent
+        className="p-3 space-y-4 rounded-xl w-64"
+        align="start"
+      >
         <div className="space-y-2">
           <h3 className="text-sm text-[#4F4F4F] font-semibold">
             Invite to Board

@@ -17,7 +17,7 @@ export const CardLabelsPopOver = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="rounded-xl w-64 py-2 px-3 space-y-3"
+        className="rounded-xl py-2 px-3 space-y-3 w-64"
         align="start"
       >
         <div className="text-sm ">
