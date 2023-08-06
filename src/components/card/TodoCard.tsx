@@ -14,7 +14,6 @@ import { Icons } from "../Icons";
 import { useUser } from "@clerk/nextjs";
 import { Task } from "@/app/context/initialData";
 import { CardDetailedPopOver } from "../Popups/CardDetailedPopOver";
-import Link from "next/link";
 
 type TodoCardProps = {
   task: Task;

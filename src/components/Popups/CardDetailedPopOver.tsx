@@ -1,5 +1,6 @@
 import { Drawer } from "vaul";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { CardDescriptionForm } from "../forms/CardDescriptionForm";
 import { ScrollArea } from "../ui/scroll-area";
@@ -7,7 +8,6 @@ import { CardCommentForm } from "../forms/CardCommentForm";
 import { CommentsList } from "../list/CommentsList";
 import { Icons } from "../Icons";
 import { CardAssignedMembersPopOver } from "./CardAssignedMemebersPopOver";
-import { CloseLink } from "../Btns";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -18,6 +18,8 @@ export const CardDetailedPopOver = ({
   taskTitle,
   cardId,
 }: CardDetailedPopOverProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <Drawer.Root>
       <Link href={`?card=${cardId}`}>
@@ -28,10 +30,12 @@ export const CardDetailedPopOver = ({
         <Drawer.Content className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden ">
           <ScrollArea className="h-full w-full ">
             <div className=" h-full pb-4 bg-white w-full md:w-3/5 m-auto shadow-outline-black ">
-              <div className="sticky top-0 flex justify-center bg-white py-5 shadow-outline-black ">
-                <Drawer.Close>
-                  <CloseLink />
-                </Drawer.Close>
+              <div className="sticky top-0 flex justify-center bg-white py-4 shadow-outline-black z-[5] ">
+                <Link href={pathname.split("?")[0]}>
+                  <Drawer.Close>
+                    <div className="max-w-full mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300" />
+                  </Drawer.Close>
+                </Link>
               </div>
               <div className="px-4 w-full max-h-full space-y-6 mt-2 ">
                 <Image

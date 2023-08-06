@@ -38,7 +38,7 @@ export const CardAssignedMembersPopOver = () => {
     closed: { opacity: 0, height: 0 },
   };
   return (
-    <div className=" p-0 relative space-y-2 w-full">
+    <div className="p-0 relative space-y-2 w-full">
       <Button
         className="flex items-center w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4"
         onClick={() => setIsMembersPopOverOpen(!isMembersPopOverOpen)}
@@ -50,8 +50,7 @@ export const CardAssignedMembersPopOver = () => {
         {isMembersPopOverOpen ? (
           <motion.div
             layout="size"
-            className="absolute top-12 md:top-0 left-0 md:relative bg-white
-            p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3"
+            className="absolute top-12 md:top-0 left-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3"
             variants={MembersVariants}
             initial="closed"
             animate="open"

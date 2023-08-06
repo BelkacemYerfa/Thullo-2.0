@@ -15,16 +15,16 @@ import {
   CommandItem,
 } from "../ui/command";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const BoardUserInvitePopOver = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  useEffect(() => {
-    console.log(selectedUsers);
-  });
+  const handleSelectAll = useCallback(() => {
+    console.log("users : ", selectedUsers);
+  }, [selectedUsers]);
   const handleUserInvite = () => {
-    console.log("handleUserInvite");
+    handleSelectAll();
     setIsOpen(false);
   };
   return (
