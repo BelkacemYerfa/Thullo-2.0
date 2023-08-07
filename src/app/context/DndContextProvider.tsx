@@ -101,7 +101,7 @@ export const DndContextProvider = () => {
       <Droppable droppableId="board" direction="horizontal" type="column">
         {(provider) => (
           <div
-            className="h-full flex gap-x-8 snap-x snap-mandatory overflow-x-auto "
+            className="h-full flex gap-x-8 snap-x snap-mandatory md:snap-none  overflow-x-auto "
             {...provider.droppableProps}
             ref={provider.innerRef}
           >

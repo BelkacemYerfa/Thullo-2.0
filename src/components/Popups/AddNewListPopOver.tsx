@@ -4,14 +4,17 @@ import { Icons } from "../Icons";
 import { ListCreationForm } from "../forms/ListCreationFrom";
 import { Dialog, DialogTrigger, DialogContent } from "../ui/dialog";
 import { useGenerationStore } from "@/lib/store/Store";
+import { Button } from "../ui/button";
 
 export const AddNewListPopOver = () => {
   const { newList, setNewList } = useGenerationStore();
   return (
     <Dialog open={newList} onOpenChange={setNewList}>
-      <DialogTrigger className="flex items-center justify-between text-sm h-fit text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-80 rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed  ">
-        Add another list
-        <Icons.Plus className="h-5 w-5" />
+      <DialogTrigger className="h-fit">
+        <Button className="flex items-center justify-between text-sm h-fit text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-80  rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed  ">
+          Add another list
+          <Icons.Plus className="h-5 w-5" />
+        </Button>
       </DialogTrigger>
       <DialogContent className="p-5">
         <ListCreationForm />
