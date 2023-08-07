@@ -34,7 +34,7 @@ module.exports = {
         "outline-black": "0px 4px 12px rgba(0, 0, 0, 0.05)",
         "outline-black-xs": "0px 2px 8px rgba(0, 0, 0, 0.10)",
         "outline-navigation": "0px 2px 2px rgba(0, 0, 0, 0.05)",
-        "outline-navigation-md": "0px 2px 4px rgba(0, 0, 0, 0.05)",
+        "outline-navigation-bottom": "0px 2px 0px rgba(0, 0, 0, 0.05)",
       },
     },
   },

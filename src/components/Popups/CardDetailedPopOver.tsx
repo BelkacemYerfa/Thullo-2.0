@@ -7,7 +7,9 @@ import { ScrollArea } from "../ui/scroll-area";
 import { CardCommentForm } from "../forms/CardCommentForm";
 import { CommentsList } from "../list/CommentsList";
 import { Icons } from "../Icons";
-import { CardAssignedMembersPopOver } from "./CardAssignedMemebersPopOver";
+import { CardAssignedMembers } from "./AddUserCardActions";
+import { CardCoverPopOver } from "./CardCoverPopOver";
+import { CardLabelsPopOver } from "./CardLabelsPopOver";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -71,7 +73,11 @@ export const CardDetailedPopOver = ({
                       Actions
                     </h3>
                     <div className="flex flex-row items-center md:flex-col gap-3 ">
-                      <CardAssignedMembersPopOver />
+                      <div className="p-0 relative flex md:block items-center md:space-y-2 gap-x-2 w-full">
+                        <CardAssignedMembers />
+                        <CardLabelsPopOver />
+                        <CardCoverPopOver />
+                      </div>
                     </div>
                   </div>
                 </div>

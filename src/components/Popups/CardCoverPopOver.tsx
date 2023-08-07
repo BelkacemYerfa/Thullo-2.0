@@ -15,17 +15,27 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import { Button } from "../ui/button";
+import { searchPhotos } from "@/types/unsplash-api/searchPhotos";
+import { ScrollArea } from "../ui/scroll-area";
+import { useDebounce } from "use-debounce";
 
 export const CardCoverPopOver = () => {
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>("nature");
   const [images, setImages] = useState<string[]>([]);
-  const handleSearchImage = useCallback(() => {
-    console.log(query);
-    setImages([]);
-  }, [query]);
+  const [value] = useDebounce(query, 500);
+  const handleSearchImage = useCallback(async () => {
+    if (!query) return;
+    const results = await searchPhotos(query, 1, 12);
+    console.log(results?.results[0]?.urls.full);
+    let images: string[] = [];
+    results?.results?.map((result: any) => {
+      images.push(result?.urls?.full);
+    });
+    setImages(images);
+  }, [value]);
   useEffect(() => {
     handleSearchImage();
-  }, [query]);
+  }, [value]);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="w-full">
@@ -53,25 +63,34 @@ export const CardCoverPopOver = () => {
           >
             No Images Found
           </CommandEmpty>
-          <CommandGroup className="flex items-center gap-x-2 gap-y-3 flex-wrap justify-center">
-            {images.map((image, index) => (
-              <CommandItem
-                key={index}
-                onSelect={() => {}}
-                className={cn(
-                  "p-1 text-[#333333] font-semibold flex items-center justify-between cursor-pointer aria-selected:bg-transparent "
-                )}
-              >
-                <Image
-                  src={image}
-                  alt={`${image} image`}
-                  height={50}
-                  width={50}
-                  className="rounded"
-                />
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <div className=" my-1 h-56">
+            <ScrollArea className="h-full w-full ">
+              <div className="max-w-[90%] mx-auto flex items-center gap-2 flex-wrap">
+                {images.map((image, index) => (
+                  <div
+                    key={index}
+                    onClick={() => console.log("selected")}
+                    className={cn(
+                      "cursor-pointer aria-selected:bg-transparent "
+                    )}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${image} image`}
+                      height={60}
+                      width={60}
+                      className="h-[60px] w-[60px] rounded object-cover"
+                      placeholder="blur"
+                      blurDataURL={
+                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyC"
+                      }
+                      quality={100}
+                    />
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
         </Command>
       </DropdownMenuContent>
     </DropdownMenu>

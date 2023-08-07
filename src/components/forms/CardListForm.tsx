@@ -77,7 +77,7 @@ export const CardListForm = () => {
       </AnimatePresence>
       <Button
         className={cn(
-          "flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-80 rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed "
+          "sticky bottom-0 flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-full rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed "
         )}
         disabled={isOpen}
         onClick={handleOpen}

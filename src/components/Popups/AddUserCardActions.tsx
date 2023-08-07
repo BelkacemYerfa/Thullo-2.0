@@ -32,7 +32,7 @@ const Users = [
   },
 ];
 
-export const AssignedMembers = () => {
+export const CardAssignedMembers = () => {
   const [isMembersOpen, setIsMembersOpen] = useState<boolean>(false);
   const MembersVariants = {
     open: { opacity: 1, height: "auto" },

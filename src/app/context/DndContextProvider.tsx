@@ -9,6 +9,7 @@ import {
 } from "react-beautiful-dnd";
 import db, { InitialData, Column } from "./initialData";
 import { useState, useEffect } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const DndContextProvider = () => {
   const [initialData, setInitialData] = useState<InitialData>(db);
@@ -99,7 +100,7 @@ export const DndContextProvider = () => {
       <Droppable droppableId="board" direction="horizontal" type="column">
         {(provider) => (
           <div
-            className="flex gap-x-8 overflow-x-auto "
+            className="h-full flex gap-x-8 overflow-x-auto overflow-y-hidden "
             {...provider.droppableProps}
             ref={provider.innerRef}
           >
@@ -116,11 +117,15 @@ export const DndContextProvider = () => {
                     }
                     return (
                       <div
+                        className="h-full"
                         ref={provided.innerRef}
-                        {...provided.dragHandleProps}
                         {...provided.draggableProps}
                       >
-                        <TasksList column={column} tasks={tasks} />
+                        <TasksList
+                          column={column}
+                          dragHandleProps={provided.dragHandleProps}
+                          tasks={tasks}
+                        />
                       </div>
                     );
                   }}
