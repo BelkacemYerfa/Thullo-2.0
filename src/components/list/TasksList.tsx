@@ -50,11 +50,11 @@ export const TasksList = ({
                     )}
                   </Draggable>
                 ))}
+                {provided.placeholder}
                 <CardListForm />
               </div>
             </ScrollArea>
           </div>
-          {provided.placeholder}
         </div>
       )}
     </Droppable>

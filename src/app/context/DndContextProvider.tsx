@@ -135,8 +135,8 @@ export const DndContextProvider = () => {
                 </Draggable>
               );
             })}
-            <AddNewListPopOver />
             {provider.placeholder}
+            <AddNewListPopOver />
           </div>
         )}
       </Droppable>
