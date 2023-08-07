@@ -24,7 +24,7 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
   const { user } = useUser();
   const img = "";
   return (
-    <Card className="max-w-[97%]">
+    <Card className="max-w-[97%] ">
       <CardHeader className="space-y-3 p-3">
         {img ? (
           <Image

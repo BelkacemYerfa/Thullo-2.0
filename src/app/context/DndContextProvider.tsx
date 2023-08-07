@@ -101,7 +101,7 @@ export const DndContextProvider = () => {
       <Droppable droppableId="board" direction="horizontal" type="column">
         {(provider) => (
           <div
-            className="h-full flex gap-x-8 snap-x snap-mandatory md:snap-none  overflow-x-auto "
+            className="h-full flex  snap-x snap-mandatory md:snap-none  overflow-x-auto bg-scroll relative "
             {...provider.droppableProps}
             ref={provider.innerRef}
           >
@@ -117,16 +117,18 @@ export const DndContextProvider = () => {
                       console.log("dragging");
                     }
                     return (
-                      <div
-                        className="h-full snap-center"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                      >
-                        <TasksList
-                          column={column}
-                          dragHandleProps={provided.dragHandleProps}
-                          tasks={tasks}
-                        />
+                      <div className="relative">
+                        <div
+                          className=" h-full snap-center"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
+                          <TasksList
+                            column={column}
+                            dragHandleProps={provided.dragHandleProps}
+                            tasks={tasks}
+                          />
+                        </div>
                       </div>
                     );
                   }}

@@ -24,7 +24,7 @@ export const TasksList = ({
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="relative w-80 h-full rounded-xl"
+          className="relative w-[340px] px-2 h-full rounded-xl"
         >
           <div className="relative h-full flex flex-col gap-y-3">
             <div
@@ -35,7 +35,7 @@ export const TasksList = ({
               <ListCardsSettingsPopOver />
             </div>
             <ScrollArea className="h-full w-full flex-1">
-              <div className="h-full px-2 space-y-4">
+              <div className="h-full px-2 ">
                 {tasks.map((task, i) => (
                   <Draggable key={task.id} draggableId={task.id} index={i}>
                     {(provided, snapshot) => (
@@ -43,6 +43,7 @@ export const TasksList = ({
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                         {...provided.draggableProps}
+                        className="pb-3"
                       >
                         <TodoCard cardId={task.id} task={task} />
                       </div>
