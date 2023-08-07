@@ -10,6 +10,7 @@ import {
 import db, { InitialData, Column } from "./initialData";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 
 export const DndContextProvider = () => {
   const [initialData, setInitialData] = useState<InitialData>(db);
@@ -100,7 +101,7 @@ export const DndContextProvider = () => {
       <Droppable droppableId="board" direction="horizontal" type="column">
         {(provider) => (
           <div
-            className="h-full flex gap-x-8 overflow-x-auto overflow-y-hidden "
+            className="h-full flex gap-x-8 snap-x snap-mandatory overflow-x-auto "
             {...provider.droppableProps}
             ref={provider.innerRef}
           >
@@ -117,7 +118,7 @@ export const DndContextProvider = () => {
                     }
                     return (
                       <div
-                        className="h-full"
+                        className="h-full snap-center"
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                       >
@@ -132,6 +133,7 @@ export const DndContextProvider = () => {
                 </Draggable>
               );
             })}
+            <AddNewListPopOver />
             {provider.placeholder}
           </div>
         )}

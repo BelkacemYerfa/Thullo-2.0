@@ -24,14 +24,14 @@ export const CardCoverPopOver = () => {
   const [images, setImages] = useState<string[]>([]);
   const [value] = useDebounce(query, 500);
   const handleSearchImage = useCallback(async () => {
-    if (!query) return;
+    /* if (!query) return;
     const results = await searchPhotos(query, 1, 12);
     console.log(results?.results[0]?.urls.full);
     let images: string[] = [];
     results?.results?.map((result: any) => {
       images.push(result?.urls?.full);
     });
-    setImages(images);
+    setImages(images); */
   }, [value]);
   useEffect(() => {
     handleSearchImage();

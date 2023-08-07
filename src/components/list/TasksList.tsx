@@ -26,9 +26,9 @@ export const TasksList = ({
           {...provided.droppableProps}
           className="relative w-80 h-full rounded-xl"
         >
-          <div className="relative h-full bg-[#F4F9FF] flex flex-col gap-y-3">
+          <div className="relative h-full flex flex-col gap-y-3">
             <div
-              className="sticky top-0 z-[4] flex items-center justify-between w-full bg-[#F8F9FD] py-2"
+              className="sticky top-0 z-[4] flex items-center justify-between w-full py-2"
               {...dragHandleProps}
             >
               <ListNameChangeForm />
@@ -49,9 +49,9 @@ export const TasksList = ({
                     )}
                   </Draggable>
                 ))}
+                <CardListForm />
               </div>
             </ScrollArea>
-            <CardListForm />
           </div>
           {provided.placeholder}
         </div>
