@@ -8,12 +8,12 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import db, { InitialData, Column } from "./initialData";
-import { useState, useEffect } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { useState, useEffect, useRef } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 
 export const DndContextProvider = () => {
   const [initialData, setInitialData] = useState<InitialData>(db);
+
   const [cachedColumnOrder, setCachedColumnOrder] = useState<string[]>(
     initialData.columnOrder
   );
@@ -59,39 +59,51 @@ export const DndContextProvider = () => {
       return;
     }
 
-    setInitialData((prevState) => {
-      const newState: InitialData = {
+    const start = initialData.columns[source.droppableId];
+    const finish = initialData.columns[destination.droppableId];
+
+    if (start === finish)
+      setInitialData((prevState) => ({
         ...prevState,
         columns: {
           ...prevState.columns,
+          [start.id]: {
+            ...start,
+            taskIds: cachedColumnOrder,
+          },
         },
+      }));
+    else {
+      const startTaskIds = Array.from(start.taskIds);
+      startTaskIds.splice(source.index, 1);
+      const newStart = {
+        ...start,
+        taskIds: startTaskIds,
       };
-
-      const sourceColumn: Column = newState.columns[source.droppableId];
-      const newSourceTaskIds = Array.from(sourceColumn.taskIds);
-      newSourceTaskIds.splice(source.index, 1);
-      newState.columns[source.droppableId] = {
-        ...sourceColumn,
-        taskIds: newSourceTaskIds,
+      const finishTaskIds = Array.from(finish.taskIds);
+      finishTaskIds.splice(destination.index, 0, draggableId);
+      const newFinish = {
+        ...finish,
+        taskIds: finishTaskIds,
       };
-
-      const destinationColumn: Column =
-        newState.columns[destination.droppableId];
-      const newDestinationTaskIds = Array.from(destinationColumn.taskIds);
-      newDestinationTaskIds.splice(destination.index, 0, draggableId);
-      newState.columns[destination.droppableId] = {
-        ...destinationColumn,
-        taskIds: newDestinationTaskIds,
-      };
-
-      return newState;
-    });
+      setInitialData((prevState) => ({
+        ...prevState,
+        columns: {
+          ...prevState.columns,
+          [start.id]: newStart,
+        },
+      }));
+      setInitialData((prevState) => {
+        return {
+          ...prevState,
+          columns: {
+            ...prevState.columns,
+            [finish.id]: newFinish,
+          },
+        };
+      });
+    }
   };
-
-  useEffect(() => {
-    console.log(initialData);
-  }, [initialData]);
-
   return (
     <DragDropContext
       onDragEnd={onDragEnd}
@@ -101,7 +113,8 @@ export const DndContextProvider = () => {
       <Droppable droppableId="board" direction="horizontal" type="column">
         {(provider) => (
           <div
-            className="h-full flex  snap-x snap-mandatory md:snap-none  overflow-x-auto bg-scroll relative "
+            id="boardColumnContainer"
+            className="h-full flex snap-x snap-mandatory md:snap-none  relative overflow-x-auto overflow-y-hidden "
             {...provider.droppableProps}
             ref={provider.innerRef}
           >
@@ -117,9 +130,9 @@ export const DndContextProvider = () => {
                       console.log("dragging");
                     }
                     return (
-                      <div className="relative">
+                      <div className="relative listContainer ">
                         <div
-                          className=" h-full snap-center"
+                          className=" h-full snap-center pb-2"
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                         >

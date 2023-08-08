@@ -20,15 +20,15 @@ export const TasksList = ({
 }: TasksListProps) => {
   return (
     <Droppable droppableId={column.id}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="relative w-[340px] px-2 h-full rounded-xl"
+          className={` relative w-[340px] px-2 h-full rounded-xl `}
         >
           <div className="relative h-full flex flex-col gap-y-3">
             <div
-              className="sticky top-0 z-[4] flex items-center justify-between w-full py-2"
+              className="sticky top-0 z-[4] flex items-center justify-between w-full py-2 px-1"
               {...dragHandleProps}
             >
               <ListNameChangeForm />
@@ -43,7 +43,7 @@ export const TasksList = ({
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                         {...provided.draggableProps}
-                        className="pb-3"
+                        className={` pb-3`}
                       >
                         <TodoCard cardId={task.id} task={task} />
                       </div>

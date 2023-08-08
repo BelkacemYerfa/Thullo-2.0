@@ -6,5 +6,6 @@
   width: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #f1f1f1;
+  background: #bdbdbd;
+  border-radius: 10px;
 }
