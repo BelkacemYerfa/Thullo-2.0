@@ -14,6 +14,9 @@ export const Provider = ({ children }: ProviderProps) => {
     if (userId && window.location.pathname.includes("/sign")) {
       redirect(window.location.origin);
     }
+    if (!userId && !window.location.pathname.includes("/sign")) {
+      redirect(window.location.origin + "/sign-in");
+    }
   }
   return <>{children}</>;
 };
