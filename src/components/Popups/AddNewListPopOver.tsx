@@ -2,7 +2,12 @@
 
 import { Icons } from "../Icons";
 import { ListCreationForm } from "../forms/ListCreationFrom";
-import { Dialog, DialogTrigger, DialogContent } from "../ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+} from "../ui/dialog";
 import { useGenerationStore } from "@/lib/store/Store";
 
 export const AddNewListPopOver = () => {
@@ -16,6 +21,12 @@ export const AddNewListPopOver = () => {
         </div>
       </DialogTrigger>
       <DialogContent className="p-5">
+        <DialogHeader>
+          <h2 className="text-base font-medium">Add another list</h2>
+          <p className="text-sm text-[#333333]">
+            Create an new list for the board
+          </p>
+        </DialogHeader>
         <ListCreationForm />
       </DialogContent>
     </Dialog>

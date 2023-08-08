@@ -49,13 +49,15 @@ export const BoardCreationForm = () => {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed"
-          disabled={isPending || !form.formState.isValid}
-        >
-          + Create
-        </Button>
+        <div className="flex items-center justify-end">
+          <Button
+            type="submit"
+            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed"
+            disabled={isPending || !form.formState.isValid}
+          >
+            + Create
+          </Button>
+        </div>
       </form>
     </Form>
   );
