@@ -8,7 +8,7 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import db, { InitialData, Column } from "./initialData";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 
 export const DndContextProvider = () => {
@@ -59,50 +59,33 @@ export const DndContextProvider = () => {
       return;
     }
 
-    const start = initialData.columns[source.droppableId];
-    const finish = initialData.columns[destination.droppableId];
+    setInitialData((prevState) => {
+      const newState: InitialData = {
+        ...prevState,
+        columns: {
+          ...prevState.columns,
+        },
+      };
 
-    if (start === finish)
-      setInitialData((prevState) => ({
-        ...prevState,
-        columns: {
-          ...prevState.columns,
-          [start.id]: {
-            ...start,
-            taskIds: cachedColumnOrder,
-          },
-        },
-      }));
-    else {
-      const startTaskIds = Array.from(start.taskIds);
-      startTaskIds.splice(source.index, 1);
-      const newStart = {
-        ...start,
-        taskIds: startTaskIds,
+      const sourceColumn: Column = newState.columns[source.droppableId];
+      const newSourceTaskIds = Array.from(sourceColumn.taskIds);
+      newSourceTaskIds.splice(source.index, 1);
+      newState.columns[source.droppableId] = {
+        ...sourceColumn,
+        taskIds: newSourceTaskIds,
       };
-      const finishTaskIds = Array.from(finish.taskIds);
-      finishTaskIds.splice(destination.index, 0, draggableId);
-      const newFinish = {
-        ...finish,
-        taskIds: finishTaskIds,
+
+      const destinationColumn: Column =
+        newState.columns[destination.droppableId];
+      const newDestinationTaskIds = Array.from(destinationColumn.taskIds);
+      newDestinationTaskIds.splice(destination.index, 0, draggableId);
+      newState.columns[destination.droppableId] = {
+        ...destinationColumn,
+        taskIds: newDestinationTaskIds,
       };
-      setInitialData((prevState) => ({
-        ...prevState,
-        columns: {
-          ...prevState.columns,
-          [start.id]: newStart,
-        },
-      }));
-      setInitialData((prevState) => {
-        return {
-          ...prevState,
-          columns: {
-            ...prevState.columns,
-            [finish.id]: newFinish,
-          },
-        };
-      });
-    }
+
+      return newState;
+    });
   };
   return (
     <DragDropContext
