@@ -13,7 +13,7 @@ export const DeleteBtn = ({ commentId }: DeleteBtnProps) => {
   };
   return (
     <Toggle
-      className="rounded-lg justify-start text-sm bg-transparent hover:bg-[#EB5757] text-[#EB5757]  hover:text-white font-medium "
+      className="rounded-lg justify-start text-sm bg-transparent p-2 hover:bg-[#EB5757] text-[#EB5757]  hover:text-white font-medium "
       onClick={handleDelete}
     >
       <Icons.Trash2 className="h-5 w-5" />

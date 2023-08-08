@@ -34,7 +34,7 @@ export const CommentsList = () => {
   return (
     <ul className="h-64">
       <ScrollArea className="h-full w-full px-1">
-        <li className="space-y-4 px-1">
+        <li className="space-y-4 px-2">
           {Users.map((user, index) => (
             <div key={user.id} className="space-y-3">
               <div className="space-y-2">

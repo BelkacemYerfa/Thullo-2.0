@@ -67,7 +67,7 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 rounded-xl " align="end">
-                  <DropdownMenuLabel className="hidden md:flex text-sm font-bold text-[#333333]">
+                  <DropdownMenuLabel className="text-sm font-bold text-[#333333]">
                     {user?.username}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
