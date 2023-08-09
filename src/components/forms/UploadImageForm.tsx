@@ -22,11 +22,11 @@ export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
     // to show image preview before uploading
     // render it as a base64 encoded URL and send it to the server
     const file = e.target.files?.[0] as Blob;
-    handleBannerImageChange(file);
     if (file.size > 1024 * 1024 * 5) {
-      toast.error("Image size must be less than 5mb");
+      toast.error("Image size must be less than 5MB");
       return;
     }
+    handleBannerImageChange(file);
   };
 
   const onDrop = useCallback((acceptedFiles: any) => {
