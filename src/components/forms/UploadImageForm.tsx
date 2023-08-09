@@ -1,5 +1,8 @@
 import Image from "next/image";
 import { Input } from "../ui/input";
+import { ChangeEvent, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { toast } from "sonner";
 
 type UploadImageFormProps = {
   image: string;
@@ -7,23 +10,45 @@ type UploadImageFormProps = {
 };
 
 export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
-  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // to show image preview before uploading
-    // render it as a base64 encoded URL and send it to the server
+  const handleBannerImageChange = (file: Blob) => {
     const reader = new FileReader();
-    reader.readAsDataURL(e.target.files?.[0] as File);
+    reader.readAsDataURL(file);
     reader.onload = () => {
       if (reader.result) setImage(reader.result as string);
     };
   };
+
+  const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // to show image preview before uploading
+    // render it as a base64 encoded URL and send it to the server
+    const file = e.target.files?.[0] as Blob;
+    handleBannerImageChange(file);
+    if (file.size > 1024 * 1024 * 5) {
+      toast.error("Image size must be less than 5mb");
+      return;
+    }
+  };
+
+  const onDrop = useCallback((acceptedFiles: any) => {
+    const file = acceptedFiles[0];
+    handleBannerImageChange(file);
+  }, []);
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({ onDrop, maxSize: 1024 * 1024 * 5 });
   return image ? (
-    <div className="grid gap-3">
+    <div className="grid gap-3" {...getRootProps()}>
       <Image
         src={image}
         alt="image"
         height={100}
         width={200}
-        className="w-full h-[300px] rounded-lg"
+        className="w-full h-[300px] rounded-lg object-cover"
       />
       <Input
         type="file"
@@ -33,7 +58,17 @@ export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
       />
     </div>
   ) : (
-    <label className="w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer ">
+    <label
+      className={`w-full border-2 border-dashed rounded-lg cursor-pointer duration-300 ease-in-out
+      ${
+        isDragAccept
+          ? "border-green-500"
+          : isDragReject
+          ? "border-red-500"
+          : "border-gray-300 "
+      }`}
+      {...getRootProps()}
+    >
       <div className="flex items-center justify-center flex-col pt-5 pb-6">
         <svg
           className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
@@ -63,6 +98,7 @@ export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
         className="hidden"
         onChange={(e) => handleBannerChange(e)}
         accept="image/*"
+        {...getInputProps()}
       />
     </label>
   );

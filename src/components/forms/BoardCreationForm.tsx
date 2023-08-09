@@ -52,7 +52,7 @@ export const BoardCreationForm = () => {
         <div className="flex items-center justify-end">
           <Button
             type="submit"
-            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed"
+            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
             disabled={isPending || !form.formState.isValid}
           >
             + Create
