@@ -39,17 +39,19 @@ export const CardDetailedPopOver = ({
                   </Drawer.Close>
                 </Link>
               </div>
-              <div className="px-4 w-full max-h-full space-y-6 mt-2 ">
-                <Image
-                  src={
-                    "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                  }
-                  alt="pic"
-                  height={200}
-                  width={200}
-                  className="w-full h-[200px] rounded-xl object-cover "
-                  quality={100}
-                />
+              <div className=" max-w-[95%] mx-auto max-h-full space-y-6 mt-2 ">
+                <div className="relative w-full h-[200px]">
+                  <Image
+                    src={
+                      "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                    }
+                    alt="pic"
+                    fill
+                    sizes="100%"
+                    className="w-full h-full rounded-xl object-cover "
+                    quality={100}
+                  />
+                </div>
                 <div className="flex flex-col-reverse md:flex-row gap-5">
                   <div className=" basis-full md:basis-3/4 space-y-5 ">
                     <div className="space-y-2">

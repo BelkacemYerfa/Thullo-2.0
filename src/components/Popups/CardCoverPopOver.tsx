@@ -15,7 +15,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { Icons } from "../Icons";
 import { Button } from "../ui/button";
-import { searchPhotos } from "@/types/unsplash-api/searchPhotos";
+import { searchPhotos } from "@/lib/unsplash-api/searchPhotos";
 import { ScrollArea } from "../ui/scroll-area";
 import { useDebounce } from "use-debounce";
 

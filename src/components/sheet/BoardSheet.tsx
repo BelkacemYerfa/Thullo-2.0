@@ -32,7 +32,7 @@ export const BoardSheet = async ({
           Show Menu
         </div>
       </SheetTrigger>
-      <SheetContent className="px-2 py-6 flex flex-col gap-y-2">
+      <SheetContent className="w-full px-2 py-6 flex flex-col gap-y-2">
         <SheetHeader className="px-3">
           <SheetTitle className="text-sm text-[#333333] font-semibold">
             {boardTitle}
