@@ -14,6 +14,7 @@ import { Icons } from "../Icons";
 import { SearchPopOver } from "../Popups/SearchPopOver";
 import { LogOutBtn } from "../auth/LogOutBtn";
 import { Skeleton } from "../ui/skeleton";
+import { UserProfilePopOver } from "../Popups/UserProfilePopOver";
 
 type NavBarProps = {
   user: User | null;
@@ -68,29 +69,10 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 rounded-xl " align="end">
                   <DropdownMenuLabel className="text-sm font-bold text-[#333333]">
-                    {user?.username}
+                    {user?.username ?? user?.emailAddresses[0].emailAddress}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    asChild
-                    className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
-                  >
-                    <Link href={"/profile"} className="text-sm text-[#BDBDBD]">
-                      <Icons.User2 className="h-4 w-4 " />
-                      Profile
-                      <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    asChild
-                    className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
-                  >
-                    <Link href={"/team"} className="text-sm text-[#BDBDBD]">
-                      <Icons.Settings2 className="h-4 w-4" />
-                      Settings
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </Link>
-                  </DropdownMenuItem>
+                  <UserProfilePopOver />
                   <DropdownMenuItem
                     asChild
                     className=" flex items-center gap-x-[10px] px-3 py-2 rounded-lg"
