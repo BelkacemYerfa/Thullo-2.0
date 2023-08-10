@@ -24,7 +24,7 @@ export const ListCardsSettingsPopOver = () => {
     </div>
   ) : (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger>
+      <PopoverTrigger aria-label="open list settings">
         <Icons.MoreHorizontal className="h-5 w-5" />
       </PopoverTrigger>
       <PopoverContent

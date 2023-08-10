@@ -18,7 +18,11 @@ export const BoardCard = ({
 }: BoardCardProps) => {
   return (
     <Card className="relative shadow-outline-black rounded-xl">
-      <Link href={`/board/${boardId}`} className="absolute inset-0"></Link>
+      <Link
+        href={`/board/${boardId}`}
+        className="absolute inset-0"
+        aria-label="open board"
+      ></Link>
       <CardHeader className="p-3 space-y-3 ">
         <Image
           src={boardBanner}
