@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Input } from "../ui/input";
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
@@ -10,7 +10,9 @@ type UploadImageFormProps = {
 };
 
 export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
-  const handleBannerImageChange = (file: Blob) => {
+  const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
+
+  const handleBannerImageChange = (file: File) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -18,29 +20,35 @@ export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
     };
   };
 
-  const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // to show image preview before uploading
-    // render it as a base64 encoded URL and send it to the server
-    const file = e.target.files?.[0] as Blob;
+  const checkFileSize = (file: File) => {
     if (file.size > 1024 * 1024 * 5) {
-      toast.error("Image size must be less than 5MB");
+      setIsFileTooBig(true);
       return;
     }
+    setIsFileTooBig(false);
+  };
+
+  const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] as File;
+    checkFileSize(file);
     handleBannerImageChange(file);
   };
 
-  const onDrop = useCallback((acceptedFiles: any) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
+    if (!file) return toast.error("file error , probably too big");
+    checkFileSize(file);
     handleBannerImageChange(file);
   }, []);
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({ onDrop, maxSize: 1024 * 1024 * 5 });
+  const { getRootProps, getInputProps, isDragAccept, isDragReject } =
+    useDropzone({
+      onDrop,
+      maxSize: 1024 * 1024 * 5,
+      onDropRejected: () => setIsFileTooBig(true),
+      onDropAccepted: () => setIsFileTooBig(false),
+    });
+
   return image ? (
     <div className="grid gap-3" {...getRootProps()}>
       <Image
@@ -63,7 +71,7 @@ export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
       ${
         isDragAccept
           ? "border-green-500"
-          : isDragReject
+          : isDragReject || isFileTooBig
           ? "border-red-500"
           : "border-gray-300 "
       }`}
