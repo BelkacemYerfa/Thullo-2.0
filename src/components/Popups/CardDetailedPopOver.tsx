@@ -1,6 +1,6 @@
 import { Drawer } from "vaul";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { CardDescriptionForm } from "../forms/CardDescriptionForm";
 import { ScrollArea } from "../ui/scroll-area";
@@ -20,7 +20,6 @@ export const CardDetailedPopOver = ({
   taskTitle,
   cardId,
 }: CardDetailedPopOverProps) => {
-  const router = useRouter();
   const pathname = usePathname();
   return (
     <Drawer.Root>

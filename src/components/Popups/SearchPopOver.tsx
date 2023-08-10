@@ -16,19 +16,24 @@ import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { Icons } from "../Icons";
 
+type SearchDataResults = {
+  category: string;
+  items: ItemsData[];
+};
+
+type ItemsData = {
+  id: number;
+  name: string;
+  image: string;
+};
+
 export const SearchPopOver = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [isPending, setIsPending] = useTransition();
   const [value] = useDebounce(search, 500);
-  const [data, setData] = useState<
-    | {
-        category: string;
-        items: { id: number; name: string; image: string }[];
-      }[]
-    | null
-  >([]);
+  const [data, setData] = useState<SearchDataResults[] | null>([]);
   const searchHandler = () => {
     setIsPending(async () => {
       console.log(search);

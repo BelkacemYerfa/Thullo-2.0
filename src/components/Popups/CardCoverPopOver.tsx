@@ -12,26 +12,40 @@ import {
 } from "../ui/command";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { Icons } from "../Icons";
 import { Button } from "../ui/button";
 import { searchPhotos } from "@/lib/unsplash-api/searchPhotos";
 import { ScrollArea } from "../ui/scroll-area";
 import { useDebounce } from "use-debounce";
+import { Skeleton } from "../ui/skeleton";
+
+type SearchDataResults = {
+  image: string;
+  blurDataURL: string;
+};
 
 export const CardCoverPopOver = () => {
   const [query, setQuery] = useState<string>("nature");
   const [images, setImages] = useState<string[]>([]);
+  const [isPending, setIsPending] = useTransition();
   const [value] = useDebounce(query, 500);
-  const handleSearchImage = useCallback(async () => {
-    /* if (!query) return;
-    const results = await searchPhotos(query, 1, 12);
-    console.log(results?.results[0]?.urls.full);
-    let images: string[] = [];
-    results?.results?.map((result: any) => {
-      images.push(result?.urls?.full);
+  const handleSearchImage = useCallback(() => {
+    setIsPending(async () => {
+      /* if (!query) return;
+      const results = await searchPhotos(query, 1, 12);
+      console.log(results?.results[0]?.urls.full);
+      let images: string[] = [];
+      results?.results?.map((result: any) => {
+        images.push(result?.urls?.full);
+      });
+      console.log(images);
+      if (!images.length) {
+        setImages([]);
+        return;
+      }
+      setImages(images); */
     });
-    setImages(images); */
   }, [value]);
   useEffect(() => {
     handleSearchImage();
@@ -66,28 +80,28 @@ export const CardCoverPopOver = () => {
           <div className=" my-1 h-56">
             <ScrollArea className="h-full w-full ">
               <div className="max-w-[90%] mx-auto flex items-center gap-2 flex-wrap">
-                {images.map((image, index) => (
-                  <div
-                    key={index}
-                    onClick={() => console.log("selected")}
-                    className={cn(
-                      "cursor-pointer aria-selected:bg-transparent "
-                    )}
-                  >
-                    <Image
-                      src={image}
-                      alt={`${image} image`}
-                      height={60}
-                      width={60}
-                      className="h-[60px] w-[60px] rounded object-cover"
-                      placeholder="blur"
-                      blurDataURL={
-                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyC"
-                      }
-                      quality={100}
-                    />
-                  </div>
-                ))}
+                {isPending
+                  ? [...Array(12)].map((_, i) => (
+                      <Skeleton key={i} className="h-[60px] w-[60px] rounded" />
+                    ))
+                  : images.map((image, index) => (
+                      <div
+                        key={index}
+                        onClick={() => console.log("selected")}
+                        className={cn(
+                          "cursor-pointer aria-selected:bg-transparent "
+                        )}
+                      >
+                        <Image
+                          src={image}
+                          alt={`${image} image`}
+                          height={60}
+                          width={60}
+                          className="h-[60px] w-[60px] rounded border-black border-solid border object-cover"
+                          quality={100}
+                        />
+                      </div>
+                    ))}
               </div>
             </ScrollArea>
           </div>
