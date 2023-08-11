@@ -10,10 +10,10 @@ import {
 export const CardLabelsPopOver = () => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="w-full">
-        <Button className="flex items-center w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4">
+      <DropdownMenuTrigger className="w-fit sm:w-full">
+        <Button className="flex items-center w-fit sm:w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4">
           <Icons.Tags className="h-5 w-5" />
-          Labels
+          <span className="hidden sm:flex">Labels</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

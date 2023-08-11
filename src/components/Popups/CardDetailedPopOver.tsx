@@ -10,6 +10,7 @@ import { Icons } from "../Icons";
 import { CardAssignedMembers } from "./AddUserCardActions";
 import { CardCoverPopOver } from "./CardCoverPopOver";
 import { CardLabelsPopOver } from "./CardLabelsPopOver";
+import { Button } from "../ui/button";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -23,7 +24,7 @@ export const CardDetailedPopOver = ({
   const pathname = usePathname();
   return (
     <Drawer.Root>
-      <Link href={`?card=${cardId}`}>
+      <Link href={`?cardId=${cardId}`}>
         <Drawer.Trigger className="cursor-pointer">{taskTitle}</Drawer.Trigger>
       </Link>
       <Drawer.Portal>
@@ -32,7 +33,7 @@ export const CardDetailedPopOver = ({
           <ScrollArea className="h-full w-full ">
             <div className=" h-full pb-4 bg-white w-full md:w-3/5 m-auto shadow-outline-black ">
               <div className="sticky top-0 flex justify-center bg-white py-4 shadow-outline-black z-[5] ">
-                <Link href={pathname.split("?")[0]}>
+                <Link href={pathname}>
                   <Drawer.Close>
                     <div className="max-w-full mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300" />
                   </Drawer.Close>
@@ -78,6 +79,14 @@ export const CardDetailedPopOver = ({
                         <CardAssignedMembers />
                         <CardLabelsPopOver />
                         <CardCoverPopOver />
+                        <Button
+                          variant={"destructive"}
+                          className="flex justify-start items-center gap-x-[10px] cursor-default duration-200 w-fit sm:w-full ease-linear rounded-lg text-sm py-3 px-4 bg-[#EB5757] text-white "
+                          onClick={() => console.log("remove card")}
+                        >
+                          <Icons.Trash2 className="h-5 w-5" />
+                          <span className="hidden sm:flex">Delete</span>
+                        </Button>
                       </div>
                     </div>
                   </div>

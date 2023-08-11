@@ -34,8 +34,8 @@ export const TasksList = ({
               <ListNameChangeForm />
               <ListCardsSettingsPopOver />
             </div>
-            <ScrollArea className="h-full w-full flex-1">
-              <div className="h-full px-2 ">
+            <ScrollArea className="h-full w-full flex-1 px-3 ">
+              <div className="h-full ">
                 {tasks.map((task, i) => (
                   <Draggable key={task.id} draggableId={task.id} index={i}>
                     {(provided, snapshot) => (
@@ -43,7 +43,7 @@ export const TasksList = ({
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                         {...provided.draggableProps}
-                        className={` pb-3`}
+                        className={`pb-3`}
                       >
                         <TodoCard cardId={task.id} task={task} />
                       </div>

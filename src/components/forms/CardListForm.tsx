@@ -31,12 +31,28 @@ export const CardListForm = () => {
     }, 0);
   };
   const formVariants = {
-    open: { opacity: 1, height: "auto" },
-    closed: { opacity: 0, height: 0 },
+    open: {
+      opacity: 1,
+      height: "auto",
+      transition: {
+        type: "tween",
+        duration: 0.15,
+        ease: "circOut",
+      },
+    },
+    closed: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        type: "tween",
+        duration: 0.15,
+        ease: "circIn",
+      },
+    },
   };
   return (
     <>
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} mode="wait">
         {isOpen ? (
           <Form {...form}>
             <motion.form
@@ -62,22 +78,36 @@ export const CardListForm = () => {
                   </FormItem>
                 )}
               />
-              <Button
-                type="submit"
-                className={cn(
-                  "rounded-lg text-white py-1 px-3 bg-[#219653] hover:bg-[#219653] w-fit"
-                )}
-                disabled={!form.formState.isValid}
-              >
-                Save
-              </Button>
+              <div className="space-x-1">
+                <Button
+                  type="submit"
+                  className={cn(
+                    "rounded-lg text-white py-1 px-3 bg-[#219653] hover:bg-[#219653] w-fit"
+                  )}
+                  disabled={!form.formState.isValid}
+                >
+                  Save
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className={cn(
+                    "rounded-lg text-[#333333] py-1 px-3 w-fit hover:bg-transparent "
+                  )}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
             </motion.form>
           </Form>
         ) : null}
       </AnimatePresence>
       <Button
         className={cn(
-          "sticky bottom-0 flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-full rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed "
+          `sticky bottom-0 flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-full rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed ${
+            isOpen ? "mt-3" : ""
+          }`
         )}
         disabled={isOpen}
         onClick={handleOpen}

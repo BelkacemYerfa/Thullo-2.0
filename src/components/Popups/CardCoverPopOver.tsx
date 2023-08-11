@@ -52,10 +52,10 @@ export const CardCoverPopOver = () => {
   }, [value]);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="w-full">
-        <Button className="flex items-center w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4">
+      <DropdownMenuTrigger className="w-fit sm:w-full">
+        <Button className="flex items-center w-fit sm:w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4">
           <Icons.Wallpaper className="h-5 w-5" />
-          Cover
+          <span className="hidden sm:flex">Cover</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

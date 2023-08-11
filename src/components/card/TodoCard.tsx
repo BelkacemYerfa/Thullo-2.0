@@ -8,12 +8,12 @@ import {
 } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
-import { BoardUserInvitePopOver } from "../Popups/BoardUserInvitePopOver";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Icons } from "../Icons";
 import { useUser } from "@clerk/nextjs";
 import { Task } from "@/app/context/initialData";
 import { CardDetailedPopOver } from "../Popups/CardDetailedPopOver";
+import { AddUserToCard } from "../Popups/AddUserCardActions";
 
 type TodoCardProps = {
   task: Task;
@@ -40,7 +40,7 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
   const { user } = useUser();
   const img = "";
   return (
-    <Card className="max-w-[97%] ">
+    <Card>
       <CardHeader className="space-y-3 p-3">
         {img ? (
           <Image
@@ -74,17 +74,17 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
         </div>
         <CardFooter className="flex items-center justify-between w-full p-0">
           <div className="flex items-center gap-x-2">
-            <Avatar className="h-10 w-10 rounded-lg">
+            <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
                 src={"https://i.pravatar.cc/150?img=68"}
                 alt={user?.username ?? ""}
-                height={40}
-                width={40}
+                height={32}
+                width={32}
                 loading="lazy"
               />
               <AvatarFallback>{user?.username}</AvatarFallback>
             </Avatar>
-            <BoardUserInvitePopOver />
+            <AddUserToCard />
           </div>
           <div className="flex items-center gap-x-2">
             <div className="flex items-center gap-x-1 text-[#BDBDBD]">
