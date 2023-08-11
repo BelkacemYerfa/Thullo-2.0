@@ -17,6 +17,7 @@ import { useSignIn } from "@clerk/nextjs";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { Icons } from "../Icons";
+import { PasswordInput } from "../PasswordInput";
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -74,8 +75,7 @@ export const SignInForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
+                <PasswordInput
                   className="rounded-lg"
                   placeholder="*******"
                   {...field}
@@ -86,7 +86,7 @@ export const SignInForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (

@@ -20,6 +20,7 @@ import {
   ResetPasswordSchemaType,
 } from "@/validation/reset-password";
 import { Icons } from "../Icons";
+import { PasswordInput } from "../PasswordInput";
 
 export const ResetPasswordForm = () => {
   const { signIn, setActive } = useSignIn();
@@ -65,10 +66,9 @@ export const ResetPasswordForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
+                <PasswordInput
                   className="rounded-lg"
-                  placeholder="ex@exe.com"
+                  placeholder="*******"
                   {...field}
                 />
               </FormControl>
@@ -82,8 +82,7 @@ export const ResetPasswordForm = () => {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
+                <PasswordInput
                   className="rounded-lg"
                   placeholder="*******"
                   {...field}
@@ -106,7 +105,7 @@ export const ResetPasswordForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (

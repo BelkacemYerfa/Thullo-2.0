@@ -60,6 +60,7 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                       src={user?.imageUrl ?? ""}
                       alt={user?.username ?? ""}
                       loading="lazy"
+                      className="object-cover"
                     />
 
                     <AvatarFallback>

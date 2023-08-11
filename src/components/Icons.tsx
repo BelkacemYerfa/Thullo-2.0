@@ -24,6 +24,8 @@ import {
   Minus,
   Wallpaper,
   Tags,
+  Eye,
+  EyeOff,
   type LucideProps,
 } from "lucide-react";
 
@@ -52,6 +54,8 @@ export const Icons = {
   Minus,
   Wallpaper,
   Tags,
+  Eye, 
+  EyeOff,
   logo: (props: LucideProps) => (
     <svg
       width="98"

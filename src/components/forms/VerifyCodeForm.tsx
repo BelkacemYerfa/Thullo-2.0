@@ -70,7 +70,7 @@ export const VerifyCodeForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (

@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { Icons } from "../Icons";
+import { PasswordInput } from "../PasswordInput";
 
 export const SignUpForm = () => {
   const { signUp } = useSignUp();
@@ -79,8 +80,7 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
+                <PasswordInput
                   className="rounded-lg"
                   placeholder="*******"
                   {...field}
@@ -91,7 +91,7 @@ export const SignUpForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (

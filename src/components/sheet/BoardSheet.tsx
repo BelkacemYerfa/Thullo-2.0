@@ -95,7 +95,7 @@ export const BoardSheet = async ({
                         quality={100}
                       />
                       <h3 className="text-sm text-[#333333] font-semibold">
-                        {user?.username}
+                        {user?.username ?? user?.emailAddresses[0].emailAddress}
                       </h3>
                     </div>
                     {1 === 1 ? (
