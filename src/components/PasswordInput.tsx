@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Icons } from "./Icons";
 
-// eslint-disable-next-line react/display-name
 export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -37,3 +36,5 @@ export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
+
+PasswordInput.displayName = "PasswordInput";

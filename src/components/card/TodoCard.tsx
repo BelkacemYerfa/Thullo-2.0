@@ -20,6 +20,22 @@ type TodoCardProps = {
   cardId: string;
 };
 
+type cardBadge = {
+  title: string;
+  color: string;
+};
+
+const cardBadges = [
+  {
+    title: "Technical",
+    color: "#2F80ED",
+  },
+  {
+    title: "Design",
+    color: "#219653",
+  },
+] satisfies cardBadge[];
+
 export const TodoCard = ({ task, cardId }: TodoCardProps) => {
   const { user } = useUser();
   const img = "";
@@ -39,26 +55,22 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
         ) : null}
         <CardTitle className="text-base font-normal p-0 group w-fit flex flex-col -space-y-[2.5px] items-center">
           <CardDetailedPopOver cardId={cardId} taskTitle={task.content} />
-
-          <div className="w-0 h-[1px] bg-[#828282] group-hover:w-full duration-200 ease-linear"></div>
+          <div className="w-0 h-[1px] bg-[#828282] group-hover:w-full duration-200 ease-linear" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-3 space-y-3 ">
+      <CardContent className="px-3 py-2 space-y-3">
         <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-          <Badge
-            className={cn(
-              "bg-[#D5E6FB] hover:bg-[#2F80ED] py-1 px-2 text-xs font-medium text-[#2F80ED] hover:text-[#D5E6FB] cursor-default"
-            )}
-          >
-            Technical
-          </Badge>
-          <Badge
-            className={cn(
-              "bg-[#D5E6FB] hover:bg-[#219653]  py-1 px-2 text-xs font-medium text-[#219653] hover:text-[#D5E6FB] cursor-default"
-            )}
-          >
-            Design
-          </Badge>
+          {cardBadges.slice(0, 5).map((badge) => (
+            <Badge
+              key={badge.color}
+              className={cn(
+                `bg-[#D5E6FB] hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default `
+              )}
+              style={{ color: badge.color }}
+            >
+              {badge.title}
+            </Badge>
+          ))}
         </div>
         <CardFooter className="flex items-center justify-between w-full p-0">
           <div className="flex items-center gap-x-2">

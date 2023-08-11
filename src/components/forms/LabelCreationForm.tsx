@@ -96,7 +96,7 @@ export const LabelCreationForm = () => {
                   <Badge
                     key={badge.color + badge.name}
                     className={cn(
-                      `bg-[#D5E6FB] hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default`
+                      `bg-[#D5E6FB] hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default `
                     )}
                     style={{ color: badge.color }}
                   >
