@@ -33,15 +33,6 @@ export default async function Home() {
             ))}
           </div>
         </section>
-        {/* <div className=" flex items-center justify-center w-full  gap-2 py-5 bg-[#2F80ED] text-white ">
-          Made with ❤️ by
-          <Link
-            href={"https://github.com/BelkacemYerfa"}
-            className="font-semibold"
-          >
-            Belkacem Yerfa
-          </Link>
-        </div> */}
       </ScrollArea>
     </main>
   );

@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export const CardListForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   const form = useForm<cardSchemaType>({
     resolver: zodResolver(cardSchema),
@@ -25,8 +26,11 @@ export const CardListForm = () => {
   const handleOpen = () => {
     setIsOpen(true);
     setTimeout(() => {
-      if (formRef.current) {
-        formRef.current.scrollIntoView({ behavior: "smooth" });
+      if (btnRef.current) {
+        btnRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
       }
     }, 0);
   };
@@ -104,9 +108,10 @@ export const CardListForm = () => {
         ) : null}
       </AnimatePresence>
       <Button
+        ref={btnRef}
         className={cn(
-          `sticky bottom-0 flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-full rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed ${
-            isOpen ? "mt-3" : ""
+          `bottom-0 flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-full rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed ${
+            isOpen ? "static mt-3" : "sticky"
           }`
         )}
         disabled={isOpen}

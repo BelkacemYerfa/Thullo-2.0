@@ -30,7 +30,7 @@ export default async function BoardPage({
           <BoardSettings />
         </section>
       </section>
-      <BoardDashboard />
+      <BoardDashboard boardId={boardId} />
     </main>
   );
 }

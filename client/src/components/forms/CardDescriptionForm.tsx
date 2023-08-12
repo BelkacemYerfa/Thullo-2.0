@@ -44,7 +44,9 @@ export const CardDescriptionForm = () => {
       </div>
       <>
         {value && isDescriptionFormOpen ? (
-          <p>{form.getValues("description")}</p>
+          <p className="max-w-full break-all">
+            {form.getValues("description")}
+          </p>
         ) : (
           <Form {...form}>
             <form

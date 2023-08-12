@@ -8,10 +8,17 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import db, { InitialData, Column } from "./initialData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
+import { io } from "socket.io-client";
 
-export const DndContextProvider = () => {
+const socket = io("http://localhost:5000");
+
+type DndContextProviderProps = {
+  boardId: string;
+};
+
+export const DndContextProvider = ({ boardId }: DndContextProviderProps) => {
   const [initialData, setInitialData] = useState<InitialData>(db);
 
   const [cachedColumnOrder, setCachedColumnOrder] = useState<string[]>(
@@ -26,7 +33,22 @@ export const DndContextProvider = () => {
     setCachedColumnOrder(initialData.columnOrder);
   };
 
-  const onDragEnd = (result: DropResult) => {
+  const reorderColumns = (
+    sourceIndex: number,
+    destinationIndex: number,
+    draggableId: string
+  ) => {
+    const newColumnOrder = Array.from(initialData.columnOrder);
+    newColumnOrder.splice(sourceIndex, 1);
+    newColumnOrder.splice(destinationIndex, 0, draggableId);
+    setInitialData((prevState) => ({
+      ...prevState,
+      columnOrder: newColumnOrder,
+    }));
+    return;
+  };
+
+  const onDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
 
     if (!destination) {
@@ -47,14 +69,19 @@ export const DndContextProvider = () => {
     }
 
     if (type === "column") {
-      const newColumnOrder = Array.from(initialData.columnOrder);
-      newColumnOrder.splice(source.index, 1);
-      newColumnOrder.splice(destination.index, 0, draggableId);
-
-      setInitialData((prevState) => ({
-        ...prevState,
-        columnOrder: newColumnOrder,
-      }));
+      socket.emit("start_dragging", {
+        sourceIndex: source.index,
+        destinationIndex: destination.index,
+        draggableId: draggableId,
+        roomId: boardId,
+      });
+      socket.on("update_dragging", (data) => {
+        reorderColumns(
+          data.sourceIndex,
+          data.destinationIndex,
+          data.draggableId
+        );
+      });
 
       return;
     }
@@ -87,9 +114,31 @@ export const DndContextProvider = () => {
       return newState;
     });
   };
+
+  useEffect(() => {
+    socket.emit("join_room", { roomId: boardId });
+    socket.on("join_room", (data) => {
+      console.log(data);
+    });
+  }, [boardId]);
   return (
     <DragDropContext
       onDragEnd={onDragEnd}
+      onDragUpdate={() => {
+        socket.emit("start-dragging", {
+          sourceIndex: 0,
+          destinationIndex: 0,
+          draggableId: "0",
+        });
+        socket.on("start-dragging", (data) => {
+          alert("data : " + data);
+          reorderColumns(
+            data.sourceIndex,
+            data.destinationIndex,
+            data.draggableId
+          );
+        });
+      }}
       onBeforeCapture={onBeforeCapture}
       onBeforeDragStart={onBeforeDragStart}
     >
@@ -97,7 +146,7 @@ export const DndContextProvider = () => {
         {(provider) => (
           <div
             id="boardColumnContainer"
-            className="h-full flex snap-x snap-mandatory md:snap-none  relative overflow-x-auto overflow-y-hidden "
+            className="h-full flex snap-x snap-mandatory md:snap-none  relative overflow-x-auto "
             {...provider.droppableProps}
             ref={provider.innerRef}
           >
@@ -110,7 +159,6 @@ export const DndContextProvider = () => {
                 <Draggable key={columnId} draggableId={columnId} index={index}>
                   {(provided, snapshot) => {
                     if (snapshot.isDragging) {
-                      console.log("dragging");
                     }
                     return (
                       <div className="relative listContainer ">

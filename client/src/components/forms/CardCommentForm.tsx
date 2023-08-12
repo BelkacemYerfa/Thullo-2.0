@@ -27,6 +27,7 @@ export const CardCommentForm = () => {
           src={user?.imageUrl}
           alt={user?.username ?? ""}
           loading="lazy"
+          className="object-cover"
         />
         <AvatarFallback>{user?.username?.split("")[0]}</AvatarFallback>
       </Avatar>

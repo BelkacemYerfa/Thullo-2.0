@@ -83,17 +83,17 @@ export const BoardSheet = async ({
                 <div className="space-y-4 ">
                   <div className="w-full flex items-center justify-between">
                     <div className="flex items-center gap-x-4">
-                      <Image
-                        src={
-                          user?.imageUrl ?? "https://i.pravatar.cc/150?img=68"
-                        }
-                        alt={user?.username ?? "user"}
-                        height={40}
-                        width={40}
-                        loading="lazy"
-                        className="rounded-lg"
-                        quality={100}
-                      />
+                      <Avatar className="h-10 w-10 rounded-lg">
+                        <AvatarImage
+                          src={user?.imageUrl}
+                          alt={user?.username ?? ""}
+                          height={40}
+                          width={40}
+                          loading="lazy"
+                          className="object-cover"
+                        />
+                        <AvatarFallback>{user?.username}</AvatarFallback>
+                      </Avatar>
                       <h3 className="text-sm text-[#333333] font-semibold">
                         {user?.username ?? user?.emailAddresses[0].emailAddress}
                       </h3>
