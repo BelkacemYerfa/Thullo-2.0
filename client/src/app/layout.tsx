@@ -3,7 +3,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Provider } from "./Provider";
+import { Provider } from "./providers/Provider";
+import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <Provider>
-        <html lang="en">
-          <body className={inter.className}>
-            <main>{children}</main>
-            <Toaster />
-          </body>
-        </html>
+        <ReactQueryProvider>
+          <html lang="en">
+            <body className={inter.className}>
+              <main>{children}</main>
+              <Toaster />
+            </body>
+          </html>
+        </ReactQueryProvider>
       </Provider>
     </ClerkProvider>
   );

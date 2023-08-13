@@ -75,6 +75,8 @@ export const DndContextProvider = ({ boardId }: DndContextProviderProps) => {
         draggableId: draggableId,
         roomId: boardId,
       });
+      //this is just for testing && will be removed
+      reorderColumns(source.index, destination.index, draggableId);
       socket.on("update_dragging", (data) => {
         reorderColumns(
           data.sourceIndex,

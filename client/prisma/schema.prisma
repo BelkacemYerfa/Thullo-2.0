@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("NEXT_PUBLIC_DATABASE_URL")
+}
+
+
+model Board {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name     String
+  image   String
+  description String
+  user      String @map("userId")
+  Lists   List[]
+}
+
+model List {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name     String
+  boardId   String @map("boardId")
+  board     Board @relation(fields: [boardId], references: [id])
+  cards     Card[]
+}
+
+model Card {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  image  String
+  name     String
+  description String
+  columnId   String @map("columnId")
+  column     List @relation(fields: [columnId], references: [id])
+  comments   Comments[]
+  user     String @map("userId")
+}
+
+model Comments {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      String @map("userId")
+  text     String
+  cardId   String @map("cardId")
+  card     Card @relation(fields: [cardId], references: [id])
+}
