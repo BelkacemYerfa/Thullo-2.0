@@ -23,13 +23,11 @@ export const BoardCard = ({
         className="absolute inset-0"
         aria-label="open board"
       ></Link>
-      <CardHeader className="p-3 space-y-3 ">
+      <CardHeader className="p-3 space-y-3 w-[320px]">
         <Image
           src={boardBanner}
           alt={title + " board banner"}
           loading="lazy"
-          placeholder="blur"
-          blurDataURL={boardBanner}
           height={130}
           width={220}
           className="w-full h-52  sm:h-[180px] xl:h-[200px] 2xl:h-[140px] rounded-xl"

@@ -5,23 +5,30 @@ import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
 type UploadImageFormProps = {
-  image: string;
-  setImage: (image: string) => void;
+  image: File[];
+  setImage: (image: File[]) => void;
+  preview: string;
+  setPreview: (preview: string) => void;
 };
 
-export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
+export const UploadImageForm = ({
+  setImage,
+  preview,
+  setPreview,
+}: UploadImageFormProps) => {
   const [isFileTooBig, setIsFileTooBig] = useState<boolean>(false);
 
   const handleBannerImageChange = (file: File) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => {
-      if (reader.result) setImage(reader.result as string);
+    reader.onloadend = () => {
+      setPreview(reader.result as string);
     };
+    setImage([file]);
   };
 
   const checkFileSize = (file: File) => {
-    if (file.size > 1024 * 1024 * 5) {
+    if (file.size > 1024 * 1024 * 4) {
       setIsFileTooBig(true);
       return;
     }
@@ -44,15 +51,15 @@ export const UploadImageForm = ({ image, setImage }: UploadImageFormProps) => {
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
     useDropzone({
       onDrop,
-      maxSize: 1024 * 1024 * 5,
+      maxSize: 1024 * 1024 * 4,
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
     });
 
-  return image ? (
+  return preview ? (
     <div className="grid gap-3" {...getRootProps()}>
       <Image
-        src={image}
+        src={preview}
         alt="image"
         height={100}
         width={200}

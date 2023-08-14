@@ -10,11 +10,15 @@ import { toast } from "sonner";
 import { BoardFormSchema, BoardFormSchemaType } from "@/validation/search";
 import { UploadImageForm } from "./UploadImageForm";
 import { useGenerationStore } from "@/lib/store/Store";
+import { addBoard } from "@/app/_actions/board";
+import { useUploadThing } from "@/lib/uploadthing/uploadthing";
 
 export const BoardCreationForm = () => {
   const { setBoardCard } = useGenerationStore();
   const [isPending, setIsPending] = useTransition();
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<File[]>([]);
+  const [preview, setPreview] = useState<string>("");
+  const { startUpload } = useUploadThing("imageUploader");
   const form = useForm<BoardFormSchemaType>({
     resolver: zodResolver(BoardFormSchema),
     defaultValues: {
@@ -23,7 +27,20 @@ export const BoardCreationForm = () => {
   });
   const onSubmit = (data: BoardFormSchemaType) => {
     setIsPending(async () => {
-      console.log({ ...data, image });
+      try {
+        const Image = await startUpload(image).then((res) => {
+          const response = {
+            fileKey: res?.[0].fileKey,
+            fileUrl: res?.[0].fileUrl,
+          };
+          return response ?? null;
+        });
+
+        await addBoard({ ...data, Image });
+        toast.success("Board created successfully");
+      } catch (error) {
+        console.log(error);
+      }
     });
     setBoardCard(false);
   };
@@ -33,7 +50,12 @@ export const BoardCreationForm = () => {
         className="grid gap-4"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
-        <UploadImageForm image={image} setImage={(image) => setImage(image)} />
+        <UploadImageForm
+          image={image}
+          preview={preview}
+          setPreview={(image) => setPreview(image)}
+          setImage={(image) => setImage(image)}
+        />
         <FormField
           control={form.control}
           name="title"
@@ -53,7 +75,7 @@ export const BoardCreationForm = () => {
           <Button
             type="submit"
             className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
-            disabled={isPending || !form.formState.isValid}
+            disabled={isPending || !form.formState.isValid || !image}
           >
             + Create
           </Button>

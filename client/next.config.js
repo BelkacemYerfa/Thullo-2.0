@@ -9,7 +9,11 @@ const nextConfig = {
       "e1.pxfuel.com",
       "i.pravatar.cc",
       "img.clerk.com",
+      "uploadthing.com",
     ],
+  },
+  experimental: {
+    serverActions: true,
   },
 };
 
