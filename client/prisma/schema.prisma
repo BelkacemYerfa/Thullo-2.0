@@ -19,7 +19,7 @@ model Board {
   name     String
   image   Image[]
   description String
-  user      String @map("userId")
+  user      User[]
   Lists   List?
 }
 
@@ -66,4 +66,15 @@ model Comments {
   cardId   String @map("cardId")
   card     Card @relation(fields: [cardId], references: [id])
   @@unique([cardId])
+}
+
+model User {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String @unique
+  name     String
+  password String
+  boardId  String @map("boardId")
+  board    Board @relation(fields: [boardId], references: [id])
 }

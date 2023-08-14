@@ -12,6 +12,7 @@ import { UploadImageForm } from "./UploadImageForm";
 import { useGenerationStore } from "@/lib/store/Store";
 import { addBoard } from "@/app/_actions/board";
 import { useUploadThing } from "@/lib/uploadthing/uploadthing";
+import { Icons } from "../Icons";
 
 export const BoardCreationForm = () => {
   const { setBoardCard } = useGenerationStore();
@@ -35,14 +36,13 @@ export const BoardCreationForm = () => {
           };
           return response ?? null;
         });
-
         await addBoard({ ...data, Image });
+        setBoardCard(false);
         toast.success("Board created successfully");
       } catch (error) {
         console.log(error);
       }
     });
-    setBoardCard(false);
   };
   return (
     <Form {...form}>
@@ -74,10 +74,10 @@ export const BoardCreationForm = () => {
         <div className="flex items-center justify-end">
           <Button
             type="submit"
-            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
+            className="flex items-center gap-x-2 bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
             disabled={isPending || !form.formState.isValid || !image}
           >
-            + Create
+            {isPending ? <Icons.Loader2 className="w-5 h-5" /> : null}+ Create
           </Button>
         </div>
       </form>

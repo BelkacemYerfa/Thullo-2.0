@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import client from "@/lib/prismaDb";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import { Key, Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +20,7 @@ export default async function Home() {
       image: true,
     },
   });
+  console.log(userBoards);
   return (
     <main className="min-h-screen w-full flex flex-col">
       <NavBar user={user} />
@@ -30,19 +31,29 @@ export default async function Home() {
             <AddBoardPopOver />
           </div>
           <div className="flex items-center justify-center w-full flex-wrap gap-x-8 gap-y-7 pb-5">
-            <Suspense fallback={<p>Loading</p>}>
-              {userBoards.map((board) => {
-                return (
-                  <BoardCard
-                    key={board.id}
-                    boardBanner={board.image?.[0].fileUrl}
-                    title={board.name}
-                    usersPics={[user.imageUrl]}
-                    boardId={board.id}
-                  />
-                );
-              })}
-            </Suspense>
+            {userBoards.length !== 0 ? (
+              userBoards.map(
+                (board: {
+                  id: Key;
+                  image: { fileUrl: string }[];
+                  name: string;
+                }) => {
+                  return (
+                    <BoardCard
+                      key={board.id}
+                      boardBanner={board.image?.[0].fileUrl}
+                      title={board.name}
+                      usersPics={[user.imageUrl]}
+                      boardId={board.id as string}
+                    />
+                  );
+                }
+              )
+            ) : (
+              <p>
+                You have no boards yet. Create one by clicking the plus icon
+              </p>
+            )}
           </div>
         </section>
       </ScrollArea>

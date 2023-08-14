@@ -8,9 +8,6 @@ type ProviderProps = {
 
 export const Provider = async ({ children }: ProviderProps) => {
   const user = await currentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
   if (typeof window !== "undefined") {
     if (user?.id && window.location.pathname.includes("/sign")) {
       redirect(window.location.origin);

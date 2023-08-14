@@ -2,9 +2,25 @@ interface IBoard {
   id: string;
   name: string;
   description: string;
-  image: StoredImage;
-  user: string;
+  image: Image[];
+  user: User[];
   Lists: IList[];
+}
+
+interface Image {
+  id: string;
+  fileKey: string;
+  fileUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface IList {

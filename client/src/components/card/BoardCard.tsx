@@ -23,7 +23,7 @@ export const BoardCard = ({
         className="absolute inset-0"
         aria-label="open board"
       ></Link>
-      <CardHeader className="p-3 space-y-3 w-[320px]">
+      <CardHeader className="p-3 space-y-3 sm:w-[300px] md:w-[320px]">
         <Image
           src={boardBanner}
           alt={title + " board banner"}
@@ -49,7 +49,7 @@ export const BoardCard = ({
                 width={32}
                 loading="lazy"
               />
-              <AvatarFallback>{pic}</AvatarFallback>
+              <AvatarFallback className="rounded-lg">{pic}</AvatarFallback>
             </Avatar>
           ) : (
             <p key={pic + index} className="text-[#BDBDBD] text-sm font-medium">
