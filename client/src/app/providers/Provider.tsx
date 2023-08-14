@@ -1,4 +1,6 @@
-import { currentUser } from "@clerk/nextjs";
+"use client";
+
+import { useUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
@@ -6,12 +8,11 @@ type ProviderProps = {
   children: ReactNode;
 };
 
-export const Provider = async ({ children }: ProviderProps) => {
-  const user = await currentUser();
-  if (typeof window !== "undefined") {
-    if (user?.id && window.location.pathname.includes("/sign")) {
-      redirect(window.location.origin);
-    }
+export const Provider = ({ children }: ProviderProps) => {
+  const { user } = useUser();
+
+  if (user?.id && window.location.pathname.includes("/sign")) {
+    redirect(`/`);
   }
   return <>{children}</>;
 };

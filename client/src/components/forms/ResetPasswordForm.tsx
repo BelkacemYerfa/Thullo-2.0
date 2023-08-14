@@ -23,24 +23,30 @@ import { Icons } from "../Icons";
 import { PasswordInput } from "../PasswordInput";
 
 export const ResetPasswordForm = () => {
-  const { signIn, setActive } = useSignIn();
+  const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
   const [isPending, setIsPending] = useTransition();
   const form = useForm<ResetPasswordSchemaType>({
     resolver: zodResolver(ResetPasswordSchema),
+    defaultValues: {
+      password: "",
+      confirm_password: "",
+      code: "",
+    },
   });
   const onSubmit = (data: ResetPasswordSchemaType) => {
+    if (!isLoaded) return;
     setIsPending(async () => {
-      const { password, confirm_password, code } = data;
+      const { password, code } = data;
       try {
-        const attemptFirstFactor = await signIn?.attemptFirstFactor({
+        const attemptFirstFactor = await signIn.attemptFirstFactor({
           strategy: "reset_password_email_code",
-          code: data.code,
-          password: data.password,
+          code: code,
+          password: password,
         });
 
         if (attemptFirstFactor?.status === "complete") {
-          await setActive!({
+          await setActive({
             session: attemptFirstFactor?.createdSessionId,
           });
           router.push(`${window.location.origin}/`);
@@ -105,11 +111,14 @@ export const ResetPasswordForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] flex items-center gap-x-2 "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (
-            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+            <Icons.Loader2
+              className="h-5 w-5 animate-spin"
+              aria-hidden="true"
+            />
           )}
           Reset Password
         </Button>

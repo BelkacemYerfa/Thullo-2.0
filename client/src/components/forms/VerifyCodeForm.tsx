@@ -22,17 +22,21 @@ import {
 import { Icons } from "../Icons";
 
 export const VerifyCodeForm = () => {
-  const { signUp, setActive } = useSignUp();
+  const { signUp, setActive, isLoaded } = useSignUp();
   const router = useRouter();
   const [isPending, setIsPending] = useTransition();
   const form = useForm<AccountConfirmationType>({
     resolver: zodResolver(AccountConfirmation),
+    defaultValues: {
+      code: "",
+    },
   });
   const onSubmit = (data: AccountConfirmationType) => {
+    if (!isLoaded) return;
     setIsPending(async () => {
       const { code } = data;
       try {
-        const completeSignUp = await signUp?.attemptEmailAddressVerification({
+        const completeSignUp = await signUp.attemptEmailAddressVerification({
           code: code,
         });
         if (completeSignUp?.status !== "complete") {
@@ -41,7 +45,7 @@ export const VerifyCodeForm = () => {
           console.log(JSON.stringify(completeSignUp, null, 2));
         }
         if (completeSignUp?.status === "complete") {
-          await setActive!({ session: completeSignUp.createdSessionId });
+          await setActive({ session: completeSignUp.createdSessionId });
 
           router.push(`${window.location.origin}/`);
         }
@@ -70,11 +74,14 @@ export const VerifyCodeForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] flex items-center gap-x-2 "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (
-            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+            <Icons.Loader2
+              className="h-5 w-5 animate-spin"
+              aria-hidden="true"
+            />
           )}
           Create Account
         </Button>

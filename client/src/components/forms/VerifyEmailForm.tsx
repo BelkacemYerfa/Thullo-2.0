@@ -22,13 +22,17 @@ import {
 import { Icons } from "../Icons";
 
 export const VerifyEmailForm = () => {
-  const { signIn } = useSignIn();
+  const { signIn, isLoaded } = useSignIn();
   const router = useRouter();
   const [isPending, setIsPending] = useTransition();
   const form = useForm<VerifyEmailSchemaType>({
     resolver: zodResolver(VerifyEmailSchema),
+    defaultValues: {
+      email: "",
+    },
   });
   const onSubmit = (data: VerifyEmailSchemaType) => {
+    if (!isLoaded) return;
     setIsPending(async () => {
       const { email } = data;
       try {
@@ -72,11 +76,14 @@ export const VerifyEmailForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] flex items-center gap-x-2 "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (
-            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+            <Icons.Loader2
+              className="h-5 w-5 animate-spin"
+              aria-hidden="true"
+            />
           )}
           Send Code
         </Button>

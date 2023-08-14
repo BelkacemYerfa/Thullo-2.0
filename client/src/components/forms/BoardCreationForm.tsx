@@ -77,7 +77,10 @@ export const BoardCreationForm = () => {
             className="flex items-center gap-x-2 bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
             disabled={isPending || !form.formState.isValid || !image}
           >
-            {isPending ? <Icons.Loader2 className="w-5 h-5" /> : null}+ Create
+            {isPending ? (
+              <Icons.Loader2 className="w-5 h-5 animate-spin" />
+            ) : null}
+            + Create
           </Button>
         </div>
       </form>

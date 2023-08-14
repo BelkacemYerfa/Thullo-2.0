@@ -20,7 +20,7 @@ import { Icons } from "../Icons";
 import { PasswordInput } from "../PasswordInput";
 
 export const SignUpForm = () => {
-  const { signUp } = useSignUp();
+  const { signUp, isLoaded } = useSignUp();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<SignUpSchemaType>({
@@ -31,14 +31,15 @@ export const SignUpForm = () => {
     },
   });
   const onSubmit = (data: SignUpSchemaType) => {
+    if (!isLoaded) return;
     startTransition(async () => {
       const { email, password } = data;
       try {
-        await signUp?.create({
+        await signUp.create({
           emailAddress: email,
           password,
         });
-        await signUp?.prepareEmailAddressVerification({
+        await signUp.prepareEmailAddressVerification({
           strategy: "email_code",
         });
 
@@ -91,11 +92,14 @@ export const SignUpForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] flex items-center gap-x-2 "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (
-            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+            <Icons.Loader2
+              className="h-5 w-5 animate-spin"
+              aria-hidden="true"
+            />
           )}
           Sign Up
         </Button>

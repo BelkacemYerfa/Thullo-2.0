@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchemaType, SignInSchema } from "@/validation/auth-sign-in";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useSignIn } from "@clerk/nextjs";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -21,21 +21,26 @@ import { PasswordInput } from "../PasswordInput";
 
 export const SignInForm = () => {
   const router = useRouter();
-  const { signIn, setActive } = useSignIn();
+  const { signIn, setActive, isLoaded } = useSignIn();
   const [isPending, setIsPending] = useTransition();
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
   const onSubmit = (data: SignInSchemaType) => {
+    if (!isLoaded) return;
     setIsPending(async () => {
       try {
         const { password, email } = data;
-        const result = await signIn?.create({
+        const result = await signIn.create({
           identifier: email,
           password,
         });
         if (result?.status === "complete") {
-          setActive!({ session: result?.createdSessionId });
+          setActive({ session: result?.createdSessionId });
           router.push("/");
           toast.success("Welcome back");
         } else {
@@ -86,11 +91,14 @@ export const SignInForm = () => {
         />
         <Button
           type="submit"
-          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] "
+          className="rounded-lg bg-[#2F80ED] disabled:cursor-not-allowed hover:bg-[#2F80ED] flex items-center gap-x-2 "
           disabled={isPending || !form.formState.isValid}
         >
           {isPending && (
-            <Icons.Loader2 className="h-5 w-5" aria-hidden="true" />
+            <Icons.Loader2
+              className="h-5 w-5 animate-spin"
+              aria-hidden="true"
+            />
           )}
           Sign In
         </Button>

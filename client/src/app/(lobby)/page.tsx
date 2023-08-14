@@ -20,7 +20,6 @@ export default async function Home() {
       image: true,
     },
   });
-  console.log(userBoards);
   return (
     <main className="min-h-screen w-full flex flex-col">
       <NavBar user={user} />
