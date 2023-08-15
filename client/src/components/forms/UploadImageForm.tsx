@@ -52,6 +52,10 @@ export const UploadImageForm = ({
     useDropzone({
       onDrop,
       maxSize: 1024 * 1024 * 4,
+      multiple: false,
+      accept: {
+        "image/*": [".jpeg", ".png"],
+      },
       onDropRejected: () => setIsFileTooBig(true),
       onDropAccepted: () => setIsFileTooBig(false),
     });
@@ -73,7 +77,7 @@ export const UploadImageForm = ({
       />
     </div>
   ) : (
-    <label
+    <div
       className={`w-full border-2 border-dashed rounded-lg cursor-pointer duration-300 ease-in-out
       ${
         isDragAccept
@@ -108,13 +112,7 @@ export const UploadImageForm = ({
           SVG, PNG, JPG or GIF
         </p>
       </div>
-      <Input
-        type="file"
-        className="hidden"
-        onChange={(e) => handleBannerChange(e)}
-        accept="image/*"
-        {...getInputProps()}
-      />
-    </label>
+      <Input onChange={(e) => handleBannerChange(e)} {...getInputProps()} />
+    </div>
   );
 };
