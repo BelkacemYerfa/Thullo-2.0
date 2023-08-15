@@ -21,39 +21,38 @@ export default async function Home() {
     },
   });
   return (
-    <main className="min-h-screen w-full flex flex-col">
+    <main className="h-screen w-full flex flex-col">
       <NavBar user={user} />
       <ScrollArea className="h-full w-full">
-        <section className="flex-1 max-w-[80%] m-auto pt-10 space-y-7 ">
-          <div className="w-full flex items-center justify-between px-2">
+        <section className="flex-1 max-w-[90%] sm:max-w-[80%] mx-auto pt-10 space-y-7 ">
+          <div className="w-full flex items-center justify-between ">
             <h2 className="text-[#333333] font-medium text-lg">All Boards</h2>
             <AddBoardPopOver />
           </div>
-          <div className="flex items-center justify-center w-full flex-wrap gap-x-8 gap-y-7 pb-5">
+          <ul className="flex w-full flex-col items-center justify-center overflow-y-auto p-6 md:grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 pb-5 overflow-hidden ">
             {userBoards.length !== 0 ? (
               userBoards.map(
                 (board: {
                   id: Key;
                   image: { fileUrl: string }[];
                   name: string;
-                }) => {
-                  return (
+                }) => (
+                  <li key={board.id} className="col-span-1 w-full max-w-sm">
                     <BoardCard
-                      key={board.id}
                       boardBanner={board.image?.[0].fileUrl}
                       title={board.name}
                       usersPics={[user.imageUrl]}
                       boardId={board.id as string}
                     />
-                  );
-                }
+                  </li>
+                )
               )
             ) : (
-              <p>
+              <li>
                 You have no boards yet. Create one by clicking the plus icon
-              </p>
+              </li>
             )}
-          </div>
+          </ul>
         </section>
       </ScrollArea>
     </main>

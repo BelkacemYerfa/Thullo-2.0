@@ -17,20 +17,20 @@ export const BoardCard = ({
   boardId,
 }: BoardCardProps) => {
   return (
-    <Card className="relative shadow-outline-black rounded-xl">
+    <Card className="relative shadow-outline-black rounded-xl  ">
       <Link
         href={`/board/${boardId}`}
         className="absolute inset-0"
         aria-label="open board"
       ></Link>
-      <CardHeader className="p-3 space-y-3 sm:w-[300px] md:w-[320px]">
+      <CardHeader className="p-3 space-y-3">
         <Image
           src={boardBanner}
           alt={title + " board banner"}
           loading="lazy"
           height={130}
           width={220}
-          className="w-full h-52  sm:h-[180px] xl:h-[200px] 2xl:h-[140px] rounded-xl"
+          className="w-full h-[180px] xl:h-[200px] 2xl:h-[140px] rounded-xl"
           quality={100}
         />
         <CardTitle className="text-base font-medium ">{title}</CardTitle>
