@@ -45,9 +45,9 @@ export const ResetPasswordForm = () => {
           password: password,
         });
 
-        if (attemptFirstFactor?.status === "complete") {
+        if (attemptFirstFactor.status === "complete") {
           await setActive({
-            session: attemptFirstFactor?.createdSessionId,
+            session: attemptFirstFactor.createdSessionId,
           });
           router.push(`${window.location.origin}/`);
           toast.success("Password reset successfully.");

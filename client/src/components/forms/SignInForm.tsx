@@ -39,8 +39,8 @@ export const SignInForm = () => {
           identifier: email,
           password,
         });
-        if (result?.status === "complete") {
-          setActive({ session: result?.createdSessionId });
+        if (result.status === "complete") {
+          setActive({ session: result.createdSessionId });
           router.push("/");
           toast.success("Welcome back");
         } else {

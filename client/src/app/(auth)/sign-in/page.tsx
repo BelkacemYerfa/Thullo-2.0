@@ -9,8 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { currentUser } from "@clerk/nextjs";
 
-export default function SignInPage() {
+export default async function SignInPage() {
+  const user = await currentUser();
+  if (user) redirect("/");
   return (
     <Card className="rounded-xl w-full sm:w-3/4 md:max-w-lg ">
       <CardHeader>

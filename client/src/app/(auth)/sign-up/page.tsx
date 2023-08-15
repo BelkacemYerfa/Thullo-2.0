@@ -8,9 +8,13 @@ import {
   CardFooter,
   CardTitle,
 } from "@/components/ui/card";
+import { currentUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function SignUpPage() {
+export default async function SignUpPage() {
+  const user = await currentUser();
+  if (user) redirect("/");
   return (
     <Card className="rounded-xl w-full sm:w-3/4 md:max-w-lg ">
       <CardHeader>

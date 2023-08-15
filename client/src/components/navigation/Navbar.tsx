@@ -63,7 +63,7 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                       className="object-cover"
                     />
 
-                    <AvatarFallback>
+                    <AvatarFallback className="rounded-lg">
                       {user?.username?.split("")[0]}
                     </AvatarFallback>
                   </Avatar>

@@ -79,8 +79,10 @@ export const BoardCreationForm = () => {
           >
             {isPending ? (
               <Icons.Loader2 className="w-5 h-5 animate-spin" />
-            ) : null}
-            + Create
+            ) : (
+              <Icons.Plus className="w-5 h-5" />
+            )}
+            Create
           </Button>
         </div>
       </form>

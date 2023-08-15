@@ -44,9 +44,8 @@ export const VerifyCodeForm = () => {
              or if the user needs to complete more steps.*/
           console.log(JSON.stringify(completeSignUp, null, 2));
         }
-        if (completeSignUp?.status === "complete") {
+        if (completeSignUp.status === "complete") {
           await setActive({ session: completeSignUp.createdSessionId });
-
           router.push(`${window.location.origin}/`);
         }
       } catch (error) {

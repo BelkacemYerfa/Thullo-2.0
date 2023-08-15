@@ -36,12 +36,12 @@ export const VerifyEmailForm = () => {
     setIsPending(async () => {
       const { email } = data;
       try {
-        const result = await signIn?.create({
+        const result = await signIn.create({
           strategy: "reset_password_email_code",
           identifier: email,
         });
 
-        if (result?.status === "needs_first_factor") {
+        if (result.status === "needs_first_factor") {
           router.push("/sign-in/verify-email/step-2");
           toast.message("Check your email", {
             description: "We sent you a 6-digit verification code.",

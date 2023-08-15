@@ -46,7 +46,7 @@ export const OAuthSignIn = () => {
             key={provider.strategy}
             disabled={!isLoaded}
             variant={"outline"}
-            className="flex items-center gap-x-1 rounded-lg text-black "
+            className="flex items-center gap-x-2 rounded-lg text-black "
             onClick={() => oauthSignIn(provider.strategy)}
           >
             {isLoading !== provider.strategy ? (
