@@ -19,6 +19,15 @@ export default async function Home() {
     include: {
       image: true,
     },
+    select: {
+      id: true,
+      name: true,
+      image: {
+        select: {
+          fileUrl: true,
+        },
+      },
+    },
   });
   return (
     <main className="h-screen w-full flex flex-col">

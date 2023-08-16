@@ -117,12 +117,12 @@ export const DndContextProvider = ({ boardId }: DndContextProviderProps) => {
     });
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     socket.emit("join_room", { roomId: boardId });
     socket.on("join_room", (data) => {
       console.log(data);
     });
-  }, [boardId]);
+  }, [boardId]); */
   return (
     <DragDropContext
       onDragEnd={onDragEnd}

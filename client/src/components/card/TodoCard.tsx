@@ -35,11 +35,16 @@ const cardBadges = [
     title: "Design",
     color: "#219653",
   },
+  {
+    title: "Marketing",
+    color: "#F2994A",
+  },
 ] satisfies cardBadge[];
 
 export const TodoCard = ({ task, cardId }: TodoCardProps) => {
   const { user } = useUser();
-  const img = "";
+  const img =
+    "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg";
   return (
     <Card>
       <CardHeader className="space-y-3 p-3">
@@ -62,14 +67,14 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-3 py-2 space-y-3">
-        <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-          {cardBadges.slice(0, 5).map((badge) => (
+        <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
+          {cardBadges.slice(0, 4).map((badge) => (
             <Badge
               key={badge.color}
               className={cn(
-                `bg-[#D5E6FB] hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default `
+                `hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default text-white rounded-xl `
               )}
-              style={{ color: badge.color }}
+              style={{ backgroundColor: badge.color }}
             >
               {badge.title}
             </Badge>

@@ -51,6 +51,7 @@ export const BoardCard = ({
                 height={32}
                 width={32}
                 loading="lazy"
+                className="object-cover"
               />
               <AvatarFallback className="rounded-lg">{pic}</AvatarFallback>
             </Avatar>

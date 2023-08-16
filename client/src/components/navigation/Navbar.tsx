@@ -53,7 +53,10 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
             <div className="flex items-center gap-x-5 md:gap-x-7">
               <SearchPopOver />
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-x-[10px]">
+                <DropdownMenuTrigger
+                  className="flex items-center gap-x-[10px]"
+                  aria-label="user dropDown"
+                >
                   <Avatar className="rounded-lg">
                     <AvatarImage
                       src={user?.imageUrl ?? ""}

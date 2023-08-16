@@ -1,6 +1,7 @@
 import { BoardDashboard } from "@/components/BoardDashboard";
 import { NavBar } from "@/components/navigation/Navbar";
 import { BoardSettings } from "@/components/settings/BoardSettings";
+import client from "@/lib/prismaDb";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -13,8 +14,17 @@ type BoardPageProps = {
 export async function generateMetadata({
   params: { boardId },
 }: BoardPageProps) {
+  const board = await client.board.findUnique({
+    where: {
+      id: boardId,
+    },
+    select: {
+      name: true,
+    },
+  });
+  if (!board) redirect("/");
   return {
-    title: `board ${boardId}`,
+    title: `${board.name}`,
     description: `board ${boardId} description`,
   };
 }
