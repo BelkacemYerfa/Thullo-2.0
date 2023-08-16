@@ -13,7 +13,6 @@ import { User } from "@clerk/nextjs/dist/types/server";
 import { Icons } from "../Icons";
 import { SearchPopOver } from "../Popups/SearchPopOver";
 import { LogOutBtn } from "../auth/LogOutBtn";
-import { Skeleton } from "../ui/skeleton";
 import { UserProfilePopOver } from "../Popups/UserProfilePopOver";
 
 type NavBarProps = {

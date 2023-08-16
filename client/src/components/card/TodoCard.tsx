@@ -14,6 +14,7 @@ import { useUser } from "@clerk/nextjs";
 import { Task } from "@/app/context/initialData";
 import { CardDetailedPopOver } from "../Popups/CardDetailedPopOver";
 import { AddUserToCard } from "../Popups/AddUserCardActions";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 type TodoCardProps = {
   task: Task;
@@ -43,15 +44,17 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
     <Card>
       <CardHeader className="space-y-3 p-3">
         {img ? (
-          <Image
-            src={img}
-            alt="img"
-            height={130}
-            width={220}
-            loading="lazy"
-            className="w-full h-[200px] rounded-xl"
-            quality={100}
-          />
+          <AspectRatio ratio={3 / 2}>
+            <Image
+              src={img}
+              alt="img"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading="lazy"
+              className="object-cover rounded-xl"
+              quality={100}
+            />
+          </AspectRatio>
         ) : null}
         <CardTitle className="text-base font-normal p-0 group w-fit flex flex-col -space-y-[2.5px] items-center">
           <CardDetailedPopOver cardId={cardId} taskTitle={task.content} />

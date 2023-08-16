@@ -3,6 +3,7 @@ import { Input } from "../ui/input";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 type UploadImageFormProps = {
   image: File[];
@@ -62,13 +63,15 @@ export const UploadImageForm = ({
 
   return preview ? (
     <div className="grid gap-3" {...getRootProps()}>
-      <Image
-        src={preview}
-        alt="image"
-        height={100}
-        width={200}
-        className="w-full h-[300px] rounded-lg object-cover"
-      />
+      <AspectRatio ratio={16 / 9}>
+        <Image
+          src={preview}
+          alt="uploaded image"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className=" rounded-lg object-cover"
+        />
+      </AspectRatio>
       <Input
         type="file"
         className="rounded-lg"

@@ -11,6 +11,7 @@ import { CardAssignedMembers } from "./AddUserCardActions";
 import { CardCoverPopOver } from "./CardCoverPopOver";
 import { CardLabelsPopOver } from "./CardLabelsPopOver";
 import { Button } from "../ui/button";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -40,18 +41,18 @@ export const CardDetailedPopOver = ({
                 </Link>
               </div>
               <div className=" max-w-[95%] mx-auto max-h-full space-y-6 mt-2 ">
-                <div className="relative w-full h-[200px]">
+                <AspectRatio ratio={16 / 5}>
                   <Image
                     src={
                       "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
                     }
                     alt="pic"
                     fill
-                    sizes="100%"
-                    className="w-full h-full rounded-xl object-cover "
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className=" rounded-xl object-cover "
                     quality={100}
                   />
-                </div>
+                </AspectRatio>
                 <div className="flex flex-col-reverse md:flex-row gap-5">
                   <div className=" basis-full md:basis-3/4 space-y-5 ">
                     <div className="space-y-2">

@@ -1,19 +1,23 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { SignOutButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Icons } from "../Icons";
-import { useTransition, useState, useEffect } from "react";
+import { useTransition } from "react";
+import { useMounted } from "@/hooks/useMounted";
+import { Skeleton } from "../ui/skeleton";
+import { cn } from "@/lib/utils";
 
 export const LogOutBtn = () => {
   const router = useRouter();
+  const [mounted] = useMounted();
   const [isPending, startTransition] = useTransition();
-  return (
+  return mounted ? (
     <SignOutButton
       signOutCallback={() =>
         startTransition(() => {
-          router.push(`${window.location.origin}?redirect=false `);
+          router.push(`${window.location.origin}?redirect=false`);
         })
       }
     >
@@ -31,5 +35,14 @@ export const LogOutBtn = () => {
         Log Out
       </Button>
     </SignOutButton>
+  ) : (
+    <Skeleton
+      className={cn(
+        buttonVariants({ size: "sm" }),
+        "w-full bg-muted text-muted-foreground"
+      )}
+    >
+      Log out
+    </Skeleton>
   );
 };

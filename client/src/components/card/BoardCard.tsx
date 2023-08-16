@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Card, CardContent, CardTitle, CardHeader } from "../ui/card";
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 type BoardCardProps = {
   title: string;
@@ -20,19 +21,21 @@ export const BoardCard = ({
     <Card className="relative shadow-outline-black rounded-xl  ">
       <Link
         href={`/board/${boardId}`}
-        className="absolute inset-0"
+        className="absolute inset-0 z-10"
         aria-label="open board"
       ></Link>
       <CardHeader className="p-3 space-y-3">
-        <Image
-          src={boardBanner}
-          alt={title + " board banner"}
-          loading="lazy"
-          height={130}
-          width={220}
-          className="w-full h-[180px] xl:h-[200px] 2xl:h-[140px] rounded-xl"
-          quality={100}
-        />
+        <AspectRatio ratio={3 / 2}>
+          <Image
+            src={boardBanner}
+            alt={title + " board banner"}
+            loading="lazy"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="rounded-xl object-cover "
+            quality={100}
+          />
+        </AspectRatio>
         <CardTitle className="text-base font-medium ">{title}</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center gap-x-3 p-3">
