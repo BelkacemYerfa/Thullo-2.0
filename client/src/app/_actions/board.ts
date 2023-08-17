@@ -6,14 +6,21 @@ import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { Results } from "@/components/Popups/SearchPopOver";
+
+export const verifyUserAuth = async () => {
+  const user = await currentUser();
+  if (!user) redirect("/sign-in");
+  return user;
+};
 
 export async function addBoard(
   data: z.infer<typeof BoardFormSchema> & {
     Image: StoredImage | null;
   }
 ) {
-  const user = await currentUser();
-  if (!user) redirect("/sign-in");
+  const user = await verifyUserAuth();
+
   await client.board.create({
     data: {
       name: data.title,
@@ -47,4 +54,35 @@ export async function addBoard(
     },
   });
   revalidatePath("/");
+}
+
+export async function searchForBoards(query: string) {
+  const user = await verifyUserAuth();
+  const boards = await client.board.findMany({
+    where: {
+      user: user.id,
+      name: {
+        contains: query.toLowerCase(),
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      image: {
+        select: {
+          fileUrl: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  const results: Results = [
+    {
+      category: "Boards",
+      items: boards,
+    },
+  ];
+  return results;
 }

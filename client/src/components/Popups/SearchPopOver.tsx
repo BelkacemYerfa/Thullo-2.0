@@ -15,48 +15,46 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { Icons } from "../Icons";
+import { searchForBoards } from "@/app/_actions/board";
 
-type SearchDataResults = {
+export type Results = {
   category: string;
-  items: ItemsData[];
-};
+  items: Items;
+}[];
 
-type ItemsData = {
-  id: number;
-  name: string;
-  image: string;
-};
+type Items = Pick<board, "id" | "name" | "image">[];
 
 export const SearchPopOver = () => {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>("");
-  const [isPending, setIsPending] = useTransition();
-  const [value] = useDebounce(search, 500);
-  const [data, setData] = useState<SearchDataResults[] | null>([]);
-  const searchHandler = () => {
-    setIsPending(async () => {
-      console.log(search);
-      /* const response = await fetch(
-        `https://jsonplaceholder.typicode.com/todos/${Math.floor(
-          Math.random() * 100
-        )}`
-      );
-      console.log(await response.json()); */
-      /* const data = await response.json();
-      setData(data.items); */
-    });
-  };
-  const handleSectionClick = useCallback((callback: () => void) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [debouncedQuery] = useDebounce(query, 300);
+  const [data, setData] = useState<Results | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (debouncedQuery.length === 0) setData(null);
+
+    if (debouncedQuery.length > 0) {
+      startTransition(async () => {
+        const results = await searchForBoards(debouncedQuery);
+        setData(results);
+        console.log(data);
+      });
+    }
+  }, [debouncedQuery]);
+
+  const handleSelect = useCallback((callback: () => unknown) => {
     setIsOpen(false);
     callback();
   }, []);
+
   useEffect(() => {
-    if (!value) setData(null);
-    else {
-      searchHandler();
+    if (!isOpen) {
+      setQuery("");
     }
-  }, [value]);
+  }, [isOpen]);
+
   return (
     <>
       <div
@@ -76,8 +74,8 @@ export const SearchPopOver = () => {
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
         <CommandInput
           placeholder="keyword..."
-          value={search}
-          onValueChange={setSearch}
+          value={query}
+          onValueChange={setQuery}
         />
         <CommandList>
           <CommandEmpty
@@ -93,17 +91,23 @@ export const SearchPopOver = () => {
               <Skeleton className="h-8 rounded-sm" />
             </div>
           ) : (
-            data?.map((category) => (
-              <CommandGroup heading="repositories" key={category.category}>
-                {category.items.map((item) => (
+            data?.map((group) => (
+              <CommandGroup heading={group.category} key={group.category}>
+                {group.items.map((item) => (
                   <CommandItem
                     key={item.id}
                     onSelect={() =>
-                      handleSectionClick(() => router.push(`board/${item.id}`))
+                      handleSelect(() => router.push(`/board/${item.id}`))
                     }
                     className="flex items-center gap-x-2"
                   >
-                    <Image src={""} alt="" height={32} width={32} />
+                    <Image
+                      src={item.image[0].fileUrl}
+                      alt={item.name}
+                      height={32}
+                      width={32}
+                      className="rounded-lg object-cover h-8 w-8 "
+                    />
                     {item.name}
                   </CommandItem>
                 ))}

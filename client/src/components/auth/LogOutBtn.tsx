@@ -39,7 +39,7 @@ export const LogOutBtn = () => {
     <Skeleton
       className={cn(
         buttonVariants({ size: "sm" }),
-        "w-full bg-muted text-muted-foreground"
+        "w-full rounded-lg py-[10px] px-3"
       )}
     >
       Log out

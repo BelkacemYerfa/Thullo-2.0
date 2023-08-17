@@ -30,15 +30,16 @@ export const ListNameChangeForm = () => {
           name="name"
           render={({ field }) => (
             <FormItem className="w-full">
-              <Input
-                placeholder={name}
-                {...field}
-                className="w-full focus:outline-0 focus-visible:ring-0"
-              />
+              <Input placeholder={name} {...field} className="w-full " />
             </FormItem>
           )}
         />
-        <button disabled={!name} type="submit" className="text-[#219653]">
+        <button
+          disabled={!name}
+          type="submit"
+          className="text-[#219653]"
+          aria-label="submit rename form"
+        >
           <Icons.Check className="h-5 w-5" />
           {""}
         </button>

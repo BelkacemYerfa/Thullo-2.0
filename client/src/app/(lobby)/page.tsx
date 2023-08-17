@@ -5,20 +5,18 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import client from "@/lib/prismaDb";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { Key, Suspense } from "react";
+import { Key } from "react";
+import { verifyUserAuth } from "../_actions/board";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const user = await currentUser();
-  if (!user) redirect("/sign-in");
+  const user = await verifyUserAuth();
   const userBoards = await client.board.findMany({
     where: {
       user: user.id,
     },
-    include: {
-      image: true,
-    },
+    //you can't use include and select in the same call
     select: {
       id: true,
       name: true,

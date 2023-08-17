@@ -1,3 +1,4 @@
+import { verifyUserAuth } from "@/app/_actions/board";
 import { BoardDashboard } from "@/components/BoardDashboard";
 import { NavBar } from "@/components/navigation/Navbar";
 import { BoardSettings } from "@/components/settings/BoardSettings";
@@ -32,8 +33,7 @@ export async function generateMetadata({
 export default async function BoardPage({
   params: { boardId },
 }: BoardPageProps) {
-  const user = await currentUser();
-  if (!user) redirect("/sign-in");
+  const user = await verifyUserAuth();
   return (
     <main className="h-screen w-full space-y-6 flex flex-col">
       <section className="w-full space-y-5">

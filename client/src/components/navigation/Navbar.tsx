@@ -16,7 +16,7 @@ import { LogOutBtn } from "../auth/LogOutBtn";
 import { UserProfilePopOver } from "../Popups/UserProfilePopOver";
 
 type NavBarProps = {
-  user: User | null;
+  user: User;
   boardTitle?: string;
 };
 
@@ -59,14 +59,14 @@ export const NavBar = ({ user, boardTitle }: NavBarProps) => {
                 >
                   <Avatar className="rounded-lg">
                     <AvatarImage
-                      src={user?.imageUrl ?? ""}
-                      alt={user?.username ?? ""}
+                      src={user.imageUrl}
+                      alt={user.username ?? ""}
                       loading="lazy"
                       className="object-cover"
                     />
 
                     <AvatarFallback className="rounded-lg">
-                      {user?.username?.split("")[0]}
+                      {user.username?.split("")[0]}
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
