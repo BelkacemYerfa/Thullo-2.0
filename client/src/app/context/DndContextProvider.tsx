@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
-
+/* const socket = io("http://localhost:5000");
+ */
 type DndContextProviderProps = {
   boardId: string;
 };
@@ -69,22 +69,22 @@ export const DndContextProvider = ({ boardId }: DndContextProviderProps) => {
     }
 
     if (type === "column") {
-      socket.emit("start_dragging", {
+      /* socket.emit("start_dragging", {
         sourceIndex: source.index,
         destinationIndex: destination.index,
         draggableId: draggableId,
         roomId: boardId,
-      });
+      }); */
       //this is just for testing && will be removed
       reorderColumns(source.index, destination.index, draggableId);
-      socket.on("update_dragging", (data) => {
+      /*   socket.on("update_dragging", (data) => {
         reorderColumns(
           data.sourceIndex,
           data.destinationIndex,
           data.draggableId
         );
       });
-
+ */
       return;
     }
 
@@ -127,7 +127,7 @@ export const DndContextProvider = ({ boardId }: DndContextProviderProps) => {
     <DragDropContext
       onDragEnd={onDragEnd}
       onDragUpdate={() => {
-        socket.emit("start-dragging", {
+        /* socket.emit("start-dragging", {
           sourceIndex: 0,
           destinationIndex: 0,
           draggableId: "0",
@@ -139,7 +139,7 @@ export const DndContextProvider = ({ boardId }: DndContextProviderProps) => {
             data.destinationIndex,
             data.draggableId
           );
-        });
+        }); */
       }}
       onBeforeCapture={onBeforeCapture}
       onBeforeDragStart={onBeforeDragStart}

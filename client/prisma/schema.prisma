@@ -21,7 +21,7 @@ model Board {
   description String
   user      String @map("userId")
   users     User[]
-  Lists   List?
+  Lists   List[]
 }
 
 model Image {

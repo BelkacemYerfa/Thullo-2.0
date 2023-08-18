@@ -34,12 +34,21 @@ export default async function BoardPage({
   params: { boardId },
 }: BoardPageProps) {
   const user = await verifyUserAuth();
+  const board = await client.board.findUnique({
+    where: {
+      user: user.id,
+      id: boardId,
+    },
+    select: {
+      name: true,
+    },
+  });
   return (
     <main className="h-screen w-full space-y-6 flex flex-col">
       <section className="w-full space-y-5">
-        <NavBar user={user} boardTitle="DevChallenges" />
+        <NavBar user={user} boardTitle={board.name} />
         <section className="max-w-[95%] m-auto">
-          <BoardSettings />
+          <BoardSettings boardId={boardId} />
         </section>
       </section>
       <BoardDashboard boardId={boardId} />

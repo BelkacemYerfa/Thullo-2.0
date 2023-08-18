@@ -4,7 +4,11 @@ import { BoardUserInvitePopOver } from "../Popups/BoardUserInvitePopOver";
 import { BoardSheet } from "../sheet/BoardSheet";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
-export const BoardSettings = ({}) => {
+type BoardSettingsProps = {
+  boardId: string;
+};
+
+export const BoardSettings = ({ boardId }: BoardSettingsProps) => {
   const boardUser = [
     "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80",
     "https://www.goodmorningimagesdownload.com/wp-content/uploads/2020/11/Facebook-Profile-Images-73.jpg",
