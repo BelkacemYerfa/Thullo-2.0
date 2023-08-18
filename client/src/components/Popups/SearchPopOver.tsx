@@ -13,7 +13,7 @@ import { useCallback, useEffect, useState, useTransition } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useDebounce } from "use-debounce";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Icons } from "../Icons";
 import { searchForBoards } from "@/app/_actions/board";
 
@@ -22,13 +22,13 @@ export type Results = {
   items: Items;
 }[];
 
-type Items = Pick<board, "id" | "name" | "image">[];
+export type Items = Pick<board, "id" | "name" | "image">[];
 
 export const SearchPopOver = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [debouncedQuery] = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(query, 500);
   const [data, setData] = useState<Results | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -39,7 +39,6 @@ export const SearchPopOver = () => {
       startTransition(async () => {
         const results = await searchForBoards(debouncedQuery);
         setData(results);
-        console.log(data);
       });
     }
   }, [debouncedQuery]);

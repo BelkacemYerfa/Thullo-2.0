@@ -3,16 +3,15 @@ import { BoardCard } from "@/components/card/BoardCard";
 import { NavBar } from "@/components/navigation/Navbar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import client from "@/lib/prismaDb";
-import { currentUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import { Key } from "react";
 import { verifyUserAuth } from "../_actions/board";
+import { Items } from "@/components/Popups/SearchPopOver";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const user = await verifyUserAuth();
-  const userBoards = await client.board.findMany({
+  const userBoards: Items = await client.board.findMany({
     where: {
       user: user.id,
     },

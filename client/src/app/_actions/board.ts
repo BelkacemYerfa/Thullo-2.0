@@ -77,6 +77,8 @@ export async function searchForBoards(query: string) {
     orderBy: {
       createdAt: "desc",
     },
+    skip: 0,
+    take: 5,
   });
   const results: Results = [
     {

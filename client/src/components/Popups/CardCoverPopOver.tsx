@@ -17,7 +17,7 @@ import { Icons } from "../Icons";
 import { Button } from "../ui/button";
 import { searchPhotos } from "@/lib/unsplash-api/searchPhotos";
 import { ScrollArea } from "../ui/scroll-area";
-import { useDebounce } from "use-debounce";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Skeleton } from "../ui/skeleton";
 
 type SearchDataResults = {
@@ -29,7 +29,7 @@ export const CardCoverPopOver = () => {
   const [query, setQuery] = useState<string>("nature");
   const [images, setImages] = useState<string[]>([]);
   const [isPending, setIsPending] = useTransition();
-  const [value] = useDebounce(query, 500);
+  const value = useDebounce(query, 500);
   const handleSearchImage = useCallback(() => {
     setIsPending(async () => {
       /* if (!query) return;

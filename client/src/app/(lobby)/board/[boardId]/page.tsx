@@ -3,7 +3,6 @@ import { BoardDashboard } from "@/components/BoardDashboard";
 import { NavBar } from "@/components/navigation/Navbar";
 import { BoardSettings } from "@/components/settings/BoardSettings";
 import client from "@/lib/prismaDb";
-import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 type BoardPageProps = {
@@ -21,12 +20,13 @@ export async function generateMetadata({
     },
     select: {
       name: true,
+      description: true,
     },
   });
   if (!board) redirect("/");
   return {
     title: `${board.name}`,
-    description: `board ${boardId} description`,
+    description: ` ${boardId} , description: ${board.description}`,
   };
 }
 
