@@ -10,7 +10,11 @@ import {
 } from "../ui/dialog";
 import { useGenerationStore } from "@/lib/store/Store";
 
-export const AddNewListPopOver = () => {
+type AddNewListPopOverProps = {
+  boardId: string;
+};
+
+export const AddNewListPopOver = ({ boardId }: AddNewListPopOverProps) => {
   const { newList, setNewList } = useGenerationStore();
   return (
     <Dialog open={newList} onOpenChange={setNewList}>
@@ -27,7 +31,7 @@ export const AddNewListPopOver = () => {
             Create an new list for the board
           </p>
         </DialogHeader>
-        <ListCreationForm />
+        <ListCreationForm boardId={boardId} />
       </DialogContent>
     </Dialog>
   );

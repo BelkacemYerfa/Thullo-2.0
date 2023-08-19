@@ -1,11 +1,10 @@
 "use server";
 
 import client from "@/lib/prismaDb";
-import { BoardFormSchema } from "@/validation/search";
+import { BoardFormSchemaType } from "@/validation/search";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { Results } from "@/components/Popups/SearchPopOver";
 
 export const verifyUserAuth = async () => {
@@ -15,7 +14,7 @@ export const verifyUserAuth = async () => {
 };
 
 export async function addBoard(
-  data: z.infer<typeof BoardFormSchema> & {
+  data: BoardFormSchemaType & {
     Image: StoredImage | null;
   }
 ) {

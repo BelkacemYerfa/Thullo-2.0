@@ -186,7 +186,7 @@ export const DndContextProvider = ({
               );
             })}
             {provider.placeholder}
-            <AddNewListPopOver />
+            <AddNewListPopOver boardId={boardId} />
           </div>
         )}
       </Droppable>

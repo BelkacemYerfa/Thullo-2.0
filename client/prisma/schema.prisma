@@ -42,7 +42,6 @@ model List {
   boardId   String @map("boardId")
   cards     Card[]
   board     Board @relation(fields: [boardId], references: [id])
-  @@unique([boardId])
 }
 
 model Card {

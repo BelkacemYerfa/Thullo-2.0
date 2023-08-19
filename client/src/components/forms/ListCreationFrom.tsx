@@ -7,15 +7,32 @@ import { Button } from "../ui/button";
 import { cardSchema, cardSchemaType } from "@/validation/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGenerationStore } from "@/lib/store/Store";
+import { addList } from "@/app/_actions/list";
+import { useTransition } from "react";
+import { Icons } from "../Icons";
 
-export const ListCreationForm = () => {
+type ListCreationFormProps = {
+  boardId: string;
+};
+
+export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
   const { setNewList } = useGenerationStore();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<cardSchemaType>({
     resolver: zodResolver(cardSchema),
+    defaultValues: {
+      name: "",
+    },
   });
   const onSubmit = (data: cardSchemaType) => {
-    console.log(data);
-    setNewList(false);
+    startTransition(async () => {
+      try {
+        await addList({ ...data, id: boardId });
+        setNewList(false);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
   return (
     <Form {...form}>
@@ -34,9 +51,10 @@ export const ListCreationForm = () => {
         <div className="flex items-center justify-end">
           <Button
             type="submit"
-            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
-            disabled={!form.formState.isValid}
+            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] flex items-center gap-2 disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
+            disabled={isPending || !form.formState.isValid}
           >
+            {isPending && <Icons.Loader2 className="h-5 w-5 animate-spin" />}
             Add List
           </Button>
         </div>

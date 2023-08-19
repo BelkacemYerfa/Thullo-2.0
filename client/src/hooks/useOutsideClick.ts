@@ -1,9 +1,8 @@
-import { useGenerationStore } from "@/lib/store/Store";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export const useOutsideClick = <T extends HTMLElement>() => {
   const ref = useRef<T>(null);
-  const { rename, setRename } = useGenerationStore();
+  const [rename, setRename] = useState<boolean>(false);
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
       setRename(false);

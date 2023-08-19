@@ -1,5 +1,4 @@
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { ListCardsSettingsPopOver } from "../Popups/ListCardsSettingsPopOver";
 import { TodoCard } from "../card/TodoCard";
 import { CardListForm } from "../forms/CardListForm";
 import { ListNameChangeForm } from "../forms/ListNameChangeForm";
@@ -31,8 +30,7 @@ export const TasksList = ({
               className="sticky top-0 z-[4] flex items-center justify-between w-full py-2 px-1 gap-2 "
               {...dragHandleProps}
             >
-              <ListNameChangeForm title={column.title} />
-              <ListCardsSettingsPopOver id={column.id} />
+              <ListNameChangeForm title={column.title} listId={column.id} />
             </div>
             <ScrollArea className="h-full w-full flex-1 px-3 ">
               <div className="h-full ">

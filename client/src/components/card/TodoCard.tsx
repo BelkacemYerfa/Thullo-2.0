@@ -43,16 +43,15 @@ const cardBadges = [
 
 export const TodoCard = ({ task, cardId }: TodoCardProps) => {
   const { user } = useUser();
-  const img =
-    "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg";
+
   return (
     <Card>
       <CardHeader className="space-y-3 p-3">
-        {img ? (
+        {task.image ? (
           <AspectRatio ratio={3 / 2}>
             <Image
-              src={img}
-              alt="img"
+              src={task.image}
+              alt={`${task.content} image`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               loading="lazy"
