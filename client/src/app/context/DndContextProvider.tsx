@@ -7,8 +7,8 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import db, { InitialData, Column } from "./initialData";
-import { useEffect, useState } from "react";
+import { InitialData, Column } from "./initialData";
+import { useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { io } from "socket.io-client";
 
@@ -16,9 +16,13 @@ import { io } from "socket.io-client";
  */
 type DndContextProviderProps = {
   boardId: string;
+  db: InitialData;
 };
 
-export const DndContextProvider = ({ boardId }: DndContextProviderProps) => {
+export const DndContextProvider = ({
+  boardId,
+  db,
+}: DndContextProviderProps) => {
   const [initialData, setInitialData] = useState<InitialData>(db);
 
   const [cachedColumnOrder, setCachedColumnOrder] = useState<string[]>(

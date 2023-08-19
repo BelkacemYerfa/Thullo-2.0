@@ -8,10 +8,17 @@ import { Separator } from "../ui/separator";
 import { ListDeletePopOver } from "./ListDeletePopOver";
 import { useState } from "react";
 
-export const ListCardsSettingsPopOver = () => {
+type ListCardsSettingsPopOverProps = {
+  id: string;
+};
+
+export const ListCardsSettingsPopOver = ({
+  id,
+}: ListCardsSettingsPopOverProps) => {
   const { rename, setRename } = useGenerationStore();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleRename = () => {
+    console.log(id);
     setRename(true);
     setIsOpen(false);
   };

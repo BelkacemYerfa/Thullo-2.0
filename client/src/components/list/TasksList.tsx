@@ -28,11 +28,11 @@ export const TasksList = ({
         >
           <div className="relative h-full flex flex-col gap-y-3">
             <div
-              className="sticky top-0 z-[4] flex items-center justify-between w-full py-2 px-1"
+              className="sticky top-0 z-[4] flex items-center justify-between w-full py-2 px-1 gap-2 "
               {...dragHandleProps}
             >
-              <ListNameChangeForm />
-              <ListCardsSettingsPopOver />
+              <ListNameChangeForm title={column.title} />
+              <ListCardsSettingsPopOver id={column.id} />
             </div>
             <ScrollArea className="h-full w-full flex-1 px-3 ">
               <div className="h-full ">

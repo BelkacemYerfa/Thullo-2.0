@@ -7,11 +7,16 @@ import { Form, FormField, FormItem } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { listNameSchema, listNameSchemaType } from "@/validation/list-name";
-import { useState } from "react";
+import { useState, LegacyRef, useRef, useEffect } from "react";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 
-export const ListNameChangeForm = () => {
-  const [name, setName] = useState<string>("Tasks");
-  const { rename, setRename } = useGenerationStore();
+type ListNameChangeFormProps = {
+  title: string;
+};
+
+export const ListNameChangeForm = ({ title }: ListNameChangeFormProps) => {
+  const [name, setName] = useState<string>(title);
+  const { ref, rename, setRename } = useOutsideClick<HTMLFormElement>();
   const form = useForm<listNameSchemaType>({
     resolver: zodResolver(listNameSchema),
   });
@@ -19,9 +24,11 @@ export const ListNameChangeForm = () => {
     setName(data.name);
     setRename(false);
   };
+
   return rename ? (
     <Form {...form}>
       <form
+        ref={ref}
         className="flex items-center gap-x-2 w-full"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
@@ -34,15 +41,6 @@ export const ListNameChangeForm = () => {
             </FormItem>
           )}
         />
-        <button
-          disabled={!name}
-          type="submit"
-          className="text-[#219653]"
-          aria-label="submit rename form"
-        >
-          <Icons.Check className="h-5 w-5" />
-          {""}
-        </button>
       </form>
     </Form>
   ) : (
