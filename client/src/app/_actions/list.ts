@@ -48,5 +48,4 @@ export async function updateListName(
       name: data.name,
     },
   });
-  revalidatePath(`/board/${data.id}`);
 }

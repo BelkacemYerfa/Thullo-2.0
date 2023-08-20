@@ -11,6 +11,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
 
 model Board {
   id        String   @id @default(cuid()) @map("_id")
@@ -18,6 +27,7 @@ model Board {
   updatedAt DateTime @updatedAt
   name     String
   image   Image[]
+  visibility Visibility @default(PUBLIC)
   description String
   user      String @map("userId")
   users     User[]

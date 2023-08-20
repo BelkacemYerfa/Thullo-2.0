@@ -11,18 +11,39 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { Icons } from "../Icons";
+import { experimental_useOptimistic as useOptimistic } from "react";
+import { updateBoardDescription } from "@/app/_actions/board";
 
-export const BoardDescriptionForm = () => {
-  const [value, setValue] = useState<string>("");
+type BoardDescriptionFormProps = {
+  description: string;
+  boardId: string;
+};
+
+export const BoardDescriptionForm = ({
+  description,
+  boardId,
+}: BoardDescriptionFormProps) => {
+  const [value, setValue] = useState<string>(description);
+  const [optimisticData, setOptimisticData] = useOptimistic({
+    description: value,
+    pending: false,
+  });
   const [isDescriptionFormOpen, setIsDescriptionFormOpen] =
-    useState<boolean>(false);
+    useState<boolean>(true);
   const form = useForm<boardDescriptionSchemaType>({
     resolver: zodResolver(boardDescriptionSchema),
+    defaultValues: {
+      description: description,
+    },
   });
-  const onSubmit = (data: boardDescriptionSchemaType) => {
-    const { description } = data;
-    setValue(description ?? "");
+  const onSubmit = async (data: boardDescriptionSchemaType) => {
+    setOptimisticData({
+      description: data.description,
+      pending: true,
+    });
     setIsDescriptionFormOpen(true);
+    await updateBoardDescription({ ...data, id: boardId });
+    setValue(data.description);
   };
   return (
     <div className="space-y-2 ">
@@ -34,7 +55,7 @@ export const BoardDescriptionForm = () => {
         {isDescriptionFormOpen ? (
           <Button
             className=" flex items-center gap-x-2 px-3 py-1 border border-[#BDBDBD] border-solid rounded-lg bg-transparent hover:bg-transparent text-[#828282]"
-            disabled={!isDescriptionFormOpen}
+            disabled={!isDescriptionFormOpen || optimisticData.pending}
             onClick={() => setIsDescriptionFormOpen(!isDescriptionFormOpen)}
           >
             <Icons.Pencil className="h-4 w-4" />
@@ -43,7 +64,13 @@ export const BoardDescriptionForm = () => {
         ) : null}
       </div>
       {value && isDescriptionFormOpen ? (
-        <p className="max-w-full break-all">{form.getValues("description")}</p>
+        <p
+          className={`max-w-full break-all ${
+            optimisticData.pending ? "opacity-50" : ""
+          }`}
+        >
+          {optimisticData.description}
+        </p>
       ) : (
         <Form {...form}>
           <form

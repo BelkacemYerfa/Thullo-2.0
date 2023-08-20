@@ -13,6 +13,7 @@ import { ListDeletePopOver } from "../Popups/ListDeletePopOver";
 import { useState } from "react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { updateListName } from "@/app/_actions/list";
+import { experimental_useOptimistic as useOptimistic } from "react";
 
 type ListNameChangeFormProps = {
   title: string;
@@ -24,6 +25,10 @@ export const ListNameChangeForm = ({
   listId,
 }: ListNameChangeFormProps) => {
   const [name, setName] = useState<string>(title);
+  const [optimisticData, setOptimisticData] = useOptimistic({
+    name: name,
+    pending: false,
+  });
   const { ref, rename, setRename } = useOutsideClick<HTMLFormElement>();
   const form = useForm<listNameSchemaType>({
     resolver: zodResolver(listNameSchema),
@@ -34,9 +39,13 @@ export const ListNameChangeForm = ({
     setIsOpen(false);
   };
   const onSubmit = async (data: listNameSchemaType) => {
-    setName(data.name);
-    await updateListName({ ...data, id: listId });
+    setOptimisticData({
+      name: data.name,
+      pending: true,
+    });
     setRename(false);
+    await updateListName({ ...data, id: listId });
+    setName(data.name);
   };
 
   return rename ? (
@@ -52,7 +61,11 @@ export const ListNameChangeForm = ({
             name="name"
             render={({ field }) => (
               <FormItem className="w-full">
-                <Input placeholder={name} {...field} className="w-full " />
+                <Input
+                  placeholder={optimisticData.name}
+                  className="w-full "
+                  {...field}
+                />
               </FormItem>
             )}
           />
@@ -67,7 +80,13 @@ export const ListNameChangeForm = ({
     </>
   ) : (
     <>
-      <h3 className="text-sm text-[#333333] font-medium ">{name}</h3>
+      <h3
+        className={`text-sm text-[#333333] font-medium ${
+          optimisticData.pending ? "opacity-50" : ""
+        } `}
+      >
+        {optimisticData.name}
+      </h3>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger aria-label="open list settings">
           <Icons.MoreHorizontal className="h-5 w-5" />

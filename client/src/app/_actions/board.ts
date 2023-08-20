@@ -6,6 +6,7 @@ import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Results } from "@/components/Popups/SearchPopOver";
+import { boardDescriptionSchemaType } from "@/validation/board-description";
 
 export const verifyUserAuth = async () => {
   const user = await currentUser();
@@ -86,4 +87,26 @@ export async function searchForBoards(query: string) {
     },
   ];
   return results;
+}
+
+export async function deleteBoard(id: string) {
+  await client.board.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath("/");
+}
+
+export async function updateBoardDescription(
+  data: boardDescriptionSchemaType & { id: string }
+) {
+  await client.board.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      description: data.description,
+    },
+  });
 }

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Icons } from "../Icons";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
@@ -15,13 +14,17 @@ import { currentUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 type BoardSheetProps = {
-  boardUsers: string[];
-  boardTitle: string;
+  users: string[];
+  title: string;
+  description: string;
+  boardId: string;
 };
 
 export const BoardSheet = async ({
-  boardUsers,
-  boardTitle,
+  users,
+  title,
+  description,
+  boardId,
 }: BoardSheetProps) => {
   const user = await currentUser();
   return (
@@ -35,7 +38,7 @@ export const BoardSheet = async ({
       <SheetContent className="w-full px-2 py-6 flex flex-col gap-y-2">
         <SheetHeader className="px-3">
           <SheetTitle className="text-sm text-[#333333] font-semibold">
-            {boardTitle}
+            {title}
           </SheetTitle>
         </SheetHeader>
         <div className="px-3">
@@ -74,7 +77,10 @@ export const BoardSheet = async ({
                   </div>
                 </div>
               </div>
-              <BoardDescriptionForm />
+              <BoardDescriptionForm
+                boardId={boardId}
+                description={description}
+              />
               <div className="space-y-5">
                 <div className="text-[#BDBDBD] flex items-center gap-x-[6px]">
                   <Icons.Users2 className="h-4 w-4" />
