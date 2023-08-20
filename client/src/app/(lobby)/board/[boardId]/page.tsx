@@ -36,13 +36,13 @@ export default async function BoardPage({
   const user = await verifyUserAuth();
   const board = await client.board.findUnique({
     where: {
-      user: user.id,
       id: boardId,
     },
     select: {
       name: true,
     },
   });
+  if (!board) redirect("/");
   return (
     <main className="h-screen w-full space-y-6 flex flex-col">
       <section className="w-full space-y-5">

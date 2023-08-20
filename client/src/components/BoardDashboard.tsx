@@ -1,4 +1,3 @@
-import { verifyUserAuth } from "@/app/_actions/board";
 import { DndContextProvider } from "@/app/context/DndContextProvider";
 import client from "@/lib/prismaDb";
 
@@ -13,11 +12,8 @@ type Lists = Pick<list, "id" | "name"> & {
 type Cards = Pick<card, "id" | "name">[];
 
 export const BoardDashboard = async ({ boardId }: BoardDashboardProps) => {
-  const user = await verifyUserAuth();
-
   const board = await client.board.findUnique({
     where: {
-      user: user.id,
       id: boardId,
     },
     include: {

@@ -1,38 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Icons } from "../Icons";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+import { updateBoardVisibility } from "@/app/_actions/board";
+import { Visibility } from "@prisma/client";
 
 const BoardAccessOptions = [
   {
-    access: "Public",
+    access: Visibility.PUBLIC,
     description: "Anyone on the internet can see this.",
     icon: "Globe",
   },
   {
-    access: "Private",
+    access: Visibility.PRIVATE,
     description: "Only board members can see this",
     icon: "Lock",
   },
 ] satisfies {
-  access: string;
+  access: Visibility;
   description: string;
   icon: keyof typeof Icons;
 }[];
 
-export const BoardAccessPopOver = () => {
-  const [boardAccess, setBoardAccess] = useState<string>("Public");
+type BoardAccessPopOverProps = {
+  boardId: string;
+  visibility: Visibility;
+};
+
+export const BoardAccessPopOver = ({
+  boardId,
+  visibility,
+}: BoardAccessPopOverProps) => {
+  const [boardAccess, setBoardAccess] = useState<Visibility>(visibility);
+  const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const handleAccess = (access: Visibility) => {
+    startTransition(async () => {
+      await updateBoardVisibility({ id: boardId, visibility: access });
+      setBoardAccess(access);
+    });
+    setIsOpen(false);
+  };
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger className="flex items-center gap-x-[10px] text-[#828282] bg-[#F2F2F2] rounded-lg text-sm py-3 px-4 ">
-        {boardAccess === "Public" ? (
-          <Icons.Globe className="h-5 w-5" />
+      <PopoverTrigger
+        className="flex items-center gap-x-[10px] text-[#828282] bg-[#F2F2F2] rounded-lg text-sm py-3 px-4 disabled:cursor-not-allowed disabled:opacity-80 "
+        disabled={isPending}
+      >
+        {boardAccess === Visibility.PUBLIC ? (
+          <Icons.Globe className="h-4 w-4" />
         ) : (
-          <Icons.Lock className="h-5 w-5" />
+          <Icons.Lock className="h-4 w-4" />
         )}
-        {boardAccess}
+        {boardAccess === Visibility.PUBLIC ? "Public" : "Private"}
       </PopoverTrigger>
       <PopoverContent className="w-72 rounded-xl p-3 space-y-4" align="start">
         <div className="space-y-2">
@@ -52,15 +73,12 @@ export const BoardAccessPopOver = () => {
                     ? "bg-[#F2F2F2]"
                     : "bg-white hover:bg-[#F2F2F2]"
                 } `}
-                onClick={() => {
-                  setBoardAccess(access);
-                  setIsOpen(false);
-                }}
+                onClick={() => handleAccess(access)}
               >
-                <div className="flex items-center space-x-2">
-                  <Icon className="h-5 w-5" />
-                  <h3 className="text-sm text-[#4F4F4F] font-medium">
-                    {access}
+                <div className="flex items-center space-x-2 text-[#4F4F4F]">
+                  <Icon className="h-4 w-4" />
+                  <h3 className="text-sm font-medium">
+                    {access === Visibility.PUBLIC ? "Public" : "Private"}
                   </h3>
                 </div>
                 <p className="text-[#828282] text-xs">{description}</p>

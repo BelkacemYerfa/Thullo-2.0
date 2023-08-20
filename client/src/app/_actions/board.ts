@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Results } from "@/components/Popups/SearchPopOver";
 import { boardDescriptionSchemaType } from "@/validation/board-description";
+import { Visibility } from "@prisma/client";
 
 export const verifyUserAuth = async () => {
   const user = await currentUser();
@@ -107,6 +108,20 @@ export async function updateBoardDescription(
     },
     data: {
       description: data.description,
+    },
+  });
+}
+
+export async function updateBoardVisibility(data: {
+  id: string;
+  visibility: Visibility;
+}) {
+  await client.board.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      visibility: data.visibility,
     },
   });
 }

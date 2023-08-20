@@ -23,13 +23,14 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
       users: true,
       name: true,
       description: true,
+      visibility: true,
     },
   });
   console.log(board);
   return (
     <section className="flex items-center justify-between w-full">
       <div className="flex items-center gap-x-5">
-        <BoardAccessPopOver />
+        <BoardAccessPopOver boardId={boardId} visibility={board.visibility} />
         <div className="flex items-center gap-x-4">
           <div className="hidden sm:flex items-center gap-x-4">
             {boardUser.slice(0, 4).map((user, index) =>
