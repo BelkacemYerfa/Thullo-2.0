@@ -26,7 +26,6 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
       visibility: true,
     },
   });
-  console.log(board);
   return (
     <section className="flex items-center justify-between w-full">
       <div className="flex items-center gap-x-5">

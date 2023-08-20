@@ -20,6 +20,7 @@ type card = {
   user: string;
   image: string;
   comments: comment[];
+  list: string;
 };
 
 type comment = {

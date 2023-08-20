@@ -21,7 +21,6 @@ export async function addBoard(
   }
 ) {
   const user = await verifyUserAuth();
-
   await client.board.create({
     data: {
       name: data.title,

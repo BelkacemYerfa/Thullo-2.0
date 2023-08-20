@@ -1,6 +1,7 @@
+"use client";
+
 import { Drawer } from "vaul";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { CardDescriptionForm } from "../forms/CardDescriptionForm";
 import { ScrollArea } from "../ui/scroll-area";
@@ -12,6 +13,10 @@ import { CardCoverPopOver } from "./CardCoverPopOver";
 import { CardLabelsPopOver } from "./CardLabelsPopOver";
 import { Button } from "../ui/button";
 import { AspectRatio } from "../ui/aspect-ratio";
+import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { getCardInfoWithList } from "@/app/_actions/card";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -23,6 +28,18 @@ export const CardDetailedPopOver = ({
   cardId,
 }: CardDetailedPopOverProps) => {
   const pathname = usePathname();
+  const { data: card } = useQuery(["card", cardId], async () => {
+    return await getCardInfoWithList(cardId);
+  });
+  console.log(card);
+  const {
+    ref,
+    rename: isOpen,
+    setRename: setIsOpen,
+  } = useOutsideClick<HTMLDivElement>();
+  const handleOpen = () => {
+    setIsOpen(false);
+  };
   return (
     <Drawer.Root>
       <Link href={`?cardId=${cardId}`}>
@@ -41,18 +58,18 @@ export const CardDetailedPopOver = ({
                 </Link>
               </div>
               <div className=" max-w-[95%] mx-auto max-h-full space-y-6 mt-2 ">
-                <AspectRatio ratio={16 / 5}>
-                  <Image
-                    src={
-                      "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                    }
-                    alt="pic"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className=" rounded-xl object-cover "
-                    quality={100}
-                  />
-                </AspectRatio>
+                {card?.image ? (
+                  <AspectRatio ratio={16 / 5}>
+                    <Image
+                      src={card.image}
+                      alt={`${card.name} picture `}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className=" rounded-xl object-cover "
+                      quality={100}
+                    />
+                  </AspectRatio>
+                ) : null}
                 <div className="flex flex-col-reverse md:flex-row gap-5">
                   <div className=" basis-full md:basis-3/4 space-y-5 ">
                     <div className="space-y-2">
@@ -61,7 +78,7 @@ export const CardDetailedPopOver = ({
                       </Drawer.Title>
                       <p className="text-xs text-[#BDBDBD] font-semibold">
                         In list{" "}
-                        <span className="text-[#333333]">In Progress</span>
+                        <span className="text-[#333333]">{card.list.name}</span>
                       </p>
                     </div>
                     <CardDescriptionForm />

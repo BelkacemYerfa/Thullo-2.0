@@ -49,7 +49,7 @@ export const TasksList = ({
                   </Draggable>
                 ))}
                 {provided.placeholder}
-                <CardListForm />
+                <CardListForm listId={column.id} />
               </div>
             </ScrollArea>
           </div>

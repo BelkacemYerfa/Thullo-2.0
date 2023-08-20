@@ -25,7 +25,11 @@ export const BoardDescriptionForm = ({
   boardId,
 }: BoardDescriptionFormProps) => {
   const [isPending, startTransition] = useTransition();
-  const { ref, rename, setRename } = useOutsideClick<HTMLFormElement>();
+  const {
+    ref,
+    rename: isDescriptionOpen,
+    setRename: setIsDescriptionOpen,
+  } = useOutsideClick<HTMLFormElement>();
   const form = useForm<boardDescriptionSchemaType>({
     resolver: zodResolver(boardDescriptionSchema),
     defaultValues: {
@@ -36,7 +40,7 @@ export const BoardDescriptionForm = ({
     startTransition(async () => {
       try {
         await updateBoardDescription({ ...data, id: boardId });
-        setRename(!rename);
+        setIsDescriptionOpen(!isDescriptionOpen);
       } catch (error) {
         console.log(error);
       }
@@ -49,18 +53,18 @@ export const BoardDescriptionForm = ({
           <Icons.File className="h-4 w-4" />
           <h3 className="text-xs font-semibold">Description</h3>
         </div>
-        {!rename ? (
+        {!isDescriptionOpen ? (
           <Button
             className=" flex items-center gap-x-2 px-3 py-1 border border-[#BDBDBD] border-solid rounded-lg bg-transparent hover:bg-transparent text-[#828282]"
             disabled={isPending}
-            onClick={() => setRename(!rename)}
+            onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
           >
             <Icons.Pencil className="h-4 w-4" />
             Edit
           </Button>
         ) : null}
       </div>
-      {rename ? (
+      {isDescriptionOpen ? (
         <Form {...form}>
           <form
             ref={ref}
@@ -91,7 +95,7 @@ export const BoardDescriptionForm = ({
                 type="button"
                 className="rounded-xl text-[#828282] bg-transparent hover:bg-transparent py-1 px-3"
                 disabled={!description || isPending}
-                onClick={() => setRename(false)}
+                onClick={() => setIsDescriptionOpen(false)}
               >
                 Cancel
               </Button>

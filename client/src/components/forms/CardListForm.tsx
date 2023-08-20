@@ -5,23 +5,41 @@ import { Icons } from "../Icons";
 import { Button } from "../ui/button";
 import { Form, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
-import { useRef, useState } from "react";
+import { useRef, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cardSchema, cardSchemaType } from "@/validation/card";
 import { motion, AnimatePresence } from "framer-motion";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { addCard } from "@/app/_actions/card";
 
-export const CardListForm = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const formRef = useRef<HTMLFormElement>(null);
+type CardListFormProps = {
+  listId: string;
+};
+
+export const CardListForm = ({ listId }: CardListFormProps) => {
   const btnRef = useRef<HTMLButtonElement>(null);
-
+  const [isPending, startTransition] = useTransition();
+  const {
+    ref,
+    rename: isOpen,
+    setRename: setIsOpen,
+  } = useOutsideClick<HTMLFormElement>();
   const form = useForm<cardSchemaType>({
     resolver: zodResolver(cardSchema),
+    defaultValues: {
+      name: "",
+    },
   });
   const onSubmit = (data: cardSchemaType) => {
-    console.log(data);
-    setIsOpen(false);
+    startTransition(async () => {
+      try {
+        await addCard({ ...data, listId });
+        setIsOpen(false);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
   const handleOpen = () => {
     setIsOpen(true);
@@ -61,7 +79,7 @@ export const CardListForm = () => {
           <Form {...form}>
             <motion.form
               layout="size"
-              ref={formRef}
+              ref={ref}
               variants={formVariants}
               initial="closed"
               animate="open"
@@ -82,14 +100,17 @@ export const CardListForm = () => {
                   </FormItem>
                 )}
               />
-              <div className="space-x-1">
+              <div className="flex items-center gap-2">
                 <Button
                   type="submit"
                   className={cn(
-                    "rounded-lg text-white py-1 px-3 bg-[#219653] hover:bg-[#219653] w-fit"
+                    "flex items-center gap-2 rounded-xl bg-[#219653] hover:bg-[#219653] py-1 px-3 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm"
                   )}
-                  disabled={!form.formState.isValid}
+                  disabled={isPending || !form.formState.isValid}
                 >
+                  {isPending ? (
+                    <Icons.Loader2 className="h-4 w-4 animate-spin" />
+                  ) : null}
                   Save
                 </Button>
                 <Button
@@ -110,9 +131,9 @@ export const CardListForm = () => {
       <Button
         ref={btnRef}
         className={cn(
-          `bottom-0 flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-full rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed ${
-            isOpen ? "static mt-3" : "sticky"
-          }`
+          `${
+            isOpen ? "static mt-3" : "sticky bottom-0"
+          } flex items-center justify-between text-sm text-[#2F80ED] font-medium py-2 px-3 bg-[#DAE4FD] w-full rounded-lg hover:bg-[#DAE4FD] disabled:cursor-not-allowed `
         )}
         disabled={isOpen}
         onClick={handleOpen}
