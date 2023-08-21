@@ -12,11 +12,12 @@ import { CardAssignedMembers } from "./AddUserCardActions";
 import { CardCoverPopOver } from "./CardCoverPopOver";
 import { CardLabelsPopOver } from "./CardLabelsPopOver";
 import { Button } from "../ui/button";
+import { useEffect, useTransition } from "react";
 import { AspectRatio } from "../ui/aspect-ratio";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { getCardInfoWithList } from "@/app/_actions/card";
+import { deleteCardMutation, getCardInfoWithList } from "@/app/_actions/card";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -28,26 +29,55 @@ export const CardDetailedPopOver = ({
   cardId,
 }: CardDetailedPopOverProps) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
   const { data: card } = useQuery(["card", cardId], async () => {
     return await getCardInfoWithList(cardId);
   });
   console.log(card);
   const {
-    ref,
+    ref: containerRef,
     rename: isOpen,
     setRename: setIsOpen,
   } = useOutsideClick<HTMLDivElement>();
   const handleOpen = () => {
-    setIsOpen(false);
+    setIsOpen(!isOpen);
+    const currentPath = new URLSearchParams(Array.from(searchParams.entries()));
+    if (isOpen) currentPath.delete("cardId");
+    else currentPath.set("cardId", cardId);
+    router.push(`${pathname}?${currentPath.toString()}`);
   };
+  const deleteCard = () => {
+    startTransition(async () => {
+      try {
+        await deleteCardMutation(cardId);
+        setIsOpen(false);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+  useEffect(() => {
+    if (searchParams.has("cardId")) {
+      const cardId = searchParams.get("cardId");
+      if (cardId) {
+        if (cardId !== cardId) setIsOpen(true);
+        else setIsOpen(true);
+      }
+    }
+  }, []);
   return (
-    <Drawer.Root>
+    <Drawer.Root open={isOpen} onOpenChange={handleOpen}>
       <Link href={`?cardId=${cardId}`}>
         <Drawer.Trigger className="cursor-pointer">{taskTitle}</Drawer.Trigger>
       </Link>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed z-[5] inset-0 bg-black/40 " />
-        <Drawer.Content className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden ">
+        <Drawer.Content
+          ref={containerRef}
+          className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden "
+        >
           <ScrollArea className="h-full w-full ">
             <div className=" h-full pb-4 bg-white w-full md:w-3/5 m-auto shadow-outline-black ">
               <div className="sticky top-0 flex justify-center bg-white py-4 shadow-outline-black z-[5] ">
@@ -78,10 +108,15 @@ export const CardDetailedPopOver = ({
                       </Drawer.Title>
                       <p className="text-xs text-[#BDBDBD] font-semibold">
                         In list{" "}
-                        <span className="text-[#333333]">{card.list.name}</span>
+                        <span className="text-[#333333]">
+                          {card?.list.name}
+                        </span>
                       </p>
                     </div>
-                    <CardDescriptionForm />
+                    <CardDescriptionForm
+                      cardId={cardId}
+                      description={card?.description}
+                    />
                     <div className="space-y-4">
                       <CardCommentForm />
                       <CommentsList />
@@ -99,10 +134,15 @@ export const CardDetailedPopOver = ({
                         <CardCoverPopOver />
                         <Button
                           variant={"destructive"}
-                          className="flex justify-start items-center gap-x-[10px] cursor-default duration-200 w-fit sm:w-full ease-linear rounded-lg text-sm py-3 px-4 bg-[#EB5757] text-white "
-                          onClick={() => console.log("remove card")}
+                          className="flex justify-start items-center gap-x-[10px] duration-200 w-fit sm:w-full ease-linear rounded-lg text-sm py-3 px-4 bg-[#EB5757] text-white cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                          disabled={isPending}
+                          onClick={deleteCard}
                         >
-                          <Icons.Trash2 className="h-5 w-5" />
+                          {isPending ? (
+                            <Icons.Loader2 className="h-5 w-5 animate-spin" />
+                          ) : (
+                            <Icons.Trash2 className="h-5 w-5" />
+                          )}
                           <span className="hidden sm:flex">Delete</span>
                         </Button>
                       </div>

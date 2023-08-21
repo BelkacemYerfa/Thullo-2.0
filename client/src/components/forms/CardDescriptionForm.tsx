@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Icons } from "../Icons";
 import { Button } from "../ui/button";
 import { Form, FormField, FormItem } from "../ui/form";
@@ -11,19 +11,37 @@ import {
   boardDescriptionSchemaType,
 } from "@/validation/board-description";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { updateCardDescription } from "@/app/_actions/card";
 
-export const CardDescriptionForm = () => {
-  const [value, setValue] = useState<string>("");
-  const [isDescriptionFormOpen, setIsDescriptionFormOpen] =
-    useState<boolean>(false);
+type CardDescriptionFormProps = {
+  description: string | undefined;
+  cardId: string;
+};
+
+export const CardDescriptionForm = ({
+  description,
+  cardId,
+}: CardDescriptionFormProps) => {
+  const {
+    ref: formRef,
+    rename: isDescriptionFormOpen,
+    setRename: setIsDescriptionFormOpen,
+  } = useOutsideClick<HTMLFormElement>();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<boardDescriptionSchemaType>({
     resolver: zodResolver(boardDescriptionSchema),
+    defaultValues: { description },
   });
   const onSubmit = (data: boardDescriptionSchemaType) => {
-    console.log(data);
-    console.log("hello");
-    setValue(data.description ?? "");
-    setIsDescriptionFormOpen(true);
+    startTransition(async () => {
+      try {
+        await updateCardDescription({ ...data, cardId });
+        setIsDescriptionFormOpen(!isDescriptionFormOpen);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
   return (
     <div className="space-y-3">
@@ -32,9 +50,10 @@ export const CardDescriptionForm = () => {
           <Icons.File className="h-4 w-4" />
           <h3 className="text-xs font-semibold">Description</h3>
         </div>
-        {isDescriptionFormOpen ? (
+        {!isDescriptionFormOpen ? (
           <Button
-            className=" flex items-center gap-x-2 px-3 py-1 border border-[#BDBDBD] border-solid rounded-lg bg-transparent hover:bg-transparent text-[#828282]"
+            size={"sm"}
+            className=" flex items-center gap-x-2 py-1 border border-[#BDBDBD] border-solid rounded-xl bg-transparent hover:bg-transparent text-[#828282]"
             onClick={() => setIsDescriptionFormOpen(!isDescriptionFormOpen)}
           >
             <Icons.Pencil className="h-4 w-4" />
@@ -43,13 +62,12 @@ export const CardDescriptionForm = () => {
         ) : null}
       </div>
       <>
-        {value && isDescriptionFormOpen ? (
-          <p className="max-w-full break-all">
-            {form.getValues("description")}
-          </p>
+        {!isDescriptionFormOpen ? (
+          <p className="max-w-full break-all">{description}</p>
         ) : (
           <Form {...form}>
             <form
+              ref={formRef}
               className="grid space-y-2 max-w-[97%] m-auto"
               onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
             >
@@ -62,19 +80,25 @@ export const CardDescriptionForm = () => {
                   </FormItem>
                 )}
               />
-              <div className="space-x-2">
+              <div className="flex items-center gap-2 ">
                 <Button
                   type="submit"
-                  className="rounded-xl bg-[#219653] hover:bg-[#219653] py-1 px-3 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm"
-                  disabled={!form.formState.isValid}
+                  size={"sm"}
+                  className="flex items-center gap-2 rounded-xl bg-[#219653] hover:bg-[#219653] py-1 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm"
+                  disabled={isPending || !form.formState.isValid}
                 >
+                  {isPending ? (
+                    <Icons.Loader2 className="h-4 w-4 animate-spin" />
+                  ) : null}
                   Save
                 </Button>
                 <Button
                   type="button"
                   className="rounded-xl text-[#828282] bg-transparent hover:bg-transparent py-1 px-3"
-                  disabled={!value}
-                  onClick={() => setIsDescriptionFormOpen(true)}
+                  disabled={!description || isPending}
+                  onClick={() =>
+                    setIsDescriptionFormOpen(!isDescriptionFormOpen)
+                  }
                 >
                   Cancel
                 </Button>

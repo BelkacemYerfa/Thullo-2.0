@@ -4,6 +4,7 @@ import client from "@/lib/prismaDb";
 import { cardSchemaType } from "@/validation/card";
 import { verifyUserAuth } from "./board";
 import { revalidatePath } from "next/cache";
+import { boardDescriptionSchemaType } from "@/validation/board-description";
 
 export async function addCard(
   Info: cardSchemaType & {
@@ -33,12 +34,19 @@ export async function addCard(
   revalidatePath(`/board/${list.boardId}`);
 }
 
-export async function deleteCard(id: string) {
-  await client.card.delete({
+export async function deleteCardMutation(cardId: string) {
+  const boardId = await getBoardBasedOnCard(cardId);
+  await client.comments.deleteMany({
     where: {
-      id,
+      cardId: cardId,
     },
   });
+  await client.card.delete({
+    where: {
+      id: cardId,
+    },
+  });
+  revalidatePath(`/board/${boardId}`);
 }
 
 //for the update of the info of the card
@@ -53,7 +61,7 @@ export async function updateCardName() {
   });
 }
 
-export async function getCardInfoWithList(cardId: string) {
+export async function getCardInfoWithList(cardId: string): Promise<card> {
   const card = await client.card.findFirst({
     where: {
       id: cardId,
@@ -82,4 +90,43 @@ export async function getCardInfoWithList(cardId: string) {
     ...card,
     list,
   };
+}
+
+export async function getBoardBasedOnCard(cardId: string) {
+  const card = await client.card.findFirst({
+    where: {
+      id: cardId,
+    },
+  });
+  if (!card) throw new Error("Card not found");
+  const list = await client.list.findFirst({
+    where: {
+      id: card.listId,
+    },
+  });
+  if (!list) throw new Error("List not found");
+  const board = await client.board.findFirst({
+    where: {
+      id: list.boardId,
+    },
+  });
+  if (!board) throw new Error("Board not found");
+  return board.id;
+}
+
+export async function updateCardDescription(
+  data: boardDescriptionSchemaType & {
+    cardId: string;
+  }
+) {
+  const boardId = await getBoardBasedOnCard(data.cardId);
+  await client.card.update({
+    where: {
+      id: data.cardId,
+    },
+    data: {
+      description: data.description,
+    },
+  });
+  revalidatePath(`/board/${boardId}?cardId=${data.cardId}`);
 }

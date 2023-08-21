@@ -11,6 +11,8 @@ type BoardPageProps = {
   };
 };
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params: { boardId },
 }: BoardPageProps) {

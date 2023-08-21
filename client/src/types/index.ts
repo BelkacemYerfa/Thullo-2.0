@@ -19,8 +19,8 @@ type card = {
   description: string;
   user: string;
   image: string;
-  comments: comment[];
-  list: string;
+  comments: comment[] | null;
+  list: Pick<list, "name">;
 };
 
 type comment = {
