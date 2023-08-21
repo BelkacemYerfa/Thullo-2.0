@@ -34,3 +34,18 @@ type images = {
   fileKey: string;
   fileUrl: string;
 };
+
+type User = {
+  id: string;
+  name: string;
+  image: string;
+  boardId: string;
+  commentId: string;
+};
+
+type comments = {
+  id: string;
+  text: string;
+  createdAt: string;
+  user: Pick<User, "name" | "image" | "id">;
+};

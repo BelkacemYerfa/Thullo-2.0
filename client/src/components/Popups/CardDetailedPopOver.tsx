@@ -119,7 +119,7 @@ export const CardDetailedPopOver = ({
                     />
                     <div className="space-y-4">
                       <CardCommentForm />
-                      <CommentsList />
+                      <CommentsList cardId={cardId} />
                     </div>
                   </div>
                   <div className="basis-full md:basis-1/4 space-y-2">

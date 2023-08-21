@@ -41,12 +41,6 @@ export async function addBoard(
               description: "Example Card Description",
               user: user.id,
               image: "",
-              comments: {
-                create: {
-                  text: "Example Comment",
-                  user: user.id,
-                },
-              },
             },
           },
         },

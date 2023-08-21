@@ -130,3 +130,67 @@ export async function updateCardDescription(
   });
   revalidatePath(`/board/${boardId}?cardId=${data.cardId}`);
 }
+
+//comments section
+
+export async function getComments(cardId: string): Promise<comments[]> {
+  return await client.comments.findMany({
+    where: {
+      cardId,
+    },
+    select: {
+      user: {
+        select: {
+          name: true,
+          image: true,
+          id: true,
+        },
+      },
+      text: true,
+      id: true,
+      createdAt: true,
+    },
+  });
+}
+
+export async function addComment(
+  data: boardDescriptionSchemaType & {
+    cardId: string;
+  }
+) {
+  const user = await verifyUserAuth();
+  const boardId = await getBoardBasedOnCard(data.cardId);
+  const comment = await client.comments.create({
+    data: {
+      text: data.description,
+      user: {
+        create: {
+          id: user.id,
+          name:
+            user.username ?? user.emailAddresses[0]?.emailAddress.split("@")[0],
+          email: user.emailAddresses[0]?.emailAddress,
+          image: user.imageUrl ?? "",
+          boardId: boardId,
+        },
+      },
+      cardId: data.cardId,
+    },
+  });
+  console.log(comment);
+  revalidatePath(`/board/${boardId}?cardId=${data.cardId}`);
+}
+
+export async function deleteComment(commentId: string, cardId: string) {
+  const boardId = await getBoardBasedOnCard(cardId);
+  await client.user.delete({
+    where: {
+      commentId,
+    },
+  });
+  await client.comments.delete({
+    where: {
+      id: commentId,
+    },
+  });
+  revalidatePath(`/board/${boardId}`);
+}
