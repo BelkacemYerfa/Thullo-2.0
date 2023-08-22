@@ -75,8 +75,11 @@ export const LabelCreationForm = () => {
                 >
                   <input
                     type="radio"
-                    className="opacity-0 w-full h-full cursor-pointer checked:border-black border-solid border-2 checked:border-opacity-100 "
+                    className="opacity-0 w-full h-full cursor-pointer border-solid border-2 checked:border-opacity-100 "
                     {...field}
+                    onSelect={() => {
+                      console.log(color);
+                    }}
                     value={color}
                   />
                 </label>

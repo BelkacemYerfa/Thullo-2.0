@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Icons } from "../Icons";
 import { LabelCreationForm } from "../forms/LabelCreationForm";
 import { Button } from "../ui/button";
@@ -6,6 +7,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+
+interface CardLabelsPopOverProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const CardLabelsPopOver = () => {
   return (

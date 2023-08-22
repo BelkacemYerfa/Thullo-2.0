@@ -2,7 +2,7 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { DeleteBtn } from "../Btns";
 import { ScrollArea } from "../ui/scroll-area";
-import { deleteComment, getComments } from "@/app/_actions/card";
+import { getComments } from "@/app/_actions/card";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 

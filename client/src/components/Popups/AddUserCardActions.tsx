@@ -14,7 +14,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Icons } from "../Icons";
 

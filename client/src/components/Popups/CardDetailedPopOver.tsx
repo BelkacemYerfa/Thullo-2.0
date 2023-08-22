@@ -36,11 +36,8 @@ export const CardDetailedPopOver = ({
     return await getCardInfoWithList(cardId);
   });
   console.log(card);
-  const {
-    ref: containerRef,
-    rename: isOpen,
-    setRename: setIsOpen,
-  } = useOutsideClick<HTMLDivElement>();
+  const { rename: isOpen, setRename: setIsOpen } =
+    useOutsideClick<HTMLDivElement>();
   const handleOpen = () => {
     setIsOpen(!isOpen);
     const currentPath = new URLSearchParams(Array.from(searchParams.entries()));
@@ -74,10 +71,7 @@ export const CardDetailedPopOver = ({
       </Link>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed z-[5] inset-0 bg-black/40 " />
-        <Drawer.Content
-          ref={containerRef}
-          className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden "
-        >
+        <Drawer.Content className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden ">
           <ScrollArea className="h-full w-full ">
             <div className=" h-full pb-4 bg-white w-full md:w-3/5 m-auto shadow-outline-black ">
               <div className="sticky top-0 flex justify-center bg-white py-4 shadow-outline-black z-[5] ">
