@@ -66,9 +66,7 @@ export const CardDetailedPopOver = ({
   }, []);
   return (
     <Drawer.Root open={isOpen} onOpenChange={handleOpen}>
-      <Link href={`?cardId=${cardId}`}>
-        <Drawer.Trigger className="cursor-pointer">{taskTitle}</Drawer.Trigger>
-      </Link>
+      <Drawer.Trigger className="cursor-pointer">{taskTitle}</Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed z-[5] inset-0 bg-black/40 " />
         <Drawer.Content className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden ">

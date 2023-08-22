@@ -7,11 +7,14 @@ import {
 } from "@/validation/label-creation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { Icons } from "../Icons";
 import { ScrollArea } from "../ui/scroll-area";
+import { addLabel, getLabels } from "@/app/_actions/card";
+import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 const Colors = [
   "#219653",
@@ -34,18 +37,27 @@ type BadgeType = {
 };
 
 export const LabelCreationForm = () => {
-  const [badges, setBadges] = useState<BadgeType[]>([
-    {
-      name: "hello",
-      color: "#219653",
-    },
-  ]);
+  const searchParams = useSearchParams();
+  const cardId = searchParams.get("cardId") as string;
+  const [isPending, startTransition] = useTransition();
   const form = useForm<labelCreationSchemaType>({
     resolver: zodResolver(labelCreationSchema),
+    defaultValues: {
+      name: "",
+      color: "",
+    },
+  });
+  const { data: labels } = useQuery(["labels", cardId], async () => {
+    return await getLabels(cardId);
   });
   const onSubmit = (data: labelCreationSchemaType) => {
-    console.log(data);
-    setBadges([...badges, data]);
+    startTransition(async () => {
+      try {
+        await addLabel({ ...data, cardId });
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
   return (
     <Form {...form}>
@@ -70,7 +82,7 @@ export const LabelCreationForm = () => {
               {Colors.map((color) => (
                 <label
                   key={color}
-                  className={` w-12 h-7 rounded cursor-pointer`}
+                  className={`w-[50px] h-7 rounded cursor-pointer`}
                   style={{ backgroundColor: color }}
                 >
                   <input
@@ -87,35 +99,40 @@ export const LabelCreationForm = () => {
             </FormItem>
           )}
         />
-        <div className="space-y-2">
-          <h3 className="flex items-center gap-x-2 text-[#BDBDBD] text-xs">
-            <Icons.Tags className="h-4 w-4" />
-            Available
-          </h3>
-          <div className="w-full h-14">
-            <ScrollArea className="h-full w-full">
-              <div className="flex items-center flex-wrap gap-1">
-                {badges.map((badge) => (
-                  <Badge
-                    key={badge.color + badge.name}
-                    className={cn(
-                      `bg-[#D5E6FB] hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default `
-                    )}
-                    style={{ color: badge.color }}
-                  >
-                    {badge.name}
-                  </Badge>
-                ))}
-              </div>
-            </ScrollArea>
+        {labels?.length !== 0 ? (
+          <div className="space-y-2">
+            <h3 className="flex items-center gap-x-2 text-[#BDBDBD] text-xs">
+              <Icons.Tags className="h-4 w-4" />
+              Available
+            </h3>
+            <div className="w-full h-10">
+              <ScrollArea className="h-full w-full">
+                <div className="flex items-center flex-wrap gap-1">
+                  {labels?.map((badge) => (
+                    <Badge
+                      key={badge.id}
+                      className={cn(
+                        `hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default text-white rounded-xl `
+                      )}
+                      style={{ backgroundColor: badge.color }}
+                    >
+                      {badge.name}
+                    </Badge>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
           </div>
-        </div>
+        ) : null}
         <div className="flex items-center justify-center w-full">
           <Button
             type="submit"
-            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
-            disabled={!form.formState.isValid}
+            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm flex items-center gap-2 "
+            disabled={isPending || !form.formState.isValid}
           >
+            {isPending ? (
+              <Icons.Loader2 className="h-4 w-4 animate-spin" />
+            ) : null}
             Add
           </Button>
         </div>

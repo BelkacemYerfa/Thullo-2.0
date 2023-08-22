@@ -5,6 +5,8 @@ import { cardSchemaType } from "@/validation/card";
 import { verifyUserAuth } from "./board";
 import { revalidatePath } from "next/cache";
 import { boardDescriptionSchemaType } from "@/validation/board-description";
+import { labelCreationSchemaType } from "@/validation/label-creation";
+import { cookies } from "next/dist/client/components/headers";
 
 export async function addCard(
   Info: cardSchemaType & {
@@ -62,7 +64,7 @@ export async function updateCardName() {
 }
 
 export async function getCardInfoWithList(cardId: string): Promise<card> {
-  const card = await client.card.findFirst({
+  const card = await client.card.findUnique({
     where: {
       id: cardId,
     },
@@ -74,6 +76,13 @@ export async function getCardInfoWithList(cardId: string): Promise<card> {
       image: true,
       comments: true,
       listId: true,
+      labels: {
+        select: {
+          id: true,
+          name: true,
+          color: true,
+        },
+      },
     },
   });
   if (!card) throw new Error("Card not found");
@@ -193,4 +202,45 @@ export async function deleteComment(commentId: string, cardId: string) {
     },
   });
   revalidatePath(`/board/${boardId}`);
+}
+
+//labels section
+
+export async function getLabels(cardId: string): Promise<labels[]> {
+  return await client.label.findMany({
+    where: {
+      cardId,
+    },
+    select: {
+      id: true,
+      name: true,
+      color: true,
+    },
+  });
+}
+
+export async function addLabel(
+  data: labelCreationSchemaType & {
+    cardId: string;
+  }
+) {
+  const boardId = await getBoardBasedOnCard(data.cardId);
+  await client.label.create({
+    data: {
+      name: data.name,
+      color: data.color,
+      cardId: data.cardId,
+    },
+  });
+  revalidatePath(`/board/${boardId}?cardId=${data.cardId}`);
+}
+
+export async function deleteLabel(labelId: string, cardId: string) {
+  const boardId = await getBoardBasedOnCard(cardId);
+  await client.label.delete({
+    where: {
+      id: labelId,
+    },
+  });
+  revalidatePath(`/board/${boardId}?cardId=${cardId}`);
 }

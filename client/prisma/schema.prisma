@@ -64,6 +64,7 @@ model Card {
   listId   String @map("listId") @db.ObjectId
   list     List @relation(fields: [listId], references: [id])
   comments   Comments?
+  labels     Label[]
   user     String @map("userId")
 }
 
@@ -90,4 +91,15 @@ model User {
   commentId String @map("commentId") @db.ObjectId
   comment   Comments @relation(fields: [commentId], references: [id])
   @@unique([ commentId])
+}
+
+model Label {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name     String
+  color    String
+  cardId   String @map("cardId") @db.ObjectId
+  card     Card @relation(fields: [cardId], references: [id])
+  @@unique([cardId])
 }

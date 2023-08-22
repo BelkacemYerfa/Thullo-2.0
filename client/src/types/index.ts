@@ -21,6 +21,7 @@ type card = {
   image: string;
   comments: comment[] | null;
   list: Pick<list, "name">;
+  label: labels[];
 };
 
 type comment = {
@@ -48,4 +49,10 @@ type comments = {
   text: string;
   createdAt: string;
   user: Pick<User, "name" | "image" | "id">;
+};
+
+type labels = {
+  id: string;
+  name: string;
+  color: string;
 };

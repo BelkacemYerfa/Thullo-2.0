@@ -6,6 +6,7 @@ import {
   Draggable,
   DropResult,
   Droppable,
+  resetServerContext,
 } from "react-beautiful-dnd";
 import { InitialData, Column } from "./initialData";
 import { useState } from "react";
@@ -23,6 +24,7 @@ export const DndContextProvider = ({
   boardId,
   db,
 }: DndContextProviderProps) => {
+  resetServerContext();
   const [initialData, setInitialData] = useState<InitialData>(db);
 
   const [cachedColumnOrder, setCachedColumnOrder] = useState<string[]>(
