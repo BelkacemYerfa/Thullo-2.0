@@ -7,7 +7,8 @@ import {
 } from "@/validation/label-creation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
+import { Skeleton } from "../ui/skeleton";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { Icons } from "../Icons";
@@ -47,7 +48,7 @@ export const LabelCreationForm = () => {
       color: "",
     },
   });
-  const { data: labels } = useQuery(["labels", cardId], async () => {
+  const { data: labels, isLoading } = useQuery(["labels", cardId], async () => {
     return await getLabels(cardId);
   });
   const onSubmit = (data: labelCreationSchemaType) => {
@@ -99,7 +100,19 @@ export const LabelCreationForm = () => {
             </FormItem>
           )}
         />
-        {labels?.length !== 0 ? (
+        {isLoading ? (
+          <div className="space-y-2">
+            <div className="flex items-center gap-x-2 ">
+              <Skeleton className="h-4 w-4" />
+              <Skeleton className="w-20 h-4" />
+            </div>
+            <div className="flex items-center gap-1 w-full flex-wrap ">
+              {[...Array(4)].map((_, i) => (
+                <Skeleton key={i} className=" h-4 w-16 " />
+              ))}
+            </div>
+          </div>
+        ) : labels?.length !== 0 ? (
           <div className="space-y-2">
             <h3 className="flex items-center gap-x-2 text-[#BDBDBD] text-xs">
               <Icons.Tags className="h-4 w-4" />

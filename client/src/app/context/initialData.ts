@@ -2,6 +2,8 @@ export interface Task {
   id: string;
   content: string;
   image?: string;
+  labels?: labels[];
+  comments?: Pick<comments, "id">[];
 }
 
 export interface Column {
@@ -16,7 +18,7 @@ export interface InitialData {
   columnOrder: string[];
 }
 
-const database: InitialData = {
+/* const database: InitialData = {
   tasks: {
     "task-1": { id: "task-1", content: "Take out the garbage" },
     "task-2": { id: "task-2", content: "Watch my favorite show" },
@@ -52,5 +54,4 @@ const database: InitialData = {
   // Facilitate reordering of the columns
   columnOrder: ["column-1", "column-2", "column-3", "column-4"],
 };
-
-export default database;
+ */

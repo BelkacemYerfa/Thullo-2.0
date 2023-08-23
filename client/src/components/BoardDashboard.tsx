@@ -9,7 +9,7 @@ type Lists = Pick<list, "id" | "name"> & {
   cards: Cards;
 };
 
-type Cards = Pick<card, "id" | "name">[];
+type Cards = Pick<card, "id" | "name" | "labels" | "comments">[];
 
 export const BoardDashboard = async ({ boardId }: BoardDashboardProps) => {
   const board = await client.board.findUnique({
@@ -25,6 +25,19 @@ export const BoardDashboard = async ({ boardId }: BoardDashboardProps) => {
             select: {
               id: true,
               name: true,
+              comments: {
+                select: {
+                  id: true,
+                },
+              },
+              labels: {
+                select: {
+                  id: true,
+                  name: true,
+                  color: true,
+                },
+                take: 5,
+              },
             },
           },
         },
@@ -48,6 +61,8 @@ export const BoardDashboard = async ({ boardId }: BoardDashboardProps) => {
       acc[card.id] = {
         id: card.id,
         content: card.name,
+        labels: card.labels,
+        comments: card.comments,
       };
     });
     return acc;
@@ -58,7 +73,6 @@ export const BoardDashboard = async ({ boardId }: BoardDashboardProps) => {
     columns,
     tasks,
   };
-
   return (
     <section className="flex-1 max-w-[95%] m-auto bg-[#F8F9FD] rounded-t-xl sm:rounded-t-3xl px-2 pt-2 sm:px-4 sm:pt-4 w-full h-full overflow-y-hidden pb-2 ">
       <DndContextProvider boardId={boardId} db={db} />

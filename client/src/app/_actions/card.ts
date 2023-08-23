@@ -76,13 +76,6 @@ export async function getCardInfoWithList(cardId: string): Promise<card> {
       image: true,
       comments: true,
       listId: true,
-      labels: {
-        select: {
-          id: true,
-          name: true,
-          color: true,
-        },
-      },
     },
   });
   if (!card) throw new Error("Card not found");
@@ -206,7 +199,10 @@ export async function deleteComment(commentId: string, cardId: string) {
 
 //labels section
 
-export async function getLabels(cardId: string): Promise<labels[]> {
+export async function getLabels(
+  cardId: string,
+  take?: number
+): Promise<labels[]> {
   return await client.label.findMany({
     where: {
       cardId,
@@ -216,6 +212,7 @@ export async function getLabels(cardId: string): Promise<labels[]> {
       name: true,
       color: true,
     },
+    take: take ?? undefined,
   });
 }
 

@@ -21,7 +21,7 @@ type card = {
   image: string;
   comments: comment[] | null;
   list: Pick<list, "name">;
-  label: labels[];
+  labels: labels[];
 };
 
 type comment = {

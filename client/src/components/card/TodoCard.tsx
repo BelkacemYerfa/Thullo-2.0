@@ -15,35 +15,14 @@ import { Task } from "@/app/context/initialData";
 import { CardDetailedPopOver } from "../Popups/CardDetailedPopOver";
 import { AddUserToCard } from "../Popups/AddUserCardActions";
 import { AspectRatio } from "../ui/aspect-ratio";
-
 type TodoCardProps = {
   task: Task;
   cardId: string;
 };
 
-type cardBadge = {
-  title: string;
-  color: string;
-};
-
-const cardBadges = [
-  {
-    title: "Technical",
-    color: "#2F80ED",
-  },
-  {
-    title: "Design",
-    color: "#219653",
-  },
-  {
-    title: "Marketing",
-    color: "#F2994A",
-  },
-] satisfies cardBadge[];
-
 export const TodoCard = ({ task, cardId }: TodoCardProps) => {
   const { user } = useUser();
-
+  const { labels, comments } = task;
   return (
     <Card>
       <CardHeader className="space-y-3 p-3">
@@ -66,19 +45,22 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-3 py-2 space-y-3">
-        <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
-          {cardBadges.slice(0, 4).map((badge) => (
-            <Badge
-              key={badge.color}
-              className={cn(
-                `hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default text-white rounded-xl `
-              )}
-              style={{ backgroundColor: badge.color }}
-            >
-              {badge.title}
-            </Badge>
-          ))}
-        </div>
+        {labels?.length !== 0 ? (
+          <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
+            {labels?.map((badge) => (
+              <Badge
+                key={badge.id}
+                className={cn(
+                  `hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default text-white rounded-xl `
+                )}
+                style={{ backgroundColor: badge.color }}
+              >
+                {badge.name}
+              </Badge>
+            ))}
+          </div>
+        ) : null}
+
         <CardFooter className="flex items-center justify-between w-full p-0">
           <div className="flex items-center gap-x-2">
             <Avatar className="h-8 w-8 rounded-lg">
@@ -94,14 +76,16 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
             <AddUserToCard />
           </div>
           <div className="flex items-center gap-x-2">
-            <div className="flex items-center gap-x-1 text-[#BDBDBD]">
-              <Icons.MessageCircle className="h-5 w-5  " />
-              <span>2</span>
-            </div>
-            <div className="flex items-center gap-x-1 text-[#BDBDBD]">
+            {typeof comments?.length === "number" ? (
+              <div className="flex items-center gap-x-1 text-[#BDBDBD]">
+                <Icons.MessageCircle className="h-5 w-5  " />
+                <span>{comments?.length}</span>
+              </div>
+            ) : null}
+            {/* <div className="flex items-center gap-x-1 text-[#BDBDBD]">
               <Icons.Paperclip className="h-5 w-5 " />
               <span>2</span>
-            </div>
+            </div> */}
           </div>
         </CardFooter>
       </CardContent>

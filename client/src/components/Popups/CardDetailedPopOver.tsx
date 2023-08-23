@@ -35,7 +35,6 @@ export const CardDetailedPopOver = ({
   const { data: card } = useQuery(["card", cardId], async () => {
     return await getCardInfoWithList(cardId);
   });
-  console.log(card);
   const { rename: isOpen, setRename: setIsOpen } =
     useOutsideClick<HTMLDivElement>();
   const handleOpen = () => {

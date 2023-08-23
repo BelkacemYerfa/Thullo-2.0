@@ -63,7 +63,7 @@ model Card {
   description String
   listId   String @map("listId") @db.ObjectId
   list     List @relation(fields: [listId], references: [id])
-  comments   Comments?
+  comments   Comments[]
   labels     Label[]
   user     String @map("userId")
 }
