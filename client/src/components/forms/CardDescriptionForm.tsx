@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { Icons } from "../Icons";
 import { Button } from "../ui/button";
 import { Form, FormField, FormItem } from "../ui/form";
@@ -62,7 +62,7 @@ export const CardDescriptionForm = ({
         ) : null}
       </div>
       <>
-        {!isDescriptionFormOpen ? (
+        {description !== "" && !isDescriptionFormOpen ? (
           <p className="max-w-full break-all">{description}</p>
         ) : (
           <Form {...form}>

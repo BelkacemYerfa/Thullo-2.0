@@ -16,14 +16,12 @@ import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 type BoardSheetProps = {
   users: string[];
   title: string;
-  description: string;
   boardId: string;
 };
 
 export const BoardSheet = async ({
   users,
   title,
-  description,
   boardId,
 }: BoardSheetProps) => {
   const user = await currentUser();
@@ -77,10 +75,7 @@ export const BoardSheet = async ({
                   </div>
                 </div>
               </div>
-              <BoardDescriptionForm
-                boardId={boardId}
-                description={description}
-              />
+              <BoardDescriptionForm boardId={boardId} />
               <div className="space-y-5">
                 <div className="text-[#BDBDBD] flex items-center gap-x-[6px]">
                   <Icons.Users2 className="h-4 w-4" />

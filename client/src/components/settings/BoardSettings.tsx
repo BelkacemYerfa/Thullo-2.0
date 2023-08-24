@@ -22,7 +22,6 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
     select: {
       users: true,
       name: true,
-      description: true,
       visibility: true,
     },
   });
@@ -68,12 +67,7 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
           <BoardUserInvitePopOver />
         </div>
       </div>
-      <BoardSheet
-        title={board.name}
-        description={board.description}
-        users={boardUser}
-        boardId={boardId}
-      />
+      <BoardSheet title={board.name} users={boardUser} boardId={boardId} />
     </section>
   );
 };

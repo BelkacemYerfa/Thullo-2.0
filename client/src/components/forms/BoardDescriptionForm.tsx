@@ -12,16 +12,18 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { Icons } from "../Icons";
 import { useTransition } from "react";
-import { updateBoardDescription } from "@/app/_actions/board";
+import {
+  getBoardDescription,
+  updateBoardDescription,
+} from "@/app/_actions/board";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { useQuery } from "@tanstack/react-query";
 
 type BoardDescriptionFormProps = {
-  description: string;
   boardId: string;
 };
 
 export const BoardDescriptionForm = ({
-  description,
   boardId,
 }: BoardDescriptionFormProps) => {
   const [isPending, startTransition] = useTransition();
@@ -30,10 +32,13 @@ export const BoardDescriptionForm = ({
     rename: isDescriptionOpen,
     setRename: setIsDescriptionOpen,
   } = useOutsideClick<HTMLFormElement>();
+  const { data, isLoading } = useQuery(["description", boardId], async () => {
+    return await getBoardDescription(boardId);
+  });
   const form = useForm<boardDescriptionSchemaType>({
     resolver: zodResolver(boardDescriptionSchema),
     defaultValues: {
-      description: description,
+      description: data?.description ?? "",
     },
   });
   const onSubmit = (data: boardDescriptionSchemaType) => {
@@ -65,8 +70,8 @@ export const BoardDescriptionForm = ({
           </Button>
         ) : null}
       </div>
-      {!isDescriptionOpen ? (
-        <p className={`max-w-full break-all`}>{description}</p>
+      {data?.description !== "" && !isDescriptionOpen ? (
+        <p className={`max-w-full break-all`}>{data?.description}</p>
       ) : (
         <Form {...form}>
           <form
@@ -98,7 +103,7 @@ export const BoardDescriptionForm = ({
               <Button
                 type="button"
                 className="rounded-xl text-[#828282] bg-transparent hover:bg-transparent py-1 px-3"
-                disabled={!description || isPending}
+                disabled={!data?.description || isPending}
                 onClick={() => setIsDescriptionOpen(false)}
               >
                 Cancel

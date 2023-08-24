@@ -71,7 +71,9 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
                 width={32}
                 loading="lazy"
               />
-              <AvatarFallback>{user?.username}</AvatarFallback>
+              <AvatarFallback className="rounded-lg">
+                {user?.username}
+              </AvatarFallback>
             </Avatar>
             <AddUserToCard />
           </div>

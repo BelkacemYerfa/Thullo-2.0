@@ -118,3 +118,16 @@ export async function updateBoardVisibility(data: {
     },
   });
 }
+
+export async function getBoardDescription(
+  boardId: string
+): Promise<{ description: string }> {
+  return await client.board.findUnique({
+    where: {
+      id: boardId,
+    },
+    select: {
+      description: true,
+    },
+  });
+}

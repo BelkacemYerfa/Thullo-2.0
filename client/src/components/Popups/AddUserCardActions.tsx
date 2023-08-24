@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { Icons } from "../Icons";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
@@ -47,16 +47,16 @@ export const CardAssignedMembers = () => {
   return (
     <>
       <Button
-        className="flex items-center w-fit sm:w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4  "
+        className="flex items-center w-fit sm:w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4"
         onClick={() => setIsMembersOpen(!isMembersOpen)}
       >
         <Icons.Users2 className="h-5 w-5" />
         <span className="hidden sm:flex">Members</span>
       </Button>
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} mode="wait">
         {isMembersOpen && (
           <div
-            className="absolute top-12 md:top-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3 "
+            className="absolute top-12 md:top-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3"
             ref={containerRef}
           >
             <motion.div
@@ -82,7 +82,7 @@ export const CardAssignedMembers = () => {
                   </p>
                 </div>
               ))}
-              <AddUserPopOver />
+              <AddUserPopOver ref={containerRef} />
             </motion.div>
           </div>
         )}
@@ -91,7 +91,7 @@ export const CardAssignedMembers = () => {
   );
 };
 
-export const AddUserPopOver = () => {
+export const AddUserPopOver = forwardRef<HTMLDivElement>(({}, ref) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
@@ -108,6 +108,7 @@ export const AddUserPopOver = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
+        ref={ref}
         className="p-3 space-y-4 rounded-xl w-64"
         align="start"
       >
@@ -163,7 +164,9 @@ export const AddUserPopOver = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+});
+
+AddUserPopOver.displayName = "AddUserPopOver";
 
 export const AddUserToCard = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
