@@ -10,6 +10,7 @@ import { useGenerationStore } from "@/lib/store/Store";
 import { addList } from "@/app/_actions/list";
 import { useTransition } from "react";
 import { Icons } from "../Icons";
+import { useRouter } from "next/navigation";
 
 type ListCreationFormProps = {
   boardId: string;
@@ -17,6 +18,7 @@ type ListCreationFormProps = {
 
 export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
   const { setNewList } = useGenerationStore();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<cardSchemaType>({
     resolver: zodResolver(cardSchema),
@@ -29,6 +31,7 @@ export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
       try {
         await addList({ ...data, id: boardId });
         setNewList(false);
+        router.refresh();
       } catch (error) {
         console.log(error);
       }

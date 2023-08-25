@@ -11,7 +11,7 @@ import {
 } from "@/validation/board-description";
 import { Button } from "../ui/button";
 import { useUser } from "@clerk/nextjs";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { addComment } from "@/app/_actions/card";
 import { Icons } from "../Icons";
@@ -19,6 +19,7 @@ import { Icons } from "../Icons";
 export const CardCommentForm = () => {
   const { user } = useUser();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<boardDescriptionSchemaType>({
     resolver: zodResolver(boardDescriptionSchema),
@@ -31,6 +32,7 @@ export const CardCommentForm = () => {
     startTransition(async () => {
       try {
         await addComment({ ...data, cardId });
+        router.refresh();
       } catch (error) {
         console.log(error);
       }

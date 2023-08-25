@@ -6,7 +6,6 @@ import { verifyUserAuth } from "./board";
 import { revalidatePath } from "next/cache";
 import { boardDescriptionSchemaType } from "@/validation/board-description";
 import { labelCreationSchemaType } from "@/validation/label-creation";
-import { cookies } from "next/dist/client/components/headers";
 
 export async function addCard(
   Info: cardSchemaType & {
@@ -24,7 +23,7 @@ export async function addCard(
   });
   if (!list) throw new Error("Board not found");
 
-  const card = await client.card.create({
+  await client.card.create({
     data: {
       name: Info.name,
       description: "",
@@ -32,7 +31,6 @@ export async function addCard(
       user: user.id,
     },
   });
-  console.log(card);
   revalidatePath(`/board/${list.boardId}`);
 }
 
@@ -179,7 +177,7 @@ export async function addComment(
     },
   });
   console.log(comment);
-  revalidatePath(`/board/${boardId}?cardId=${data.cardId}`);
+  revalidatePath(`/board/${boardId}`);
 }
 
 export async function deleteComment(commentId: string, cardId: string) {
@@ -194,7 +192,7 @@ export async function deleteComment(commentId: string, cardId: string) {
       id: commentId,
     },
   });
-  revalidatePath(`/board/${boardId}`);
+  revalidatePath(`/board/${boardId}?cardId=${cardId}`);
 }
 
 //labels section

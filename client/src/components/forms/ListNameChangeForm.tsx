@@ -32,6 +32,7 @@ export const ListNameChangeForm = ({
   const { ref, rename, setRename } = useOutsideClick<HTMLFormElement>();
   const form = useForm<listNameSchemaType>({
     resolver: zodResolver(listNameSchema),
+    defaultValues: { name: name },
   });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleRename = () => {

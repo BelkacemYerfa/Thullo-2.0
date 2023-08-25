@@ -13,12 +13,13 @@ type CommentsListProps = {
 
 export const CommentsList = ({ cardId }: CommentsListProps) => {
   const { user } = useUser();
-  const { data: comments, isLoading } = useQuery(
-    ["comments", cardId],
-    async () => {
-      return await getComments(cardId);
-    }
-  );
+  const {
+    data: comments,
+    isLoading,
+    refetch,
+  } = useQuery(["comments"], async () => {
+    return await getComments(cardId);
+  });
   return (
     <ul className="h-64">
       <ScrollArea className="h-full w-full px-1">

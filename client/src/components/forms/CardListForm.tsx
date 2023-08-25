@@ -12,6 +12,7 @@ import { cardSchema, cardSchemaType } from "@/validation/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { addCard } from "@/app/_actions/card";
+import { useRouter } from "next/navigation";
 
 type CardListFormProps = {
   listId: string;
@@ -19,6 +20,7 @@ type CardListFormProps = {
 
 export const CardListForm = ({ listId }: CardListFormProps) => {
   const btnRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const {
     ref,
@@ -36,6 +38,8 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
       try {
         await addCard({ ...data, listId });
         setIsOpen(false);
+        form.reset();
+        router.refresh();
       } catch (error) {
         console.log(error);
       }

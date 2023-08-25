@@ -1,5 +1,5 @@
-import { verifyUserAuth } from "@/app/_actions/board";
-import { BoardDashboard } from "@/components/BoardDashboard";
+import { getBoardInfo, verifyUserAuth } from "@/app/_actions/board";
+import { DndContextProvider } from "@/app/context/DndContextProvider";
 import { NavBar } from "@/components/navigation/Navbar";
 import { BoardSettings } from "@/components/settings/BoardSettings";
 import client from "@/lib/prismaDb";
@@ -12,6 +12,17 @@ type BoardPageProps = {
 };
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export type BoardDashboardProps = {
+  boardId: string;
+};
+
+export type Lists = Pick<list, "id" | "name"> & {
+  cards: Cards;
+};
+
+export type Cards = Pick<card, "id" | "name" | "labels" | "comments">[];
 
 export async function generateMetadata({
   params: { boardId },
@@ -45,6 +56,7 @@ export default async function BoardPage({
     },
   });
   if (!board) redirect("/");
+  const db = await getBoardInfo(boardId);
   return (
     <main className="h-screen w-full space-y-6 flex flex-col">
       <section className="w-full space-y-5">
@@ -53,7 +65,9 @@ export default async function BoardPage({
           <BoardSettings boardId={boardId} />
         </section>
       </section>
-      <BoardDashboard boardId={boardId} />
+      <section className="flex-1 max-w-[95%] m-auto bg-[#F8F9FD] rounded-t-xl sm:rounded-t-3xl px-2 pt-2 sm:px-4 sm:pt-4 w-full h-full overflow-y-hidden pb-2 ">
+        <DndContextProvider boardId={boardId} db={db} />
+      </section>
     </main>
   );
 }

@@ -48,7 +48,8 @@ export const CardDetailedPopOver = ({
     startTransition(async () => {
       try {
         await deleteCardMutation(cardId);
-        setIsOpen(false);
+        handleOpen();
+        router.refresh();
       } catch (error) {
         console.log(error);
       }

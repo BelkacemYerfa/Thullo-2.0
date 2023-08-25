@@ -23,6 +23,7 @@ type TodoCardProps = {
 export const TodoCard = ({ task, cardId }: TodoCardProps) => {
   const { user } = useUser();
   const { labels, comments } = task;
+
   return (
     <Card>
       <CardHeader className="space-y-3 p-3">

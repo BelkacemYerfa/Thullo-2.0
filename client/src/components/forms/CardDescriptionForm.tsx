@@ -50,7 +50,7 @@ export const CardDescriptionForm = ({
           <Icons.File className="h-4 w-4" />
           <h3 className="text-xs font-semibold">Description</h3>
         </div>
-        {!isDescriptionFormOpen ? (
+        {description !== "" && !isDescriptionFormOpen ? (
           <Button
             size={"sm"}
             className=" flex items-center gap-x-2 py-1 border border-[#BDBDBD] border-solid rounded-xl bg-transparent hover:bg-transparent text-[#828282]"

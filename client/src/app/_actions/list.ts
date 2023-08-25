@@ -2,7 +2,7 @@
 
 import client from "@/lib/prismaDb";
 import { verifyUserAuth } from "./board";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { listNameSchemaType } from "@/validation/list-name";
 
 export async function addList(data: listNameSchemaType & { id: string }) {
@@ -20,21 +20,74 @@ export async function addList(data: listNameSchemaType & { id: string }) {
       },
     },
   });
-  revalidatePath(`/board/${data.id}`);
 }
 
+type Cards = Pick<card, "comments" | "labels" | "id">[];
+
 export async function deleteList(id: string) {
-  await client.card.deleteMany({
+  const speed = performance.now();
+  const cards: Cards = await client.card.findMany({
     where: {
       listId: id,
     },
+    select: {
+      id: true,
+      comments: {
+        select: {
+          id: true,
+        },
+      },
+      labels: {
+        select: {
+          id: true,
+        },
+      },
+    },
   });
+
+  const cardIds = cards.map((card) => card.id);
+
+  await Promise.all(
+    cards.map(async (card) => {
+      const commentIds = card.comments?.map((comment) => comment.id);
+
+      await client.user.deleteMany({
+        where: {
+          commentId: {
+            in: commentIds,
+          },
+        },
+      });
+
+      await client.comments.deleteMany({
+        where: {
+          cardId: card.id,
+        },
+      });
+
+      await client.label.deleteMany({
+        where: {
+          cardId: card.id,
+        },
+      });
+    })
+  );
+
+  await client.card.deleteMany({
+    where: {
+      id: {
+        in: cardIds,
+      },
+    },
+  });
+
   await client.list.delete({
     where: {
       id,
     },
   });
-  revalidatePath(`/board/${id}`);
+  const speed2 = performance.now();
+  console.log("deleteList", (speed2 - speed).toFixed(2) + "ms");
 }
 
 export async function updateListName(
@@ -48,4 +101,17 @@ export async function updateListName(
       name: data.name,
     },
   });
+}
+
+export async function getBoardBasedOnList(listId: string) {
+  const list = await client.list.findUnique({
+    where: {
+      id: listId,
+    },
+    select: {
+      boardId: true,
+    },
+  });
+  if (!list) throw new Error("List not found");
+  return list.boardId;
 }
