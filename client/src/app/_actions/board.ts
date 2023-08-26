@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { Results } from "@/components/Popups/SearchPopOver";
 import { boardDescriptionSchemaType } from "@/validation/board-description";
 import { Visibility } from "@prisma/client";
-import { Lists } from "@/components/BoardDashboard";
+import { Lists } from "../(lobby)/board/[boardId]/page";
 import { InitialData } from "../context/initialData";
 
 export const verifyUserAuth = async () => {

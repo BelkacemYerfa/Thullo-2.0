@@ -14,8 +14,8 @@ export const UserProfilePopOver = () => {
           <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
         </div>
       </DialogTrigger>
-      <DialogContent className="h-full w-full max-w-[95%] sm:max-w-[90%] xl:w-full 2xl:max-w-[60%] bg-transparent shadow-none border-none p-2">
-        <ScrollArea className="h-full max-w-full mx-auto">
+      <DialogContent className="h-full max-w-[95%] sm:max-w-[90%] xl:max-w-[90%] 2xl:max-w-[60%] bg-transparent shadow-none border-none p-2">
+        <ScrollArea className="h-full sw-full mx-auto">
           <UserProfile
             appearance={{
               layout: {
