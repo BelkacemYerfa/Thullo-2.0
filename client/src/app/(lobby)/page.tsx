@@ -5,13 +5,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import client from "@/lib/prismaDb";
 import { Key } from "react";
 import { verifyUserAuth } from "../_actions/board";
-import { Items } from "@/components/Popups/SearchPopOver";
 
 export const dynamic = "force-dynamic";
 
+type Boards = Pick<board, "id" | "name" | "image">[];
+
 export default async function Home() {
   const user = await verifyUserAuth();
-  const userBoards: Items = await client.board.findMany({
+  const userBoards: Boards = await client.board.findMany({
     where: {
       user: user.id,
     },

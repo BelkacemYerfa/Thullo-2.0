@@ -64,11 +64,6 @@ export async function searchForBoards(query: string) {
     select: {
       id: true,
       name: true,
-      image: {
-        select: {
-          fileUrl: true,
-        },
-      },
     },
     orderBy: {
       createdAt: "desc",

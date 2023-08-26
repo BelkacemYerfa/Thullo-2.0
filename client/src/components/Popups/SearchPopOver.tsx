@@ -22,7 +22,7 @@ export type Results = {
   items: Items;
 }[];
 
-export type Items = Pick<board, "id" | "name" | "image">[];
+type Items = Pick<board, "id" | "name">[];
 
 export const SearchPopOver = () => {
   const router = useRouter();
@@ -49,9 +49,7 @@ export const SearchPopOver = () => {
   }, []);
 
   useEffect(() => {
-    if (!isOpen) {
-      setQuery("");
-    }
+    if (!isOpen) setQuery("");
   }, [isOpen]);
 
   return (
@@ -72,17 +70,16 @@ export const SearchPopOver = () => {
       </div>
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
         <CommandInput
-          placeholder="keyword..."
+          placeholder="Search products..."
           value={query}
           onValueChange={setQuery}
         />
         <CommandList>
           <CommandEmpty
-            className={cn(isPending ? "hidden" : "text-center text-sm p-6")}
+            className={cn(isPending ? "hidden" : "py-6 text-center text-sm")}
           >
-            No results found.
+            No products found.
           </CommandEmpty>
-
           {isPending ? (
             <div className="space-y-1 overflow-hidden px-1 py-2">
               <Skeleton className="h-4 w-10 rounded" />
@@ -91,22 +88,19 @@ export const SearchPopOver = () => {
             </div>
           ) : (
             data?.map((group) => (
-              <CommandGroup heading={group.category} key={group.category}>
+              <CommandGroup
+                key={group.category}
+                className="capitalize"
+                heading={group.category}
+              >
                 {group.items.map((item) => (
                   <CommandItem
                     key={item.id}
                     onSelect={() =>
-                      handleSelect(() => router.push(`/board/${item.id}`))
+                      handleSelect(() => router.push(`/product/${item.id}`))
                     }
-                    className="flex items-center gap-x-2"
+                    className=" text-sm rounded-lg cursor-pointer "
                   >
-                    <Image
-                      src={item.image[0].fileUrl}
-                      alt={item.name}
-                      height={32}
-                      width={32}
-                      className="rounded-lg object-cover h-8 w-8 "
-                    />
                     {item.name}
                   </CommandItem>
                 ))}
