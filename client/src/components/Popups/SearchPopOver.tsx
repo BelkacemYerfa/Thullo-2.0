@@ -97,7 +97,7 @@ export const SearchPopOver = () => {
                   <CommandItem
                     key={item.id}
                     onSelect={() =>
-                      handleSelect(() => router.push(`/product/${item.id}`))
+                      handleSelect(() => router.push(`/board/${item.id}`))
                     }
                     className=" text-sm rounded-lg cursor-pointer "
                   >

@@ -28,7 +28,7 @@ export const BoardCard = ({
         <AspectRatio ratio={3 / 2}>
           <Image
             src={boardBanner}
-            alt={title + " board banner"}
+            alt={`${title} banner`}
             loading="lazy"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
