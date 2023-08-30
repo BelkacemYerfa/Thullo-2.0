@@ -15,11 +15,11 @@ import {
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "../ui/button";
 import { useState, forwardRef } from "react";
 import { Icons } from "../Icons";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const Users = [
   {
@@ -42,10 +42,8 @@ export const CardAssignedMembers = () => {
     rename: isMembersOpen,
     setRename: setIsMembersOpen,
   } = useOutsideClick<HTMLDivElement>();
-  const MembersVariants = {
-    open: { opacity: 1, height: "auto" },
-    closed: { opacity: 0, height: 0 },
-  };
+  const [parent] = useAutoAnimate();
+
   return (
     <>
       <Button
@@ -55,20 +53,13 @@ export const CardAssignedMembers = () => {
         <Icons.Users2 className="h-5 w-5" />
         <span className="hidden sm:flex">Members</span>
       </Button>
-      <AnimatePresence initial={false} mode="wait">
+      <div ref={parent}>
         {isMembersOpen && (
           <div
             className="absolute top-12 md:top-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3"
             ref={containerRef}
           >
-            <motion.div
-              layout="size"
-              className="w-full space-y-3"
-              variants={MembersVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-            >
+            <div className="w-full space-y-3">
               {Users.map((user) => (
                 <div key={user.id} className="flex items-center gap-x-4">
                   <Avatar className="rounded-lg">
@@ -85,10 +76,10 @@ export const CardAssignedMembers = () => {
                 </div>
               ))}
               <AddUserPopOver ref={containerRef} />
-            </motion.div>
+            </div>
           </div>
         )}
-      </AnimatePresence>
+      </div>
     </>
   );
 };

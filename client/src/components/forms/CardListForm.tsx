@@ -5,14 +5,14 @@ import { Icons } from "../Icons";
 import { Button } from "../ui/button";
 import { Form, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
-import { useRef, useTransition } from "react";
+import { useEffect, useRef, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cardSchema, cardSchemaType } from "@/validation/card";
-import { motion, AnimatePresence } from "framer-motion";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { addCard } from "@/app/_actions/card";
 import { useRouter } from "next/navigation";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 type CardListFormProps = {
   listId: string;
@@ -27,6 +27,7 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
     rename: isOpen,
     setRename: setIsOpen,
   } = useOutsideClick<HTMLFormElement>();
+  const [parent, enableAnimation] = useAutoAnimate();
   const form = useForm<cardSchemaType>({
     resolver: zodResolver(cardSchema),
     defaultValues: {
@@ -56,38 +57,14 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
       }
     }, 0);
   };
-  const formVariants = {
-    open: {
-      opacity: 1,
-      height: "auto",
-      transition: {
-        type: "tween",
-        duration: 0.15,
-        ease: "circOut",
-      },
-    },
-    closed: {
-      opacity: 0,
-      height: 0,
-      transition: {
-        type: "tween",
-        duration: 0.15,
-        ease: "circIn",
-      },
-    },
-  };
+
   return (
     <>
-      <AnimatePresence initial={false} mode="wait">
-        {isOpen ? (
+      <div ref={parent}>
+        {isOpen && (
           <Form {...form}>
-            <motion.form
-              layout="size"
+            <form
               ref={ref}
-              variants={formVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
               className={` overflow-hidden p-3 border space-y-2 border-[#E0E0E0] rounded-xl shadow-outline-black-xs bg-white`}
               onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
             >
@@ -128,10 +105,10 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
                   Cancel
                 </Button>
               </div>
-            </motion.form>
+            </form>
           </Form>
-        ) : null}
-      </AnimatePresence>
+        )}
+      </div>
       <Button
         ref={btnRef}
         className={cn(

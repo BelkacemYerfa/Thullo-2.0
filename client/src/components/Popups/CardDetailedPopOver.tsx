@@ -65,7 +65,7 @@ export const CardDetailedPopOver = ({
     }
   }, []);
   return (
-    <Drawer.Root open={isOpen} onOpenChange={handleOpen}>
+    <Drawer.Root open={isOpen} onOpenChange={handleOpen} shouldScaleBackground>
       <Drawer.Trigger className="cursor-pointer">{taskTitle}</Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed z-[5] inset-0 bg-black/40 " />
@@ -120,7 +120,7 @@ export const CardDetailedPopOver = ({
                       Actions
                     </h3>
                     <div className="flex flex-row items-center md:flex-col gap-3 ">
-                      <div className="p-0 relative flex md:block items-center md:space-y-2 gap-x-2 w-full">
+                      <div className="p-0 relative flex md:flex-col items-center gap-2 w-full">
                         <CardAssignedMembers />
                         <CardLabelsPopOver />
                         <CardCoverPopOver />
