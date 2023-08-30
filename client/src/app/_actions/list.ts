@@ -2,7 +2,6 @@
 
 import client from "@/lib/prismaDb";
 import { verifyUserAuth } from "./board";
-import { revalidatePath, revalidateTag } from "next/cache";
 import { listNameSchemaType } from "@/validation/list-name";
 
 export async function addList(data: listNameSchemaType & { id: string }) {
@@ -22,7 +21,7 @@ export async function addList(data: listNameSchemaType & { id: string }) {
   });
 }
 
-type Cards = Pick<card, "comments" | "labels" | "id">[];
+type Cards = Pick<Card, "comments" | "labels" | "id">[];
 
 export async function deleteList(id: string) {
   const speed = performance.now();

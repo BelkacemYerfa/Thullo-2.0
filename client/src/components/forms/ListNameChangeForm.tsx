@@ -23,6 +23,7 @@ type ListNameChangeFormProps = {
 export const ListNameChangeForm = ({
   title,
   listId,
+  ...props
 }: ListNameChangeFormProps) => {
   const [name, setName] = useState<string>(title);
   const [optimisticData, setOptimisticData] = useOptimistic({
@@ -82,6 +83,7 @@ export const ListNameChangeForm = ({
   ) : (
     <>
       <h3
+        {...props}
         className={`text-sm text-[#333333] font-medium ${
           optimisticData.pending ? "opacity-50" : ""
         } `}

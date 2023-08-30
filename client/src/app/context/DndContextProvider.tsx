@@ -8,15 +8,9 @@ import {
   Droppable,
   resetServerContext,
 } from "react-beautiful-dnd";
-import { InitialData, Column } from "./initialData";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { io } from "socket.io-client";
-import { useQuery } from "@tanstack/react-query";
-import client from "@/lib/prismaDb";
-import { Lists } from "../(lobby)/board/[boardId]/page";
-import { getBoardInfo } from "../_actions/board";
-import { Icons } from "@/components/Icons";
 
 /* const socket = io("http://localhost:5000");
  */
@@ -163,7 +157,7 @@ export const DndContextProvider = ({
             {initialData.columnOrder.map((columnId, index) => {
               const column = initialData.columns[columnId];
               const tasks = column.taskIds.map(
-                (taskId: string) => db.tasks[taskId]
+                (taskId: string) => initialData.tasks[taskId]
               );
               return (
                 <Draggable key={columnId} draggableId={columnId} index={index}>

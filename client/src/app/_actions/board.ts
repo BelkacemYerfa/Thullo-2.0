@@ -9,7 +9,6 @@ import { Results } from "@/components/Popups/SearchPopOver";
 import { boardDescriptionSchemaType } from "@/validation/board-description";
 import { Visibility } from "@prisma/client";
 import { Lists } from "../(lobby)/board/[boardId]/page";
-import { InitialData } from "../context/initialData";
 
 export const verifyUserAuth = async () => {
   const user = await currentUser();
@@ -49,7 +48,7 @@ export async function addBoard(
       },
     },
   });
-  revalidatePath("/");
+  revalidatePath("/board");
 }
 
 export async function searchForBoards(query: string) {
@@ -86,7 +85,7 @@ export async function deleteBoard(id: string) {
       id,
     },
   });
-  revalidatePath("/");
+  revalidatePath("/board");
 }
 
 export async function updateBoardDescription(

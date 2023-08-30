@@ -61,7 +61,7 @@ export async function updateCardName() {
   });
 }
 
-export async function getCardInfoWithList(cardId: string): Promise<card> {
+export async function getCardInfoWithList(cardId: string): Promise<Card> {
   const card = await client.card.findUnique({
     where: {
       id: cardId,

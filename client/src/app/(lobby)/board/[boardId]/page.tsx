@@ -18,11 +18,11 @@ export type BoardDashboardProps = {
   boardId: string;
 };
 
-export type Lists = Pick<list, "id" | "name"> & {
+export type Lists = Pick<List, "id" | "name"> & {
   cards: Cards;
 };
 
-export type Cards = Pick<card, "id" | "name" | "labels" | "comments">[];
+export type Cards = Pick<Card, "id" | "name" | "labels" | "comments">[];
 
 export async function generateMetadata({
   params: { boardId },

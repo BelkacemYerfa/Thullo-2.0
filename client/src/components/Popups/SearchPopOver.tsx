@@ -22,7 +22,7 @@ export type Results = {
   items: Items;
 }[];
 
-type Items = Pick<board, "id" | "name">[];
+type Items = Pick<Board, "id" | "name">[];
 
 export const SearchPopOver = () => {
   const router = useRouter();

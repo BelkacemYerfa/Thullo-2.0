@@ -2,7 +2,6 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { TodoCard } from "../card/TodoCard";
 import { CardListForm } from "../forms/CardListForm";
 import { ListNameChangeForm } from "../forms/ListNameChangeForm";
-import { Column, Task } from "@/app/context/initialData";
 import { ScrollArea } from "../ui/scroll-area";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 

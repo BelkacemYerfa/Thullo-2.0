@@ -1,58 +1,78 @@
-type board = {
+interface Board {
   id: string;
   name: string;
   description: string;
-  image: Pick<images, "fileUrl">[];
+  image: Pick<Image, "fileUrl">[];
   user: string;
-  Lists: list[];
-};
+  Lists: List[];
+}
 
-type list = {
+interface List {
   id: string;
   name: string;
-  cards: card[];
-};
+  cards: Card[];
+}
 
-type card = {
+interface Card {
   id: string;
   name: string;
   description: string;
   user: string;
   image: string;
-  comments: comment[] | null;
-  list: Pick<list, "name">;
+  comments: Comment[] | null;
+  list: Pick<List, "name">;
   labels: labels[];
-};
+}
 
-type comment = {
+interface Comment {
   id: string;
   text: string;
   user: string;
-};
+}
 
-type images = {
+interface Image {
   id: string;
   fileKey: string;
   fileUrl: string;
-};
+}
 
-type User = {
+interface User {
   id: string;
   name: string;
   image: string;
   boardId: string;
   commentId: string;
-};
+}
 
-type comments = {
+interface comments {
   id: string;
   text: string;
   createdAt: string;
   user: Pick<User, "name" | "image" | "id">;
-};
+}
 
-type labels = {
+interface labels {
   id: string;
   name: string;
   color: string;
-};
+}
+
+interface Task {
+  id: string;
+  content: string;
+  image?: string;
+  labels?: labels[];
+  comments?: Pick<comments, "id">[];
+}
+
+interface Column {
+  id: string;
+  title: string;
+  taskIds: string[];
+}
+
+interface InitialData {
+  tasks: Record<string, Task>;
+  columns: Record<string, Column>;
+  columnOrder: string[];
+}
