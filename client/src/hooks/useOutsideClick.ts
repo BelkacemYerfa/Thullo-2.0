@@ -6,6 +6,7 @@ export const useOutsideClick = <T extends HTMLElement>() => {
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
       setRename(false);
+      event.preventDefault();
     }
   };
   useEffect(() => {

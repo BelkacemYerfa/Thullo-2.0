@@ -26,7 +26,7 @@ export const TasksList = ({
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className={` relative w-[340px] px-2 h-full rounded-xl `}
+          className={` w-[340px] px-2 h-full rounded-xl `}
         >
           <div className="relative h-full flex flex-col gap-y-3">
             <div

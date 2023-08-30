@@ -8,9 +8,10 @@ import {
   Droppable,
   resetServerContext,
 } from "react-beautiful-dnd";
-import { useState } from "react";
+import { UIEvent, useEffect, useRef, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { io } from "socket.io-client";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 /* const socket = io("http://localhost:5000");
  */
@@ -27,7 +28,6 @@ export const DndContextProvider = ({
 
   const [initialData, setInitialData] = useState<InitialData>(db);
   const [cachedColumnOrder, setCachedColumnOrder] = useState<string[]>([]);
-
   const onBeforeCapture = () => {
     setCachedColumnOrder(initialData.columnOrder);
   };
@@ -149,7 +149,6 @@ export const DndContextProvider = ({
       <Droppable droppableId="board" direction="horizontal" type="column">
         {(provider) => (
           <div
-            id="boardColumnContainer"
             className="h-full flex snap-x snap-mandatory md:snap-none  relative overflow-x-auto "
             {...provider.droppableProps}
             ref={provider.innerRef}

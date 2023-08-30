@@ -76,3 +76,8 @@ interface InitialData {
   columns: Record<string, Column>;
   columnOrder: string[];
 }
+
+interface StoredImage {
+  fileKey: string | undefined;
+  fileUrl: string | undefined;
+}
