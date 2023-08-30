@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
-import { AspectRatio } from "../ui/aspect-ratio";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type UploadImageFormProps = {
   image: File[];

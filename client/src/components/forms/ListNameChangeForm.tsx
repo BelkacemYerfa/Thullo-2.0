@@ -1,15 +1,19 @@
 "use client";
 
-import { Input } from "../ui/input";
-import { Icons } from "../Icons";
-import { Form, FormField, FormItem } from "../ui/form";
+import { Input } from "@/components/ui/input";
+import { Icons } from "@/components/Icons";
+import { Form, FormField, FormItem } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { listNameSchema, listNameSchemaType } from "@/validation/list-name";
-import { Button } from "../ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Separator } from "../ui/separator";
-import { ListDeletePopOver } from "../Popups/ListDeletePopOver";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
+import { ListDeletePopOver } from "@/components/Popups/ListDeletePopOver";
 import { useState } from "react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { updateListName } from "@/app/_actions/list";

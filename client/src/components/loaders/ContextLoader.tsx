@@ -1,4 +1,4 @@
-import { ListLoader } from "./ListLoader";
+import { ListLoader } from "@/components/loaders/ListLoader";
 
 export const ContextLoader = () => {
   return (

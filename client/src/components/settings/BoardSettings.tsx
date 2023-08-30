@@ -1,8 +1,8 @@
 import client from "@/lib/prismaDb";
-import { BoardAccessPopOver } from "../Popups/BoardAccessPopOver";
-import { BoardUserInvitePopOver } from "../Popups/BoardUserInvitePopOver";
-import { BoardSheet } from "../sheet/BoardSheet";
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { BoardAccessPopOver } from "@/components/Popups/BoardAccessPopOver";
+import { BoardUserInvitePopOver } from "@/components/Popups/BoardUserInvitePopOver";
+import { BoardSheet } from "@/components/sheet/BoardSheet";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 type BoardSettingsProps = {
   boardId: string;
@@ -42,7 +42,9 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
                       width={40}
                       loading="lazy"
                     />
-                    <AvatarFallback>{user}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">
+                      {user}
+                    </AvatarFallback>
                   </Avatar>
                 ) : (
                   <div key={index + user} className="relative ">

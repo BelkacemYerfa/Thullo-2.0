@@ -1,5 +1,5 @@
-import { Skeleton } from "../ui/skeleton";
-import { CardLoader } from "./CardLoader";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CardLoader } from "@/components/loaders/CardLoader";
 
 export const ListLoader = () => {
   return (

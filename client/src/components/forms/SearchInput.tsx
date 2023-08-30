@@ -2,7 +2,7 @@
 
 import { Form, useForm } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { searchSchema, searchSchemaType } from "@/validation/search";
 

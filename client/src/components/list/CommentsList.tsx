@@ -1,11 +1,11 @@
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { Avatar, AvatarFallback } from "../ui/avatar";
-import { DeleteBtn } from "../Btns";
-import { ScrollArea } from "../ui/scroll-area";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { DeleteBtn } from "@/components/Btns";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { getComments } from "@/app/_actions/card";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CommentsListProps = {
   cardId: string;

@@ -7,10 +7,10 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -19,7 +19,7 @@ import {
   VerifyEmailSchema,
   VerifyEmailSchemaType,
 } from "@/validation/verify-email";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 
 export const VerifyEmailForm = () => {
   const { signIn, isLoaded } = useSignIn();

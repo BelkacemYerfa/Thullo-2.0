@@ -3,17 +3,17 @@
 import { Drawer } from "vaul";
 import Link from "next/link";
 import Image from "next/image";
-import { CardDescriptionForm } from "../forms/CardDescriptionForm";
-import { ScrollArea } from "../ui/scroll-area";
-import { CardCommentForm } from "../forms/CardCommentForm";
-import { CommentsList } from "../list/CommentsList";
-import { Icons } from "../Icons";
+import { CardDescriptionForm } from "@/components/forms/CardDescriptionForm";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CardCommentForm } from "@/components/forms/CardCommentForm";
+import { CommentsList } from "@/components/list/CommentsList";
+import { Icons } from "@/components/Icons";
 import { CardAssignedMembers } from "./AddUserCardActions";
 import { CardCoverPopOver } from "./CardCoverPopOver";
 import { CardLabelsPopOver } from "./CardLabelsPopOver";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useEffect, useTransition } from "react";
-import { AspectRatio } from "../ui/aspect-ratio";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
@@ -56,12 +56,10 @@ export const CardDetailedPopOver = ({
     });
   };
   useEffect(() => {
-    if (searchParams.has("cardId")) {
-      const cardId = searchParams.get("cardId");
-      if (cardId) {
-        if (cardId !== cardId) setIsOpen(true);
-        else setIsOpen(true);
-      }
+    const currentCard = searchParams.get("cardId");
+    if (currentCard) {
+      if (currentCard !== cardId) setIsOpen(false);
+      else setIsOpen(true);
     }
   }, []);
   return (

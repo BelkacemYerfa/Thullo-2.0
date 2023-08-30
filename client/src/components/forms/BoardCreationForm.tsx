@@ -1,10 +1,10 @@
 "use client";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { BoardFormSchema, BoardFormSchemaType } from "@/validation/search";
@@ -12,7 +12,7 @@ import { UploadImageForm } from "./UploadImageForm";
 import { useGenerationStore } from "@/lib/store/Store";
 import { addBoard } from "@/app/_actions/board";
 import { useUploadThing } from "@/lib/uploadthing/uploadthing";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 
 export const BoardCreationForm = () => {
   const { setBoardCard } = useGenerationStore();

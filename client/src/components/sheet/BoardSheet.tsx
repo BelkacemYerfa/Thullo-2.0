@@ -1,6 +1,6 @@
-import { Icons } from "../Icons";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
+import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -8,10 +8,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { BoardDescriptionForm } from "../forms/BoardDescriptionForm";
-import { ScrollArea } from "../ui/scroll-area";
+import { BoardDescriptionForm } from "@/components/forms/BoardDescriptionForm";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { currentUser } from "@clerk/nextjs";
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 type BoardSheetProps = {
   users: string[];

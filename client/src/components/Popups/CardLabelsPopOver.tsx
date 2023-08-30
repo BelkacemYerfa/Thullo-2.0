@@ -1,11 +1,11 @@
-import { Icons } from "../Icons";
-import { LabelCreationForm } from "../forms/LabelCreationForm";
-import { Button } from "../ui/button";
+import { Icons } from "@/components/Icons";
+import { LabelCreationForm } from "@/components/forms/LabelCreationForm";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 
 export const CardLabelsPopOver = () => {
   return (

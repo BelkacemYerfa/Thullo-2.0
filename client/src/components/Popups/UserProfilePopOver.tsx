@@ -1,8 +1,8 @@
 import { UserProfile } from "@clerk/nextjs";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { DropdownMenuShortcut } from "../ui/dropdown-menu";
-import { Icons } from "../Icons";
-import { ScrollArea } from "../ui/scroll-area";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { DropdownMenuShortcut } from "@/components/ui/dropdown-menu";
+import { Icons } from "@/components/Icons";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const UserProfilePopOver = () => {
   return (

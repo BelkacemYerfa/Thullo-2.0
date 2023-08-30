@@ -7,10 +7,10 @@ import {
   boardDescriptionSchemaType,
   boardDescriptionSchema,
 } from "@/validation/board-description";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 import { useTransition } from "react";
 import {
   getBoardDescription,

@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/command";
 import Image from "next/image";
 import { useCallback, useEffect, useState, useTransition } from "react";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 import { searchForBoards } from "@/app/_actions/board";
 
 export type Results = {

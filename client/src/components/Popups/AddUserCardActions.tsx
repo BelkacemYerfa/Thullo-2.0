@@ -6,18 +6,22 @@ import {
   CommandInput,
   CommandItem,
   CommandGroup,
-} from "../ui/command";
+} from "@/components/ui/command";
 import {
   DropdownMenuTrigger,
   DropdownMenu,
   DropdownMenuContent,
-} from "../ui/dropdown-menu";
-import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+} from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { useState, forwardRef } from "react";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
@@ -37,54 +41,42 @@ const Users = [
 ];
 
 export const CardAssignedMembers = () => {
-  const {
-    ref: containerRef,
-    rename: isMembersOpen,
-    setRename: setIsMembersOpen,
-  } = useOutsideClick<HTMLDivElement>();
-  const [parent] = useAutoAnimate();
-
   return (
-    <>
-      <Button
-        className="flex items-center w-fit sm:w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4"
-        onClick={() => setIsMembersOpen(!isMembersOpen)}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button className="flex items-center w-fit sm:w-full justify-start gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg text-sm py-3 px-4">
+          <Icons.Users2 className="h-5 w-5" />
+          <span className="hidden sm:flex">Members</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="p-3 space-y-4 rounded-xl w-64"
+        align="start"
       >
-        <Icons.Users2 className="h-5 w-5" />
-        <span className="hidden sm:flex">Members</span>
-      </Button>
-      <div ref={parent}>
-        {isMembersOpen && (
-          <div
-            className="absolute top-12 md:top-0 md:relative bg-white p-2 md:p-0 shadow-outline-black-xs md:shadow-none rounded-xl w-60 md:w-full space-y-3"
-            ref={containerRef}
-          >
-            <div className="w-full space-y-3">
-              {Users.map((user) => (
-                <div key={user.id} className="flex items-center gap-x-4">
-                  <Avatar className="rounded-lg">
-                    <AvatarImage
-                      src={user.profilePic}
-                      alt={user.username}
-                      loading="lazy"
-                    />
-                    <AvatarFallback>{user.username}</AvatarFallback>
-                  </Avatar>
-                  <p className="text-sm text-[#333333] font-semibold">
-                    {user.username}
-                  </p>
-                </div>
-              ))}
-              <AddUserPopOver ref={containerRef} />
+        <div className="w-full space-y-3">
+          {Users.map((user) => (
+            <div key={user.id} className="flex items-center gap-x-4">
+              <Avatar className="rounded-lg">
+                <AvatarImage
+                  src={user.profilePic}
+                  alt={user.username}
+                  loading="lazy"
+                />
+                <AvatarFallback>{user.username}</AvatarFallback>
+              </Avatar>
+              <p className="text-sm text-[#333333] font-semibold">
+                {user.username}
+              </p>
             </div>
-          </div>
-        )}
-      </div>
-    </>
+          ))}
+          <AddUserPopOver />
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
-export const AddUserPopOver = forwardRef<HTMLDivElement>(({}, ref) => {
+export const AddUserPopOver = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
@@ -101,7 +93,6 @@ export const AddUserPopOver = forwardRef<HTMLDivElement>(({}, ref) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        ref={ref}
         className="p-3 space-y-4 rounded-xl w-64"
         align="start"
       >
@@ -157,7 +148,7 @@ export const AddUserPopOver = forwardRef<HTMLDivElement>(({}, ref) => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-});
+};
 
 AddUserPopOver.displayName = "AddUserPopOver";
 

@@ -3,22 +3,16 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandGroup,
-} from "../ui/command";
+import { Command, CommandEmpty, CommandInput } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useCallback, useEffect, useState, useTransition } from "react";
-import { Icons } from "../Icons";
-import { Button } from "../ui/button";
+import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
 import { searchPhotos } from "@/lib/unsplash-api/searchPhotos";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type SearchDataResults = {
   image: string;

@@ -1,18 +1,18 @@
 import { Form, FormField, FormItem } from "../ui/form";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import {
   labelCreationSchema,
   labelCreationSchemaType,
 } from "@/validation/label-creation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
-import { Skeleton } from "../ui/skeleton";
-import { Badge } from "../ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Icons } from "../Icons";
-import { ScrollArea } from "../ui/scroll-area";
+import { Icons } from "@/components/Icons";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { addLabel, getLabels } from "@/app/_actions/card";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";

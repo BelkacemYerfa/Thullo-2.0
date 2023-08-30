@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Card, CardContent, CardTitle, CardHeader } from "../ui/card";
+import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { AspectRatio } from "../ui/aspect-ratio";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type BoardCardProps = {
   title: string;

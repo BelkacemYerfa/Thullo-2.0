@@ -1,5 +1,5 @@
-import { Icons } from "../Icons";
-import { Skeleton } from "../ui/skeleton";
+import { Icons } from "@/components/Icons";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const NavLoader = () => {
   return (

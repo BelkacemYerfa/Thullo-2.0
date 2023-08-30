@@ -1,5 +1,5 @@
-import { AspectRatio } from "../ui/aspect-ratio";
-import { Skeleton } from "../ui/skeleton";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const BoardCardLoader = () => {
   return (

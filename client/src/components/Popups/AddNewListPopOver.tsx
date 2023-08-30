@@ -1,13 +1,13 @@
 "use client";
 
-import { Icons } from "../Icons";
-import { ListCreationForm } from "../forms/ListCreationFrom";
+import { Icons } from "@/components/Icons";
+import { ListCreationForm } from "@/components/forms/ListCreationFrom";
 import {
   Dialog,
   DialogTrigger,
   DialogContent,
   DialogHeader,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 import { useGenerationStore } from "@/lib/store/Store";
 
 type AddNewListPopOverProps = {

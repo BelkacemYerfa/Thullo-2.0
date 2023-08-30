@@ -9,10 +9,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { deleteList } from "@/app/_actions/list";
 import { useTransition } from "react";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useRouter } from "next/navigation";
 

@@ -1,9 +1,12 @@
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import {
+  Draggable,
+  Droppable,
+  DraggableProvidedDragHandleProps,
+} from "react-beautiful-dnd";
 import { TodoCard } from "../card/TodoCard";
-import { CardListForm } from "../forms/CardListForm";
-import { ListNameChangeForm } from "../forms/ListNameChangeForm";
-import { ScrollArea } from "../ui/scroll-area";
-import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
+import { CardListForm } from "@/components/forms/CardListForm";
+import { ListNameChangeForm } from "@/components/forms/ListNameChangeForm";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type TasksListProps = {
   column: Column;
@@ -16,6 +19,7 @@ export const TasksList = ({
   tasks,
   dragHandleProps,
 }: TasksListProps) => {
+  const { id, title } = column;
   return (
     <Droppable droppableId={column.id}>
       {(provided, snapshot) => (
@@ -29,7 +33,7 @@ export const TasksList = ({
               className="sticky top-0 z-[4] flex items-center justify-between w-full py-2 px-1 gap-2 "
               {...dragHandleProps}
             >
-              <ListNameChangeForm title={column.title} listId={column.id} />
+              <ListNameChangeForm title={title} listId={id} />
             </div>
             <ScrollArea className="h-full w-full flex-1 px-3 ">
               <div className="h-full ">
@@ -42,13 +46,13 @@ export const TasksList = ({
                         {...provided.draggableProps}
                         className={`pb-3`}
                       >
-                        <TodoCard cardId={task.id} task={task} />
+                        <TodoCard task={task} />
                       </div>
                     )}
                   </Draggable>
                 ))}
                 {provided.placeholder}
-                <CardListForm listId={column.id} />
+                <CardListForm listId={id} />
               </div>
             </ScrollArea>
           </div>

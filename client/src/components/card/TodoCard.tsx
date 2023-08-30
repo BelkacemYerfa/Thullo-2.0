@@ -5,23 +5,23 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Badge } from "../ui/badge";
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Icons } from "../Icons";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Icons } from "@/components/Icons";
 import { useUser } from "@clerk/nextjs";
-import { CardDetailedPopOver } from "../Popups/CardDetailedPopOver";
-import { AddUserToCard } from "../Popups/AddUserCardActions";
-import { AspectRatio } from "../ui/aspect-ratio";
+import { CardDetailedPopOver } from "@/components/Popups/CardDetailedPopOver";
+import { AddUserToCard } from "@/components/Popups/AddUserCardActions";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+
 type TodoCardProps = {
   task: Task;
-  cardId: string;
 };
 
-export const TodoCard = ({ task, cardId }: TodoCardProps) => {
+export const TodoCard = ({ task }: TodoCardProps) => {
   const { user } = useUser();
-  const { labels, comments } = task;
+  const { labels, comments, id: cardId, content } = task;
 
   return (
     <Card>
@@ -40,7 +40,7 @@ export const TodoCard = ({ task, cardId }: TodoCardProps) => {
           </AspectRatio>
         ) : null}
         <CardTitle className="text-base font-normal p-0 group w-fit flex flex-col -space-y-[2.5px] items-center">
-          <CardDetailedPopOver cardId={cardId} taskTitle={task.content} />
+          <CardDetailedPopOver cardId={cardId} taskTitle={content} />
           <div className="w-0 h-[1px] bg-[#828282] group-hover:w-full duration-200 ease-linear" />
         </CardTitle>
       </CardHeader>

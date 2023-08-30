@@ -1,7 +1,7 @@
 "use client";
 
-import { Dialog, DialogTrigger, DialogContent } from "../ui/dialog";
-import { BoardCreationForm } from "../forms/BoardCreationForm";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { BoardCreationForm } from "@/components/forms/BoardCreationForm";
 import { useGenerationStore } from "@/lib/store/Store";
 
 export const AddBoardPopOver = () => {

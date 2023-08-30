@@ -1,8 +1,8 @@
 "use client";
 
 import { useTransition } from "react";
-import { Icons } from "./Icons";
-import { Toggle } from "./ui/toggle";
+import { Icons } from "@/components/Icons";
+import { Toggle } from "@/components/ui/toggle";
 import { deleteComment } from "@/app/_actions/card";
 
 type DeleteBtnProps = {

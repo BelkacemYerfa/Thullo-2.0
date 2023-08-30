@@ -7,13 +7,13 @@ import {
   DropdownMenuShortcut,
   DropdownMenuSeparator,
   DropdownMenuLabel,
-} from "../ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { User } from "@clerk/nextjs/dist/types/server";
-import { Icons } from "../Icons";
-import { SearchPopOver } from "../Popups/SearchPopOver";
-import { LogOutBtn } from "../auth/LogOutBtn";
-import { UserProfilePopOver } from "../Popups/UserProfilePopOver";
+import { Icons } from "@/components/Icons";
+import { SearchPopOver } from "@/components/Popups/SearchPopOver";
+import { LogOutBtn } from "@/components/auth/LogOutBtn";
+import { UserProfilePopOver } from "@/components/Popups/UserProfilePopOver";
 
 type NavBarProps = {
   user: User;

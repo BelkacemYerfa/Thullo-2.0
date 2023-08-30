@@ -7,17 +7,17 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchemaType, SignInSchema } from "@/validation/auth-sign-in";
-import { Button } from "../ui/button";
-import { redirect, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { useSignIn } from "@clerk/nextjs";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { Icons } from "../Icons";
-import { PasswordInput } from "../PasswordInput";
+import { Icons } from "@/components/Icons";
+import { PasswordInput } from "@/components/PasswordInput";
 
 export const SignInForm = () => {
   const router = useRouter();

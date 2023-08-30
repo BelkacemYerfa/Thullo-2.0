@@ -4,7 +4,7 @@ import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
 import { type OAuthStrategy } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 import { useState } from "react";
 
 const oauthProviders = [

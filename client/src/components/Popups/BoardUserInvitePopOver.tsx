@@ -5,15 +5,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "../ui/button";
-import { Icons } from "../Icons";
+import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/Icons";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "../ui/command";
+} from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
 

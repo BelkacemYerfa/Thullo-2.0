@@ -1,20 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Form, FormField, FormItem } from "../ui/form";
-import { Textarea } from "../ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Form, FormField, FormItem } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import {
   boardDescriptionSchema,
   boardDescriptionSchemaType,
 } from "@/validation/board-description";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { addComment } from "@/app/_actions/card";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 
 export const CardCommentForm = () => {
   const { user } = useUser();

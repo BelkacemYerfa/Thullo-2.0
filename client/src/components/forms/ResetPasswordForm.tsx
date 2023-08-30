@@ -7,10 +7,10 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -19,8 +19,8 @@ import {
   ResetPasswordSchema,
   ResetPasswordSchemaType,
 } from "@/validation/reset-password";
-import { Icons } from "../Icons";
-import { PasswordInput } from "../PasswordInput";
+import { Icons } from "@/components/Icons";
+import { PasswordInput } from "@/components/PasswordInput";
 
 export const ResetPasswordForm = () => {
   const { signIn, setActive, isLoaded } = useSignIn();

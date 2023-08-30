@@ -1,10 +1,10 @@
 "use client";
 
 import { useTransition } from "react";
-import { Icons } from "../Icons";
-import { Button } from "../ui/button";
+import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem } from "../ui/form";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import {
   boardDescriptionSchema,

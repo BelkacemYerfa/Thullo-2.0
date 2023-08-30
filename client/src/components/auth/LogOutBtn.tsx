@@ -3,10 +3,10 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SignOutButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 import { useTransition } from "react";
 import { useMounted } from "@/hooks/useMounted";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 export const LogOutBtn = () => {

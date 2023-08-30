@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Icons } from "../Icons";
-import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+import { Icons } from "@/components/Icons";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { updateBoardVisibility } from "@/app/_actions/board";
 import { Visibility } from "@prisma/client";
 
