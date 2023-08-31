@@ -12,6 +12,7 @@ import { BoardDescriptionForm } from "@/components/forms/BoardDescriptionForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { currentUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { BoardUsers } from "../BordUsers";
 
 type BoardSheetProps = {
   users: string[];
@@ -81,35 +82,7 @@ export const BoardSheet = async ({
                   <Icons.Users2 className="h-4 w-4" />
                   <h3 className="text-xs font-semibold">Team</h3>
                 </div>
-                <div className="space-y-4 ">
-                  <div className="w-full flex items-center justify-between">
-                    <div className="flex items-center gap-x-4">
-                      <Avatar className="h-10 w-10 rounded-lg">
-                        <AvatarImage
-                          src={user?.imageUrl}
-                          alt={user?.username ?? ""}
-                          height={40}
-                          width={40}
-                          loading="lazy"
-                          className="object-cover"
-                        />
-                        <AvatarFallback>{user?.username}</AvatarFallback>
-                      </Avatar>
-                      <h3 className="text-sm text-[#333333] font-semibold">
-                        {user?.username ?? user?.emailAddresses[0].emailAddress}
-                      </h3>
-                    </div>
-                    {1 === 1 ? (
-                      <p className="text-sm text-[#828282] font-medium ">
-                        Admin
-                      </p>
-                    ) : (
-                      <Button className="border border-solid border-[#EB5757] rounded-xl py-1 px-2 text-[#EB5757] bg-transparent hover:bg-transparent">
-                        Remove
-                      </Button>
-                    )}
-                  </div>
-                </div>
+                <BoardUsers />
               </div>
             </div>
           </ScrollArea>

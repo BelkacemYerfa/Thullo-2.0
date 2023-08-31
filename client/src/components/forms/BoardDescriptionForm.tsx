@@ -18,6 +18,7 @@ import {
 } from "@/app/_actions/board";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useQuery } from "@tanstack/react-query";
+import { DescriptionLoader } from "../loaders/DescriptionLoader";
 
 type BoardDescriptionFormProps = {
   boardId: string;
@@ -51,7 +52,9 @@ export const BoardDescriptionForm = ({
       }
     });
   };
-  return (
+  return isLoading ? (
+    <DescriptionLoader />
+  ) : (
     <div className="space-y-2 ">
       <div className="flex items-center gap-x-3">
         <div className="text-[#BDBDBD] flex items-center gap-x-[6px]">
