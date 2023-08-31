@@ -78,10 +78,10 @@ export const TodoCard = ({ task }: TodoCardProps) => {
             <AddUserToCard />
           </div>
           <div className="flex items-center gap-x-2">
-            {typeof comments?.length === "number" ? (
+            {comments ? (
               <div className="flex items-center gap-x-1 text-[#BDBDBD]">
-                <Icons.MessageCircle className="h-5 w-5  " />
-                <span>{comments?.length}</span>
+                <Icons.MessageCircle className="h-5 w-5 " />
+                <span>{comments}</span>
               </div>
             ) : null}
             {/* <div className="flex items-center gap-x-1 text-[#BDBDBD]">

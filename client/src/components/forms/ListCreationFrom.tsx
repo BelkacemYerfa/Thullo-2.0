@@ -11,6 +11,7 @@ import { addList } from "@/app/_actions/list";
 import { useTransition } from "react";
 import { Icons } from "@/components/Icons";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type ListCreationFormProps = {
   boardId: string;
@@ -30,6 +31,7 @@ export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
     startTransition(async () => {
       try {
         await addList({ ...data, id: boardId });
+        toast.success("List added successfully");
         setNewList(false);
         router.refresh();
       } catch (error) {

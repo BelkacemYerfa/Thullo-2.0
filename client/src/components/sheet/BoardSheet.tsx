@@ -29,7 +29,7 @@ export const BoardSheet = async ({
   return (
     <Sheet>
       <SheetTrigger>
-        <div className="flex items-center gap-x-[10px] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg  text-sm py-3 px-4 ">
+        <div className="flex items-center gap-[0.625rem] text-[#828282] bg-[#F2F2F2] hover:bg-[#F2F2F2] rounded-lg  text-sm py-[0.625rem] px-3 ">
           <Icons.MoreHorizontal className="h-5 w-5" />
           Show Menu
         </div>
@@ -54,14 +54,14 @@ export const BoardSheet = async ({
                   </p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Avatar className="h-10 w-10 rounded-lg">
+                  <Avatar className="h-9 w-9 rounded-lg">
                     <AvatarImage
                       src={
                         "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
                       }
                       alt={user?.username ?? ""}
-                      height={40}
-                      width={40}
+                      height={36}
+                      width={36}
                       loading="lazy"
                     />
                     <AvatarFallback>{user?.username}</AvatarFallback>
@@ -78,7 +78,7 @@ export const BoardSheet = async ({
               </div>
               <BoardDescriptionForm boardId={boardId} />
               <div className="space-y-5">
-                <div className="text-[#BDBDBD] flex items-center gap-x-[6px]">
+                <div className="text-[#BDBDBD] flex items-center gap-1.5">
                   <Icons.Users2 className="h-4 w-4" />
                   <h3 className="text-xs font-semibold">Team</h3>
                 </div>

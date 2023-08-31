@@ -15,6 +15,7 @@ import { useTransition } from "react";
 import { Icons } from "@/components/Icons";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type ListDeletePopOverProps = {
   listId: string;
@@ -32,6 +33,7 @@ export const ListDeletePopOver = ({ listId }: ListDeletePopOverProps) => {
     startTransition(async () => {
       try {
         await deleteList(listId);
+        toast.error("List deleted successfully");
         setIsDialogOpen(false);
         router.refresh();
       } catch (error) {

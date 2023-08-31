@@ -30,7 +30,7 @@ export const BoardUserInvitePopOver = () => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger
-        className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg h-10 w-10 flex items-center justify-center "
+        className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg h-9 w-9 flex items-center justify-center "
         aria-label="open new user"
       >
         <Icons.Plus className="h-5 w-5 text-white" />

@@ -49,7 +49,7 @@ export const BoardAccessPopOver = ({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger
-        className="flex items-center gap-x-[10px] text-[#828282] bg-[#F2F2F2] rounded-lg text-sm py-3 px-4 disabled:cursor-not-allowed disabled:opacity-80 "
+        className="flex items-center gap-x-[10px] text-[#828282] bg-[#F2F2F2] rounded-lg text-sm py-[0.625rem] px-3 disabled:cursor-not-allowed disabled:opacity-80 "
         disabled={isPending}
       >
         {boardAccess === Visibility.PUBLIC ? (

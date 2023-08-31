@@ -26,19 +26,19 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
   });
   return (
     <section className="flex items-center justify-between w-full">
-      <div className="flex items-center gap-x-5">
+      <div className="flex items-center gap-4">
         <BoardAccessPopOver boardId={boardId} visibility={board.visibility} />
         <div className="flex items-center gap-x-4">
-          <div className="hidden sm:flex items-center gap-x-4">
+          <div className="hidden sm:flex items-center gap-3">
             {boardUser.slice(0, 3).map((user, index) =>
               index <= 2 ? (
                 index !== 2 ? (
-                  <Avatar key={index + user} className="h-10 w-10 rounded-lg">
+                  <Avatar key={index + user} className="h-9 w-9 rounded-lg">
                     <AvatarImage
                       src={user}
                       alt={"user"}
-                      height={40}
-                      width={40}
+                      height={36}
+                      width={32}
                       loading="lazy"
                     />
                     <AvatarFallback className="rounded-lg">
@@ -47,18 +47,20 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
                   </Avatar>
                 ) : (
                   <div key={index + user} className="relative ">
-                    <Avatar className="h-10 w-10 rounded-lg">
+                    <Avatar className="h-9 w-9 rounded-lg">
                       <AvatarImage
                         src={user}
                         alt={"user"}
-                        height={40}
-                        width={40}
+                        height={36}
+                        width={36}
                         loading="lazy"
                       />
-                      <AvatarFallback>{user}</AvatarFallback>
+                      <AvatarFallback className="rounded-lg">
+                        {user}
+                      </AvatarFallback>
                     </Avatar>
                     {boardUser.length > 3 ? (
-                      <div className="absolute inset-0 flex items-center justify-center rounded-lg h-10 w-10 bg-[#BDBDBD]/70  text-[#4F4F4F] ">
+                      <div className="absolute inset-0 flex items-center justify-center rounded-lg h-9 w-9 bg-[#BDBDBD]/70  text-[#4F4F4F] ">
                         +{boardUser.length - 3}
                       </div>
                     ) : null}

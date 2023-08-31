@@ -1,9 +1,10 @@
 import { getBoardInfo, verifyUserAuth } from "@/app/_actions/board";
 import { DndContextProvider } from "@/app/context/DndContextProvider";
+import { Shell } from "@/components/Shell";
 import { NavBar } from "@/components/navigation/Navbar";
 import { BoardSettings } from "@/components/settings/BoardSettings";
 import client from "@/lib/prismaDb";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 type BoardPageProps = {
   params: {
@@ -36,7 +37,7 @@ export async function generateMetadata({
       description: true,
     },
   });
-  if (!board) redirect("/");
+  if (!board) notFound();
   return {
     title: `${board.name}`,
     description: ` ${boardId} , description: ${board.description}`,
@@ -55,10 +56,10 @@ export default async function BoardPage({
       name: true,
     },
   });
-  if (!board) redirect("/");
+  if (!board) notFound();
   const db = await getBoardInfo(boardId);
   return (
-    <main className="h-screen w-full space-y-6 flex flex-col">
+    <Shell>
       <section className="w-full space-y-5">
         <NavBar user={user} boardTitle={board.name} />
         <section className="max-w-[95%] m-auto">
@@ -68,6 +69,6 @@ export default async function BoardPage({
       <section className="flex-1 max-w-[95%] m-auto bg-[#F8F9FD] rounded-t-xl sm:rounded-t-3xl px-2 pt-2 sm:px-4 sm:pt-4 w-full h-full overflow-y-hidden pb-2 ">
         <DndContextProvider boardId={boardId} db={db} />
       </section>
-    </main>
+    </Shell>
   );
 }

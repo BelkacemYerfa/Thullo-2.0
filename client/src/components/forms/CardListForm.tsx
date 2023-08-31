@@ -13,6 +13,7 @@ import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { addCard } from "@/app/_actions/card";
 import { useRouter } from "next/navigation";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { toast } from "sonner";
 
 type CardListFormProps = {
   listId: string;
@@ -38,6 +39,7 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
     startTransition(async () => {
       try {
         await addCard({ ...data, listId });
+        toast.success("Task added successfully");
         setIsOpen(false);
         form.reset();
         router.refresh();

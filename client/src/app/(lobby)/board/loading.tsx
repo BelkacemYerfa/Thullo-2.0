@@ -1,10 +1,11 @@
+import { Shell } from "@/components/Shell";
 import { BoardCardLoader } from "@/components/loaders/BoardCardLoader";
 import { NavLoader } from "@/components/loaders/NavLoader";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function HomeLoading() {
   return (
-    <main className="h-screen w-full flex flex-col">
+    <Shell>
       <NavLoader />
       <section className="flex-1 max-w-[90%] sm:max-w-[80%] mx-auto pt-10 space-y-7 ">
         <div className="w-full flex items-center justify-between ">
@@ -17,6 +18,6 @@ export default function HomeLoading() {
           ))}
         </ul>
       </section>
-    </main>
+    </Shell>
   );
 }

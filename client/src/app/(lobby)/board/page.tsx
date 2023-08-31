@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import client from "@/lib/prismaDb";
 import { Key } from "react";
 import { verifyUserAuth } from "@/app/_actions/board";
+import { Shell } from "@/components/Shell";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,7 @@ export default async function Home() {
     },
   });
   return (
-    <main className="h-screen w-full flex flex-col">
+    <Shell>
       <NavBar user={user} />
       <ScrollArea className="h-full w-full">
         <section className="flex-1 max-w-[90%] sm:max-w-[80%] mx-auto pt-10 space-y-7 ">
@@ -62,6 +63,6 @@ export default async function Home() {
           </ul>
         </section>
       </ScrollArea>
-    </main>
+    </Shell>
   );
 }

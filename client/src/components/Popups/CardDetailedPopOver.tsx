@@ -18,6 +18,7 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { deleteCardMutation, getCardInfoWithList } from "@/app/_actions/card";
+import { toast } from "sonner";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -48,6 +49,7 @@ export const CardDetailedPopOver = ({
     startTransition(async () => {
       try {
         await deleteCardMutation(cardId);
+        toast.error("Task deleted successfully");
         handleOpen();
         router.refresh();
       } catch (error) {
