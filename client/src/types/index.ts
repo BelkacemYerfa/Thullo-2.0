@@ -62,7 +62,7 @@ interface Task {
   content: string;
   image?: string;
   labels?: labels[];
-  comments?: Pick<comments, "id">[];
+  comments?: number;
 }
 
 interface Column {
@@ -72,8 +72,8 @@ interface Column {
 }
 
 interface InitialData {
-  tasks: Record<string, Task>;
-  columns: Record<string, Column>;
+  tasks: Record<UniqueIdentifier, Task>;
+  columns: Record<UniqueIdentifier, Column>;
   columnOrder: string[];
 }
 
@@ -81,3 +81,5 @@ interface StoredImage {
   fileKey: string | undefined;
   fileUrl: string | undefined;
 }
+
+type UniqueIdentifier = string;

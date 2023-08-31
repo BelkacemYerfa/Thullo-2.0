@@ -12,6 +12,7 @@ import { UIEvent, useEffect, useRef, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { io } from "socket.io-client";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { useGenerationStore } from "@/lib/store/Store";
 
 /* const socket = io("http://localhost:5000");
  */
@@ -27,14 +28,10 @@ export const DndContextProvider = ({
   resetServerContext();
 
   const [initialData, setInitialData] = useState<InitialData>(db);
-  const [cachedColumnOrder, setCachedColumnOrder] = useState<string[]>([]);
-  const onBeforeCapture = () => {
-    setCachedColumnOrder(initialData.columnOrder);
-  };
 
-  const onBeforeDragStart = () => {
-    setCachedColumnOrder(initialData.columnOrder);
-  };
+  useEffect(() => {
+    setInitialData(db);
+  }, [db]);
 
   const reorderColumns = (
     sourceIndex: number,
@@ -54,22 +51,13 @@ export const DndContextProvider = ({
   const onDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
 
-    if (!destination) {
-      // Dragged outside of a valid drop target
-      setInitialData((prevState) => ({
-        ...prevState,
-        columnOrder: cachedColumnOrder, // Reset the column order
-      }));
-      return;
-    }
+    if (!destination) return;
 
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
-    ) {
-      // Position not changed, no need to update the state
+    )
       return;
-    }
 
     if (type === "column") {
       /* socket.emit("start_dragging", {
@@ -143,8 +131,6 @@ export const DndContextProvider = ({
           );
         }); */
       }}
-      onBeforeCapture={onBeforeCapture}
-      onBeforeDragStart={onBeforeDragStart}
     >
       <Droppable droppableId="board" direction="horizontal" type="column">
         {(provider) => (

@@ -163,26 +163,32 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
   });
   const columnsOrder: string[] = board.Lists.map((list: Lists) => list.id);
 
-  const columns = board.Lists.reduce((acc: any, list: Lists) => {
-    acc[list.id] = {
-      id: list.id,
-      title: list.name,
-      taskIds: list.cards.map((card) => card.id),
-    };
-    return acc;
-  }, {});
-
-  const tasks = board.Lists.reduce((acc: any, list: Lists) => {
-    list.cards.forEach((card) => {
-      acc[card.id] = {
-        id: card.id,
-        content: card.name,
-        labels: card.labels,
-        comments: card.comments,
+  const columns: Record<UniqueIdentifier, Column> = board.Lists.reduce(
+    (acc: any, list: Lists) => {
+      acc[list.id] = {
+        id: list.id,
+        title: list.name,
+        taskIds: list.cards.map((card) => card.id),
       };
-    });
-    return acc;
-  }, {});
+      return acc;
+    },
+    {}
+  );
+
+  const tasks: Record<UniqueIdentifier, Task> = board.Lists.reduce(
+    (acc: any, list: Lists) => {
+      list.cards.forEach((card) => {
+        acc[card.id] = {
+          id: card.id,
+          content: card.name,
+          labels: card.labels,
+          comments: card.comments,
+        };
+      });
+      return acc;
+    },
+    {}
+  );
 
   const db = {
     columnOrder: columnsOrder,
