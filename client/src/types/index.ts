@@ -82,4 +82,6 @@ interface StoredImage {
   fileUrl: string | undefined;
 }
 
+type Boards = Pick<Board, "id" | "name" | "image">[];
+
 type UniqueIdentifier = string;

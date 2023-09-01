@@ -6,28 +6,23 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type BoardCardProps = {
   title: string;
-  boardBanner: string;
-  usersPics: string[];
-  boardId: string;
+  banner: string;
+  users: string[];
+  id: string;
 };
 
-export const BoardCard = ({
-  title,
-  boardBanner,
-  usersPics,
-  boardId,
-}: BoardCardProps) => {
+export const BoardCard = ({ title, banner, users, id }: BoardCardProps) => {
   return (
     <Card className="relative shadow-outline-black rounded-xl  ">
       <Link
-        href={`/board/${boardId}`}
+        href={`/board/${id}`}
         className="absolute inset-0 z-10"
         aria-label="open board"
       ></Link>
       <CardHeader className="p-3 space-y-3">
         <AspectRatio ratio={3 / 2}>
           <Image
-            src={boardBanner}
+            src={banner}
             alt={`${title} banner`}
             loading="lazy"
             fill
@@ -39,7 +34,7 @@ export const BoardCard = ({
         <CardTitle className="text-base font-medium ">{title}</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center gap-x-3 p-3">
-        {usersPics.slice(0, 4).map((pic, index) =>
+        {users.slice(0, 4).map((pic, index) =>
           index < 3 ? (
             <Avatar
               key={index}
@@ -57,7 +52,7 @@ export const BoardCard = ({
             </Avatar>
           ) : (
             <p key={pic + index} className="text-[#BDBDBD] text-sm font-medium">
-              +{usersPics.length - 3} others
+              +{users.length - 3} others
             </p>
           )
         )}
