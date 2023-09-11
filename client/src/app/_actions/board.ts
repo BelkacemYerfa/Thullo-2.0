@@ -1,14 +1,21 @@
 "use server";
 
 import client from "@/lib/prismaDb";
-import { BoardFormSchemaType } from "@/validation/search";
+import { BoardFormSchemaType } from "../../validation/search";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Results } from "@/components/Popups/SearchPopOver";
-import { boardDescriptionSchemaType } from "@/validation/board-description";
+import { boardDescriptionSchemaType } from "../../validation/board-description";
 import { Visibility } from "@prisma/client";
 import { Lists } from "../(lobby)/board/[boardId]/page";
+import {
+  Column,
+  InitialData,
+  StoredImage,
+  Task,
+  UniqueIdentifier,
+} from "@/types";
 
 export const verifyUserAuth = async () => {
   const user = await currentUser();
@@ -118,14 +125,18 @@ export async function updateBoardVisibility(data: {
 export async function getBoardDescription(
   boardId: string
 ): Promise<{ description: string }> {
-  return await client.board.findUnique({
-    where: {
-      id: boardId,
-    },
-    select: {
-      description: true,
-    },
-  });
+  return (
+    (await client.board.findUnique({
+      where: {
+        id: boardId,
+      },
+      select: {
+        description: true,
+      },
+    })) ?? {
+      description: "",
+    }
+  );
 }
 
 export async function getBoardInfo(boardId: string): Promise<InitialData> {
@@ -156,44 +167,52 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
                 take: 5,
               },
             },
+            take: 5,
           },
         },
+        take: 5,
       },
     },
   });
+
+  if (!board) {
+    redirect("/board");
+  }
+
+  // Create an array to hold the columns in the desired order
   const columnsOrder: string[] = board.Lists.map((list: Lists) => list.id);
 
-  const columns: Record<UniqueIdentifier, Column> = board.Lists.reduce(
-    (acc: any, list: Lists) => {
-      acc[list.id] = {
-        id: list.id,
-        title: list.name,
-        taskIds: list.cards.map((card) => card.id),
-      };
-      return acc;
-    },
-    {}
-  );
+  // Create empty objects for columns and tasks
+  const columns: Record<UniqueIdentifier, Column> = {};
+  const tasks: Record<UniqueIdentifier, Task> = {};
 
-  const tasks: Record<UniqueIdentifier, Task> = board.Lists.reduce(
-    (acc: any, list: Lists) => {
-      list.cards.forEach((card) => {
-        acc[card.id] = {
-          id: card.id,
-          content: card.name,
-          labels: card.labels,
-          comments: card.comments,
-        };
-      });
-      return acc;
-    },
-    {}
-  );
+  // Populate columns and tasks in the desired order
+  board.Lists.forEach((list: Lists) => {
+    const column: Column = {
+      id: list.id,
+      title: list.name,
+      taskIds: [],
+    };
+
+    list.cards.forEach((card) => {
+      tasks[card.id] = {
+        id: card.id,
+        content: card.name,
+        labels: card.labels,
+        comments: card.comments?.length as number, // Assuming comments is an array
+      };
+
+      column.taskIds.push(card.id);
+    });
+
+    columns[list.id] = column;
+  });
 
   const db = {
     columnOrder: columnsOrder,
     columns,
     tasks,
   };
+
   return db;
 }

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { useRef, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cardSchema, cardSchemaType } from "@/validation/card";
+import { cardSchema, cardSchemaType } from "../../validation/card";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { addCard } from "@/app/_actions/card";
 import { useRouter } from "next/navigation";

@@ -14,6 +14,7 @@ import { useUser } from "@clerk/nextjs";
 import { CardDetailedPopOver } from "@/components/Popups/CardDetailedPopOver";
 import { AddUserToCard } from "@/components/Popups/AddUserCardActions";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Task } from "@/types";
 
 type TodoCardProps = {
   task: Task;
@@ -78,12 +79,10 @@ export const TodoCard = ({ task }: TodoCardProps) => {
             <AddUserToCard />
           </div>
           <div className="flex items-center gap-x-2">
-            {comments ? (
-              <div className="flex items-center gap-x-1 text-[#BDBDBD]">
-                <Icons.MessageCircle className="h-5 w-5 " />
-                <span>{comments}</span>
-              </div>
-            ) : null}
+            <div className="flex items-center gap-x-1 text-[#BDBDBD]">
+              <Icons.MessageCircle className="h-5 w-5 " />
+              <span>{comments}</span>
+            </div>
             {/* <div className="flex items-center gap-x-1 text-[#BDBDBD]">
               <Icons.Paperclip className="h-5 w-5 " />
               <span>2</span>

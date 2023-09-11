@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import {
   labelCreationSchema,
   labelCreationSchemaType,
-} from "@/validation/label-creation";
+} from "../../validation/label-creation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";

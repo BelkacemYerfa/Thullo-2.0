@@ -19,14 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-        <ReactQueryProvider>
-          <html lang="en">
-            <body className={inter.className}>
-              <main>{children}</main>
-              <Toaster />
-            </body>
-          </html>
-        </ReactQueryProvider>
+      <ReactQueryProvider>
+        <html lang="en">
+          <body className={inter.className}>
+            <main>{children}</main>
+            <Toaster />
+          </body>
+        </html>
+      </ReactQueryProvider>
     </ClerkProvider>
   );
 }

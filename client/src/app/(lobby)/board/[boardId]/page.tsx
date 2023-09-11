@@ -5,6 +5,7 @@ import { NavBar } from "@/components/navigation/Navbar";
 import { BoardSettings } from "@/components/settings/BoardSettings";
 import client from "@/lib/prismaDb";
 import { notFound, redirect } from "next/navigation";
+import { Card, List } from "@/types";
 
 type BoardPageProps = {
   params: {
@@ -28,6 +29,7 @@ export type Cards = Pick<Card, "id" | "name" | "labels" | "comments">[];
 export async function generateMetadata({
   params: { boardId },
 }: BoardPageProps) {
+  if (!boardId) notFound();
   const board = await client.board.findUnique({
     where: {
       id: boardId,
@@ -48,6 +50,7 @@ export default async function BoardPage({
   params: { boardId },
 }: BoardPageProps) {
   const user = await verifyUserAuth();
+  if (!boardId) redirect("/board");
   const board = await client.board.findUnique({
     where: {
       id: boardId,

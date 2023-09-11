@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import {
   boardDescriptionSchema,
   boardDescriptionSchemaType,
-} from "@/validation/board-description";
+} from "../../validation/board-description";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";

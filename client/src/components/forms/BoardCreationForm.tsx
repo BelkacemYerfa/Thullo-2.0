@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { BoardFormSchema, BoardFormSchemaType } from "@/validation/search";
+import { BoardFormSchema, BoardFormSchemaType } from "../../validation/search";
 import { UploadImageForm } from "./UploadImageForm";
 import { useGenerationStore } from "@/lib/store/Store";
 import { addBoard } from "@/app/_actions/board";

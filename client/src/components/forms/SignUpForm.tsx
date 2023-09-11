@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignUpSchemaType, SignUpSchema } from "@/validation/auth-sign-up";
+import { SignUpSchemaType, SignUpSchema } from "../../validation/auth-sign-up";
 import { Button } from "@/components/ui/button";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";

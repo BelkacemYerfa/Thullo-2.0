@@ -18,7 +18,7 @@ import { useTransition } from "react";
 import {
   AccountConfirmation,
   AccountConfirmationType,
-} from "@/validation/verify-email";
+} from "../../validation/verify-email";
 import { Icons } from "@/components/Icons";
 
 export const VerifyCodeForm = () => {

@@ -1,11 +1,11 @@
 "use server";
 
 import client from "@/lib/prismaDb";
-import { cardSchemaType } from "@/validation/card";
+import { cardSchemaType } from "../../validation/card";
 import { verifyUserAuth } from "./board";
 import { revalidatePath } from "next/cache";
-import { boardDescriptionSchemaType } from "@/validation/board-description";
-import { labelCreationSchemaType } from "@/validation/label-creation";
+import { boardDescriptionSchemaType } from "../../validation/board-description";
+import { labelCreationSchemaType } from "../../validation/label-creation";
 
 export async function addCard(
   Info: cardSchemaType & {

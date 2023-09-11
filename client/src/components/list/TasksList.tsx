@@ -7,6 +7,7 @@ import { TodoCard } from "../card/TodoCard";
 import { CardListForm } from "@/components/forms/CardListForm";
 import { ListNameChangeForm } from "@/components/forms/ListNameChangeForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Column, Task } from "@/types";
 
 type TasksListProps = {
   column: Column;

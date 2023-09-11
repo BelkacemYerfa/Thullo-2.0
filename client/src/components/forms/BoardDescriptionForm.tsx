@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import {
   boardDescriptionSchemaType,
   boardDescriptionSchema,
-} from "@/validation/board-description";
+} from "../../validation/board-description";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";

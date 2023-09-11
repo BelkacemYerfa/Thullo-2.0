@@ -3,6 +3,7 @@ import { BoardAccessPopOver } from "@/components/Popups/BoardAccessPopOver";
 import { BoardUserInvitePopOver } from "@/components/Popups/BoardUserInvitePopOver";
 import { BoardSheet } from "@/components/sheet/BoardSheet";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Visibility } from "@prisma/client";
 
 type BoardSettingsProps = {
   boardId: string;
@@ -19,15 +20,18 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
       id: boardId,
     },
     select: {
-      users: true,
       name: true,
       visibility: true,
     },
   });
+
   return (
     <section className="flex items-center justify-between w-full">
       <div className="flex items-center gap-4">
-        <BoardAccessPopOver boardId={boardId} visibility={board.visibility} />
+        <BoardAccessPopOver
+          boardId={boardId}
+          visibility={board?.visibility ?? Visibility.PUBLIC}
+        />
         <div className="flex items-center gap-x-4">
           <div className="hidden sm:flex items-center gap-3">
             {boardUser.slice(0, 3).map((user, index) =>
@@ -72,7 +76,12 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
           <BoardUserInvitePopOver />
         </div>
       </div>
-      <BoardSheet title={board.name} users={boardUser} boardId={boardId} />
+
+      <BoardSheet
+        title={board?.name ?? ""}
+        users={boardUser}
+        boardId={boardId}
+      />
     </section>
   );
 };

@@ -1,19 +1,22 @@
-interface Board {
+import { Visibility } from "@prisma/client";
+
+export interface Board {
   id: string;
   name: string;
   description: string;
   image: Pick<Image, "fileUrl">[];
   user: string;
   Lists: List[];
+  visibility: Visibility;
 }
 
-interface List {
+export interface List {
   id: string;
   name: string;
   cards: Card[];
 }
 
-interface Card {
+export interface Card {
   id: string;
   name: string;
   description: string;
@@ -24,19 +27,19 @@ interface Card {
   labels: labels[];
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   text: string;
   user: string;
 }
 
-interface Image {
+export interface Image {
   id: string;
   fileKey: string;
   fileUrl: string;
 }
 
-interface User {
+export interface User {
   id: string;
   name: string;
   image: string;
@@ -44,44 +47,44 @@ interface User {
   commentId: string;
 }
 
-interface comments {
+export interface comments {
   id: string;
   text: string;
   createdAt: string;
   user: Pick<User, "name" | "image" | "id">;
 }
 
-interface labels {
+export interface labels {
   id: string;
   name: string;
   color: string;
 }
 
-interface Task {
+export interface Task {
   id: string;
   content: string;
   image?: string;
   labels?: labels[];
-  comments?: number;
+  comments: number;
 }
 
-interface Column {
+export interface Column {
   id: string;
   title: string;
   taskIds: string[];
 }
 
-interface InitialData {
+export interface InitialData {
   tasks: Record<UniqueIdentifier, Task>;
   columns: Record<UniqueIdentifier, Column>;
   columnOrder: string[];
 }
 
-interface StoredImage {
+export interface StoredImage {
   fileKey: string | undefined;
   fileUrl: string | undefined;
 }
 
-type Boards = Pick<Board, "id" | "name" | "image">[];
+export type Boards = Pick<Board, "id" | "name" | "image">[];
 
-type UniqueIdentifier = string;
+export type UniqueIdentifier = string;

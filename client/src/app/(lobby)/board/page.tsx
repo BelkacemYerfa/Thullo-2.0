@@ -5,7 +5,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import client from "@/lib/prismaDb";
 import { verifyUserAuth } from "@/app/_actions/board";
 import { Shell } from "@/components/Shell";
-import { Boards } from "@/components/Boards";
+import { BoardS } from "@/components/Boards";
+import { Boards } from "@/types";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,7 @@ export default async function Home() {
     orderBy: {
       createdAt: "desc",
     },
-    take: 3,
+    take: 6,
   });
   return (
     <Shell>
@@ -39,7 +40,7 @@ export default async function Home() {
             <h2 className="text-[#333333] font-medium text-lg">All Boards</h2>
             <AddBoardPopOver />
           </div>
-          <Boards initialBoards={boards} />
+          <BoardS initialBoards={boards} />
         </section>
       </ScrollArea>
     </Shell>

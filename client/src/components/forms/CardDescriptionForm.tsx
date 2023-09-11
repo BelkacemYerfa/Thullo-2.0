@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import {
   boardDescriptionSchema,
   boardDescriptionSchemaType,
-} from "@/validation/board-description";
+} from "../../validation/board-description";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { updateCardDescription } from "@/app/_actions/card";

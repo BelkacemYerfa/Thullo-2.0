@@ -18,7 +18,7 @@ import { useTransition } from "react";
 import {
   ResetPasswordSchema,
   ResetPasswordSchemaType,
-} from "@/validation/reset-password";
+} from "../../validation/reset-password";
 import { Icons } from "@/components/Icons";
 import { PasswordInput } from "@/components/PasswordInput";
 

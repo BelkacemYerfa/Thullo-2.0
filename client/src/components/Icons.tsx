@@ -26,6 +26,8 @@ import {
   Tags,
   Eye,
   EyeOff,
+  Wifi,
+  WifiOff,
   type LucideProps,
 } from "lucide-react";
 
@@ -49,13 +51,15 @@ export const Icons = {
   LogOut,
   X,
   Github,
-  Edit2, 
+  Edit2,
   Trash2,
   Minus,
   Wallpaper,
   Tags,
-  Eye, 
+  Eye,
   EyeOff,
+  Wifi,
+  WifiOff,
   logo: (props: LucideProps) => (
     <svg
       width="98"

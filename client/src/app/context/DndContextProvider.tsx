@@ -8,14 +8,10 @@ import {
   Droppable,
   resetServerContext,
 } from "react-beautiful-dnd";
-import { UIEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
-import { io } from "socket.io-client";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { useGenerationStore } from "@/lib/store/Store";
+import { Column, InitialData } from "@/types";
 
-/* const socket = io("http://localhost:5000");
- */
 type DndContextProviderProps = {
   boardId: string;
   db: InitialData;
@@ -60,52 +56,35 @@ export const DndContextProvider = ({
       return;
 
     if (type === "column") {
-      /* socket.emit("start_dragging", {
-        sourceIndex: source.index,
-        destinationIndex: destination.index,
-        draggableId: draggableId,
-        roomId: boardId,
-      }); */
       //this is just for testing && will be removed
       reorderColumns(source.index, destination.index, draggableId);
-      /*   socket.on("update_dragging", (data) => {
-        reorderColumns(
-          data.sourceIndex,
-          data.destinationIndex,
-          data.draggableId
-        );
-      });
- */
+
       return;
     }
 
-    setInitialData((prevState) => {
-      const newState: InitialData = {
-        ...prevState,
-        columns: {
-          ...prevState.columns,
-        },
-      };
+    const newState: InitialData = {
+      ...initialData,
+      columns: {
+        ...initialData.columns,
+      },
+    };
+    const sourceColumn: Column = newState.columns[source.droppableId];
+    const newSourceTaskIds = Array.from(sourceColumn.taskIds);
+    newSourceTaskIds.splice(source.index, 1);
+    newState.columns[source.droppableId] = {
+      ...sourceColumn,
+      taskIds: newSourceTaskIds,
+    };
 
-      const sourceColumn: Column = newState.columns[source.droppableId];
-      const newSourceTaskIds = Array.from(sourceColumn.taskIds);
-      newSourceTaskIds.splice(source.index, 1);
-      newState.columns[source.droppableId] = {
-        ...sourceColumn,
-        taskIds: newSourceTaskIds,
-      };
+    const destinationColumn: Column = newState.columns[destination.droppableId];
+    const newDestinationTaskIds = Array.from(destinationColumn.taskIds);
+    newDestinationTaskIds.splice(destination.index, 0, draggableId);
+    newState.columns[destination.droppableId] = {
+      ...destinationColumn,
+      taskIds: newDestinationTaskIds,
+    };
 
-      const destinationColumn: Column =
-        newState.columns[destination.droppableId];
-      const newDestinationTaskIds = Array.from(destinationColumn.taskIds);
-      newDestinationTaskIds.splice(destination.index, 0, draggableId);
-      newState.columns[destination.droppableId] = {
-        ...destinationColumn,
-        taskIds: newDestinationTaskIds,
-      };
-
-      return newState;
-    });
+    setInitialData(newState);
   };
   /* useEffect(() => {
     socket.emit("join_room", { roomId: boardId });
@@ -114,24 +93,7 @@ export const DndContextProvider = ({
     });
   }, [boardId]); */
   return (
-    <DragDropContext
-      onDragEnd={onDragEnd}
-      onDragUpdate={() => {
-        /* socket.emit("start-dragging", {
-          sourceIndex: 0,
-          destinationIndex: 0,
-          draggableId: "0",
-        });
-        socket.on("start-dragging", (data) => {
-          alert("data : " + data);
-          reorderColumns(
-            data.sourceIndex,
-            data.destinationIndex,
-            data.draggableId
-          );
-        }); */
-      }}
-    >
+    <DragDropContext onDragEnd={onDragEnd} onDragUpdate={() => {}}>
       <Droppable droppableId="board" direction="horizontal" type="column">
         {(provider) => (
           <div

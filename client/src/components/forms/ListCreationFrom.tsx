@@ -4,7 +4,7 @@ import { Form, FormItem, FormField } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { cardSchema, cardSchemaType } from "@/validation/card";
+import { cardSchema, cardSchemaType } from "../../validation/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGenerationStore } from "@/lib/store/Store";
 import { addList } from "@/app/_actions/list";

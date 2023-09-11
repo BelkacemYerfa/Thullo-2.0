@@ -6,31 +6,33 @@ import { BoardCard } from "./card/BoardCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Icons } from "./Icons";
+import { Boards } from "@/types";
 
 type BoardsProps = {
   initialBoards: Boards;
 };
 
-export const Boards = ({ initialBoards }: BoardsProps) => {
+export const BoardS = ({ initialBoards }: BoardsProps) => {
   const lastBoardRef = useRef<HTMLElement>(null);
   const { ref, entry } = useIntersection({
     root: lastBoardRef.current,
     threshold: 1,
   });
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["scrolling-boards"],
-    async ({ pageParam = 1 }) => {
-      const query = `/api/boards?limit=${3}&page=${pageParam}`;
-      const { data } = await axios.get(query);
-      return data as Boards;
-    },
-    {
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1;
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
+    useInfiniteQuery(
+      ["scrolling-boards"],
+      async ({ pageParam = 1 }) => {
+        const query = `/api/boards?limit=${6}&page=${pageParam}`;
+        const { data } = await axios.get(query);
+        return data as Boards;
       },
-      initialData: { pages: [initialBoards], pageParams: [1] },
-    }
-  );
+      {
+        getNextPageParam: (_, pages) => {
+          return pages.length + 1;
+        },
+        initialData: { pages: [initialBoards], pageParams: [1] },
+      }
+    );
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -39,7 +41,7 @@ export const Boards = ({ initialBoards }: BoardsProps) => {
   }, [entry, fetchNextPage]);
 
   const boards = data?.pages.flatMap((page) => page) ?? initialBoards;
-  return (
+  return boards.length !== 0 ? (
     <>
       <ul className="flex w-full flex-col items-center justify-center overflow-y-auto p-6 md:grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 pb-5 overflow-hidden ">
         {boards.map((board, index) => {
@@ -78,5 +80,9 @@ export const Boards = ({ initialBoards }: BoardsProps) => {
         )}
       </div>
     </>
+  ) : (
+    <div className="flex justify-center">
+      <p>You don&apos;t have any board now , create one</p>
+    </div>
   );
 };

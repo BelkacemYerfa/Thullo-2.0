@@ -5,7 +5,7 @@ import { Icons } from "@/components/Icons";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { listNameSchema, listNameSchemaType } from "@/validation/list-name";
+import { listNameSchema, listNameSchemaType } from "../../validation/list-name";
 import { Button } from "@/components/ui/button";
 import {
   Popover,

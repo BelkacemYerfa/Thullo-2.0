@@ -2,7 +2,8 @@
 
 import client from "@/lib/prismaDb";
 import { verifyUserAuth } from "./board";
-import { listNameSchemaType } from "@/validation/list-name";
+import { listNameSchemaType } from "../../validation/list-name";
+import { Card } from "@/types";
 
 export async function addList(data: listNameSchemaType & { id: string }) {
   const user = await verifyUserAuth();
