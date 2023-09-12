@@ -40,7 +40,7 @@ export const CardDetailedPopOver = ({
     useOutsideClick<HTMLDivElement>();
   const handleOpen = () => {
     setIsOpen(!isOpen);
-    const currentPath = new URLSearchParams(Array.from(searchParams.entries()));
+    const currentPath = new URLSearchParams(searchParams?.toString());
     if (isOpen) currentPath.delete("cardId");
     else currentPath.set("cardId", cardId);
     router.push(`${pathname}?${currentPath.toString()}`);
@@ -58,7 +58,7 @@ export const CardDetailedPopOver = ({
     });
   };
   useEffect(() => {
-    const currentCard = searchParams.get("cardId");
+    const currentCard = searchParams?.get("cardId");
     if (currentCard) {
       if (currentCard !== cardId) setIsOpen(false);
       else setIsOpen(true);
@@ -73,7 +73,7 @@ export const CardDetailedPopOver = ({
           <ScrollArea className="h-full w-full ">
             <div className=" h-full pb-4 bg-white w-full md:w-3/5 m-auto shadow-outline-black ">
               <div className="sticky top-0 flex justify-center bg-white py-4 shadow-outline-black z-[5] ">
-                <Link href={pathname}>
+                <Link href={pathname ?? "/"}>
                   <Drawer.Close>
                     <div className="max-w-full mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300" />
                   </Drawer.Close>
