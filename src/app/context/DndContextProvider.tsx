@@ -37,10 +37,11 @@ export const DndContextProvider = ({
     const newColumnOrder = Array.from(initialData.columnOrder);
     newColumnOrder.splice(sourceIndex, 1);
     newColumnOrder.splice(destinationIndex, 0, draggableId);
-    setInitialData((prevState) => ({
-      ...prevState,
+    const newState: InitialData = {
+      ...initialData,
       columnOrder: newColumnOrder,
-    }));
+    };
+    setInitialData(newState);
     return;
   };
 
@@ -83,15 +84,9 @@ export const DndContextProvider = ({
       ...destinationColumn,
       taskIds: newDestinationTaskIds,
     };
-
+    /*Update the db */
     setInitialData(newState);
   };
-  /* useEffect(() => {
-    socket.emit("join_room", { roomId: boardId });
-    socket.on("join_room", (data) => {
-      console.log(data);
-    });
-  }, [boardId]); */
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragUpdate={() => {}}>
       <Droppable droppableId="board" direction="horizontal" type="column">
@@ -109,10 +104,8 @@ export const DndContextProvider = ({
               return (
                 <Draggable key={columnId} draggableId={columnId} index={index}>
                   {(provided, snapshot) => {
-                    if (snapshot.isDragging) {
-                    }
                     return (
-                      <div className="relative listContainer ">
+                      <div className="relative ">
                         <div
                           className=" h-full snap-center pb-2"
                           ref={provided.innerRef}

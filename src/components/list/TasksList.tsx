@@ -21,6 +21,7 @@ export const TasksList = ({
   dragHandleProps,
 }: TasksListProps) => {
   const { id, title } = column;
+
   return (
     <Droppable droppableId={column.id}>
       {(provided, snapshot) => (
@@ -40,19 +41,23 @@ export const TasksList = ({
               <div className="h-full ">
                 {tasks.map((task, i) => (
                   <Draggable key={task.id} draggableId={task.id} index={i}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.dragHandleProps}
-                        {...provided.draggableProps}
-                        className={`pb-3`}
-                      >
-                        <TodoCard task={task} />
-                      </div>
-                    )}
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.dragHandleProps}
+                          {...provided.draggableProps}
+                          className={`pb-3`}
+                          key={task.id}
+                        >
+                          <TodoCard task={task} />
+                        </div>
+                      );
+                    }}
                   </Draggable>
                 ))}
                 {provided.placeholder}
+
                 <CardListForm listId={id} />
               </div>
             </ScrollArea>

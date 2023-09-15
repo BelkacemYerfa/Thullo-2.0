@@ -1,10 +1,13 @@
+import { InitialData } from "@/types";
 import { create } from "zustand";
 
 interface IStore {
   boardCard: boolean;
   newList: boolean;
+  initialData: InitialData;
   setBoardCard: (boardCard: boolean) => void;
   setNewList: (newList: boolean) => void;
+  setInitialData: (initialData: InitialData) => void;
 }
 
 export const useGenerationStore = create<IStore>((set) => ({
@@ -12,4 +15,10 @@ export const useGenerationStore = create<IStore>((set) => ({
   setBoardCard: (boardCard) => set({ boardCard }),
   newList: false,
   setNewList: (newList) => set({ newList }),
+  initialData: {
+    columnOrder: [],
+    columns: {},
+    tasks: {},
+  },
+  setInitialData: (initialData) => set({ initialData }),
 }));

@@ -24,7 +24,13 @@ export type Lists = Pick<List, "id" | "name"> & {
   cards: Cards;
 };
 
-export type Cards = Pick<Card, "id" | "name" | "labels" | "comments">[];
+export type Cards = Pick<Card, "id" | "name"> &
+  {
+    comments: {
+      id: string;
+      text: string;
+    };
+  }[];
 
 export async function generateMetadata({
   params: { boardId },

@@ -22,15 +22,7 @@ export interface Card {
   description: string;
   user: string;
   image: string;
-  comments: Comment[] | null;
   list: Pick<List, "name">;
-  labels: labels[];
-}
-
-export interface Comment {
-  id: string;
-  text: string;
-  user: string;
 }
 
 export interface Image {
@@ -50,8 +42,7 @@ export interface User {
 export interface comments {
   id: string;
   text: string;
-  createdAt: string;
-  user: Pick<User, "name" | "image" | "id">;
+  createdAt: Date;
 }
 
 export interface labels {
@@ -64,7 +55,6 @@ export interface Task {
   id: string;
   content: string;
   image?: string;
-  labels?: labels[];
   comments: number;
 }
 
@@ -75,8 +65,8 @@ export interface Column {
 }
 
 export interface InitialData {
-  tasks: Record<UniqueIdentifier, Task>;
-  columns: Record<UniqueIdentifier, Column>;
+  tasks: { [key: string]: Task };
+  columns: { [key: string]: Column };
   columnOrder: string[];
 }
 

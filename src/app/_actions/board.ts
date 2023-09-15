@@ -158,58 +158,44 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
                   id: true,
                 },
               },
-              labels: {
-                select: {
-                  id: true,
-                  name: true,
-                  color: true,
-                },
-                take: 5,
-              },
             },
-            take: 5,
           },
         },
-        take: 5,
       },
     },
   });
 
   if (!board) {
-    redirect("/board");
+    redirect("/board"); // Redirect to the appropriate URL when the board is not found
   }
 
   // Create an array to hold the columns in the desired order
-  const columnsOrder: string[] = board.Lists.map((list: Lists) => list.id);
+  const columnOrder = board.Lists.map((list) => list.id);
 
-  // Create empty objects for columns and tasks
-  const columns: Record<UniqueIdentifier, Column> = {};
-  const tasks: Record<UniqueIdentifier, Task> = {};
-
-  // Populate columns and tasks in the desired order
-  board.Lists.forEach((list: Lists) => {
-    const column: Column = {
+  // Create an object to hold columns and their associated taskIds
+  const columns = board.Lists.reduce((acc: any, list) => {
+    acc[list.id] = {
       id: list.id,
       title: list.name,
-      taskIds: [],
+      taskIds: list.cards.map((card) => card.id),
     };
+    return acc;
+  }, {});
 
+  // Create an object to hold tasks
+  const tasks = board.Lists.reduce((acc: any, list) => {
     list.cards.forEach((card) => {
-      tasks[card.id] = {
+      acc[card.id] = {
         id: card.id,
         content: card.name,
-        labels: card.labels,
-        comments: card.comments?.length as number, // Assuming comments is an array
+        comments: card.comments?.length ?? 0,
       };
-
-      column.taskIds.push(card.id);
     });
+    return acc;
+  }, {});
 
-    columns[list.id] = column;
-  });
-
-  const db = {
-    columnOrder: columnsOrder,
+  const db: InitialData = {
+    columnOrder,
     columns,
     tasks,
   };

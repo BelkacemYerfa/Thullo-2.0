@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Icons } from "@/components/Icons";
 import { searchForBoards } from "@/app/_actions/board";
+import { Board } from "@/types";
 
 export type Results = {
   category: string;

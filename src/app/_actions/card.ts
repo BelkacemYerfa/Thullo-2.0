@@ -6,6 +6,7 @@ import { verifyUserAuth } from "./board";
 import { revalidatePath } from "next/cache";
 import { boardDescriptionSchemaType } from "../../validation/board-description";
 import { labelCreationSchemaType } from "../../validation/label-creation";
+import { comments, labels, Card } from "@/types";
 
 export async function addCard(
   Info: cardSchemaType & {
@@ -72,7 +73,11 @@ export async function getCardInfoWithList(cardId: string): Promise<Card> {
       description: true,
       user: true,
       image: true,
-      comments: true,
+      comments: {
+        select: {
+          id: true,
+        },
+      },
       listId: true,
     },
   });
@@ -88,7 +93,8 @@ export async function getCardInfoWithList(cardId: string): Promise<Card> {
   if (!list) throw new Error("List not found");
   return {
     ...card,
-    list,
+    image: card.image as string,
+    list: list,
   };
 }
 

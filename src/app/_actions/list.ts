@@ -22,11 +22,11 @@ export async function addList(data: listNameSchemaType & { id: string }) {
   });
 }
 
-type Cards = Pick<Card, "comments" | "labels" | "id">[];
+type Cards = Pick<Card, "id">[];
 
 export async function deleteList(id: string) {
   const speed = performance.now();
-  const cards: Cards = await client.card.findMany({
+  const cards = await client.card.findMany({
     where: {
       listId: id,
     },

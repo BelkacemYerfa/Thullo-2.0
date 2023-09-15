@@ -6,8 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Icons } from "@/components/Icons";
 import { useUser } from "@clerk/nextjs";
@@ -22,8 +20,7 @@ type TodoCardProps = {
 
 export const TodoCard = ({ task }: TodoCardProps) => {
   const { user } = useUser();
-  const { labels, comments, id: cardId, content } = task;
-
+  const { comments, id: cardId, content } = task;
   return (
     <Card>
       <CardHeader className="space-y-3 p-3">
@@ -46,22 +43,6 @@ export const TodoCard = ({ task }: TodoCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-3 py-2 space-y-3">
-        {labels?.length !== 0 ? (
-          <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
-            {labels?.map((badge) => (
-              <Badge
-                key={badge.id}
-                className={cn(
-                  `hover:bg-[#D5E6FB] py-1 px-2 text-xs font-medium  cursor-default text-white rounded-xl `
-                )}
-                style={{ backgroundColor: badge.color }}
-              >
-                {badge.name}
-              </Badge>
-            ))}
-          </div>
-        ) : null}
-
         <CardFooter className="flex items-center justify-between w-full p-0">
           <div className="flex items-center gap-x-2">
             <Avatar className="h-8 w-8 rounded-lg">
