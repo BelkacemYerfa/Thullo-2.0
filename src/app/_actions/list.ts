@@ -14,15 +14,13 @@ export async function addList(data: listNameSchemaType & { id: string }) {
       cards: {
         create: {
           name: "New Card",
-          description: "New Card Description",
-          user: user.id,
+          description: "",
+          userId: user.id,
         },
       },
     },
   });
 }
-
-type Cards = Pick<Card, "id">[];
 
 export async function deleteList(id: string) {
   const speed = performance.now();
@@ -53,8 +51,12 @@ export async function deleteList(id: string) {
 
       await client.user.deleteMany({
         where: {
-          commentId: {
-            in: commentIds,
+          comments: {
+            some: {
+              id: {
+                in: commentIds,
+              },
+            },
           },
         },
       });

@@ -28,7 +28,7 @@ export const CommentsList = ({ cardId }: CommentsListProps) => {
             [...Array(3)].map((_, i) => (
               <div key={i} className="space-y-2">
                 <div className="w-full flex gap-2">
-                  <Skeleton className="h-10 w-10 rounded-lg" />
+                  <Skeleton className="h-8 w-8 rounded-lg" />
                   <div className="w-full space-y-1">
                     <Skeleton className="w-24 h-4" />
                     <Skeleton className="w-48 h-4" />
@@ -40,7 +40,44 @@ export const CommentsList = ({ cardId }: CommentsListProps) => {
               </div>
             ))
           ) : comments?.length !== 0 ? (
-            <p>test</p>
+            comments?.map((comment, index) => (
+              <div key={comment.id} className="space-y-3">
+                <div className="space-y-2">
+                  <div className="w-full flex justify-between">
+                    <div className="flex items-center gap-x-3">
+                      <Avatar className="rounded-lg">
+                        <AvatarImage
+                          src={comment.user[0].image}
+                          alt={comment.user[0].name}
+                          loading="lazy"
+                          className="w-full object-cover"
+                        />
+                        <AvatarFallback>
+                          {comment.user[0].name.split("")[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1">
+                        <h3 className="text-sm font-medium">
+                          {comment.user[0].name}
+                        </h3>
+                        <p className="text-xs font-medium text-[#BDBDBD]">
+                          {new Date(comment.createdAt).toISOString()}
+                        </p>
+                      </div>
+                    </div>
+                    {user?.id === comment.user[0].userId ? (
+                      <DeleteBtn
+                        userId={user?.id}
+                        commentId={comment.id}
+                        cardId={cardId}
+                      />
+                    ) : null}
+                  </div>
+                  <p>{comment.text}</p>
+                </div>
+                {comments.length - 1 > index ? <hr /> : null}
+              </div>
+            ))
           ) : (
             <p>No comments yet. Be the first to comment on this card.</p>
           )}

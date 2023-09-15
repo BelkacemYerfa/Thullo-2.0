@@ -29,7 +29,7 @@ export async function addCard(
       name: Info.name,
       description: "",
       listId: Info.listId,
-      user: user.id,
+      userId: user.id,
     },
   });
   revalidatePath(`/board/${list.boardId}`);
@@ -81,6 +81,7 @@ export async function getCardInfoWithList(cardId: string): Promise<Card> {
       listId: true,
     },
   });
+  console.log(card);
   if (!card) throw new Error("Card not found");
   const list = await client.list.findFirst({
     where: {
@@ -149,7 +150,6 @@ export async function getComments(cardId: string): Promise<comments[]> {
         select: {
           name: true,
           image: true,
-          id: true,
         },
       },
       text: true,
@@ -169,16 +169,7 @@ export async function addComment(
   const comment = await client.comments.create({
     data: {
       text: data.description,
-      user: {
-        create: {
-          id: user.id,
-          name:
-            user.username ?? user.emailAddresses[0]?.emailAddress.split("@")[0],
-          email: user.emailAddresses[0]?.emailAddress,
-          image: user.imageUrl ?? "",
-          boardId: boardId,
-        },
-      },
+      userId: user.id,
       cardId: data.cardId,
     },
   });
@@ -190,7 +181,11 @@ export async function deleteComment(commentId: string, cardId: string) {
   const boardId = await getBoardBasedOnCard(cardId);
   await client.user.delete({
     where: {
-      commentId,
+      comments: {
+        some: {
+          id: commentId,
+        },
+      },
     },
   });
   await client.comments.delete({

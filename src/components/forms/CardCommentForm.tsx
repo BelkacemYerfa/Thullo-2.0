@@ -15,7 +15,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { addComment } from "@/app/_actions/card";
 import { Icons } from "@/components/Icons";
-import { toast } from "sonner";
 
 export const CardCommentForm = () => {
   const { user } = useUser();
@@ -33,7 +32,6 @@ export const CardCommentForm = () => {
     startTransition(async () => {
       try {
         await addComment({ ...data, cardId });
-
         router.refresh();
       } catch (error) {
         console.log(error);

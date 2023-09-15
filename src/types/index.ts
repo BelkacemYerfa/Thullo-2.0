@@ -20,7 +20,7 @@ export interface Card {
   id: string;
   name: string;
   description: string;
-  user: string;
+  user: Pick<User, "id" | "image" | "name"> | null;
   image: string;
   list: Pick<List, "name">;
 }

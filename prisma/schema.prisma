@@ -65,31 +65,33 @@ model Card {
   list     List @relation(fields: [listId], references: [id])
   comments   Comments[]
   labels     Label[]
-  user     String @map("userId")
+  userId     String @map("userId")
+  user     User @relation(fields: [userId], references: [id])
 }
 
 model Comments {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User[]
   text     String
   cardId   String @map("cardId") @db.ObjectId
   card     Card @relation(fields: [cardId], references: [id])
+  userId     String @map("userId")
+  user     User @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id        String   @id @default(cuid()) @map("_id")
+  id        String  @id @default(cuid()) @map("_id")
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String @unique
+  updatedAt DateTime @updatedAt 
+  email     String 
+  isAdmin Boolean @default(false)
   image  String
   name     String
   boardId  String @map("boardId") @db.ObjectId
   board    Board @relation(fields: [boardId], references: [id])
-  commentId String @map("commentId") @db.ObjectId
-  comment   Comments @relation(fields: [commentId], references: [id])
-  @@unique([commentId])
+  cards    Card[]
+  comments Comments[]
 }
 
 model Label {

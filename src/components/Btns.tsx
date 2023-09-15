@@ -8,14 +8,19 @@ import { deleteComment } from "@/app/_actions/card";
 type DeleteBtnProps = {
   commentId: string;
   cardId: string;
+  userId: string;
 };
 
-export const DeleteBtn = ({ commentId, cardId }: DeleteBtnProps) => {
+export const DeleteBtn = ({ commentId, cardId, userId }: DeleteBtnProps) => {
   const [isPending, startTransition] = useTransition();
   const handleDelete = () => {
     startTransition(async () => {
       try {
-        await deleteComment(commentId, cardId);
+        await deleteComment({
+          commentId,
+          cardId,
+          userId,
+        });
       } catch (error) {
         console.log(error);
       }

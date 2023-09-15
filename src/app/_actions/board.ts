@@ -29,7 +29,7 @@ export async function addBoard(
   }
 ) {
   const user = await verifyUserAuth();
-  await client.board.create({
+  const board = await client.board.create({
     data: {
       name: data.title,
       description: "",
@@ -40,19 +40,15 @@ export async function addBoard(
         },
       },
       user: user.id,
-      Lists: {
-        create: {
-          name: "To Do",
-          cards: {
-            create: {
-              name: "Example Card",
-              description: "Example Card Description",
-              user: user.id,
-              image: "",
-            },
-          },
-        },
-      },
+    },
+  });
+  await client.user.create({
+    data: {
+      boardId: board.id,
+      isAdmin: true,
+      email: user.emailAddresses[0].emailAddress,
+      name: user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
+      image: user.imageUrl ?? "",
     },
   });
   revalidatePath("/board");
