@@ -49,6 +49,7 @@ export async function addBoard(
       email: user.emailAddresses[0].emailAddress,
       name: user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
       image: user.imageUrl ?? "",
+      id: user.id,
     },
   });
   revalidatePath("/board");
@@ -153,6 +154,14 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
                 select: {
                   id: true,
                 },
+              },
+              labels: {
+                select: {
+                  id: true,
+                  name: true,
+                  color: true,
+                },
+                take: 3,
               },
             },
           },

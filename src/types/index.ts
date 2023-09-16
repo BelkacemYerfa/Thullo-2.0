@@ -20,7 +20,6 @@ export interface Card {
   id: string;
   name: string;
   description: string;
-  user: Pick<User, "id" | "image" | "name"> | null;
   image: string;
   list: Pick<List, "name">;
 }
@@ -36,6 +35,7 @@ export interface User {
   name: string;
   image: string;
   boardId: string;
+  email: string;
   commentId: string;
 }
 
@@ -43,6 +43,8 @@ export interface comments {
   id: string;
   text: string;
   createdAt: Date;
+  userId: string;
+  user: User;
 }
 
 export interface labels {
@@ -55,6 +57,7 @@ export interface Task {
   id: string;
   content: string;
   image?: string;
+  labels: labels[];
   comments: number;
 }
 

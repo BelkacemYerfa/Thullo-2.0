@@ -6,7 +6,7 @@ import { verifyUserAuth } from "./board";
 import { revalidatePath } from "next/cache";
 import { boardDescriptionSchemaType } from "../../validation/board-description";
 import { labelCreationSchemaType } from "../../validation/label-creation";
-import { comments, labels, Card } from "@/types";
+import { comments, labels, Card, User } from "@/types";
 
 export async function addCard(
   Info: cardSchemaType & {
@@ -71,7 +71,6 @@ export async function getCardInfoWithList(cardId: string): Promise<Card> {
       id: true,
       name: true,
       description: true,
-      user: true,
       image: true,
       comments: {
         select: {
@@ -81,7 +80,6 @@ export async function getCardInfoWithList(cardId: string): Promise<Card> {
       listId: true,
     },
   });
-  console.log(card);
   if (!card) throw new Error("Card not found");
   const list = await client.list.findFirst({
     where: {
@@ -141,22 +139,35 @@ export async function updateCardDescription(
 //comments section
 
 export async function getComments(cardId: string): Promise<comments[]> {
-  return await client.comments.findMany({
+  const comments = await client.comments.findMany({
     where: {
       cardId,
     },
     select: {
-      user: {
-        select: {
-          name: true,
-          image: true,
-        },
-      },
+      userId: true,
       text: true,
       id: true,
       createdAt: true,
     },
   });
+  const users = await client.user.findMany({
+    where: {
+      comments: {
+        some: {
+          cardId: cardId,
+        },
+      },
+    },
+    select: {
+      name: true,
+      image: true,
+      id: true,
+    },
+  });
+  return comments.map((comment) => ({
+    ...comment,
+    user: users.find((user) => user.id === comment.userId) as User,
+  }));
 }
 
 export async function addComment(
@@ -171,6 +182,18 @@ export async function addComment(
       text: data.description,
       userId: user.id,
       cardId: data.cardId,
+    },
+  });
+  await client.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      comments: {
+        connect: {
+          id: comment.id,
+        },
+      },
     },
   });
   console.log(comment);

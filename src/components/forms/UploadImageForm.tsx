@@ -74,7 +74,6 @@ export const UploadImageForm = ({
         />
       </AspectRatio>
       <Input
-        type="file"
         className="rounded-lg"
         onChange={(e) => handleBannerChange(e)}
         accept="image/*"

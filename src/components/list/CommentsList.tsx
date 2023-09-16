@@ -20,6 +20,7 @@ export const CommentsList = ({ cardId }: CommentsListProps) => {
   } = useQuery(["comments"], async () => {
     return await getComments(cardId);
   });
+  console.log(comments);
   return (
     <ul className="h-64">
       <ScrollArea className="h-full w-full px-1">
@@ -47,30 +48,26 @@ export const CommentsList = ({ cardId }: CommentsListProps) => {
                     <div className="flex items-center gap-x-3">
                       <Avatar className="rounded-lg">
                         <AvatarImage
-                          src={comment.user[0].image}
-                          alt={comment.user[0].name}
+                          src={comment.user.image}
+                          alt={comment.user.name}
                           loading="lazy"
                           className="w-full object-cover"
                         />
                         <AvatarFallback>
-                          {comment.user[0].name.split("")[0]}
+                          {comment.user.name.split("")[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
                         <h3 className="text-sm font-medium">
-                          {comment.user[0].name}
+                          {comment.user.name}
                         </h3>
                         <p className="text-xs font-medium text-[#BDBDBD]">
-                          {new Date(comment.createdAt).toISOString()}
+                          {new Date(comment.createdAt).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
-                    {user?.id === comment.user[0].userId ? (
-                      <DeleteBtn
-                        userId={user?.id}
-                        commentId={comment.id}
-                        cardId={cardId}
-                      />
+                    {comment.user.id === user?.id ? (
+                      <DeleteBtn commentId={comment.id} cardId={cardId} />
                     ) : null}
                   </div>
                   <p>{comment.text}</p>

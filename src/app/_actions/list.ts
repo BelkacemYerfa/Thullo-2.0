@@ -3,7 +3,6 @@
 import client from "@/lib/prismaDb";
 import { verifyUserAuth } from "./board";
 import { listNameSchemaType } from "../../validation/list-name";
-import { Card } from "@/types";
 
 export async function addList(data: listNameSchemaType & { id: string }) {
   const user = await verifyUserAuth();
@@ -11,13 +10,6 @@ export async function addList(data: listNameSchemaType & { id: string }) {
     data: {
       name: data.name,
       boardId: data.id,
-      cards: {
-        create: {
-          name: "New Card",
-          description: "",
-          userId: user.id,
-        },
-      },
     },
   });
 }
