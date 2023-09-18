@@ -67,7 +67,6 @@ export const CardDescriptionForm = ({
         ) : (
           <Form {...form}>
             <form
-              ref={formRef}
               className="grid space-y-2 max-w-[97%] m-auto"
               onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
             >

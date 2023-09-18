@@ -202,15 +202,7 @@ export async function addComment(
 
 export async function deleteComment(commentId: string, cardId: string) {
   const boardId = await getBoardBasedOnCard(cardId);
-  await client.user.delete({
-    where: {
-      comments: {
-        some: {
-          id: commentId,
-        },
-      },
-    },
-  });
+
   await client.comments.delete({
     where: {
       id: commentId,
