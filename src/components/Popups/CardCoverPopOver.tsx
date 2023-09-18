@@ -14,7 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Skeleton } from "@/components/ui/skeleton";
 
-type SearchDataResults = {
+export type SearchDataResults = {
   image: string;
   blurDataURL: string;
 };
@@ -26,9 +26,8 @@ export const CardCoverPopOver = () => {
   const value = useDebounce(query, 500);
   const handleSearchImage = useCallback(() => {
     setIsPending(async () => {
-      /* if (!query) return;
-      const results = await searchPhotos(query, 1, 12);
-      console.log(results?.results[0]?.urls.full);
+      if (!query) return;
+      const results = await searchPhotos(query);
       let images: string[] = [];
       results?.results?.map((result: any) => {
         images.push(result?.urls?.full);
@@ -38,7 +37,7 @@ export const CardCoverPopOver = () => {
         setImages([]);
         return;
       }
-      setImages(images); */
+      setImages(images);
     });
   }, [value]);
   useEffect(() => {
@@ -76,7 +75,10 @@ export const CardCoverPopOver = () => {
               <div className="max-w-[90%] mx-auto flex items-center gap-2 flex-wrap">
                 {isPending
                   ? [...Array(12)].map((_, i) => (
-                      <Skeleton key={i} className="h-[60px] w-[60px] rounded" />
+                      <Skeleton
+                        key={i}
+                        className="h-[3.75rem] w-[3.75rem] rounded"
+                      />
                     ))
                   : images.map((image, index) => (
                       <div
@@ -91,7 +93,7 @@ export const CardCoverPopOver = () => {
                           alt={`${image} image`}
                           height={60}
                           width={60}
-                          className="h-[60px] w-[60px] rounded border-black border-solid border object-cover"
+                          className="h-[3.75rem] w-[3.75rem] rounded object-cover"
                           quality={100}
                         />
                       </div>
