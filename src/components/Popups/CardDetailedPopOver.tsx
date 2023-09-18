@@ -19,6 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { deleteCardMutation, getCardInfoWithList } from "@/app/_actions/card";
 import { toast } from "sonner";
+import { CardLabelsList } from "../list/CardLabelsList";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
@@ -105,6 +106,7 @@ export const CardDetailedPopOver = ({
                         </span>
                       </p>
                     </div>
+                    <CardLabelsList cardId={cardId} />
                     <CardDescriptionForm
                       cardId={cardId}
                       description={card?.description}

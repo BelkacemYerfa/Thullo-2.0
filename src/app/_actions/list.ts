@@ -39,20 +39,6 @@ export async function deleteList(id: string) {
 
   await Promise.all(
     cards.map(async (card) => {
-      const commentIds = card.comments?.map((comment) => comment.id);
-
-      await client.user.deleteMany({
-        where: {
-          comments: {
-            some: {
-              id: {
-                in: commentIds,
-              },
-            },
-          },
-        },
-      });
-
       await client.comments.deleteMany({
         where: {
           cardId: card.id,

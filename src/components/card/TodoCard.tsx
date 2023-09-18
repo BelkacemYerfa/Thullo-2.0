@@ -23,8 +23,8 @@ export const TodoCard = ({ task }: TodoCardProps) => {
   const { user } = useUser();
   const { comments, id: cardId, content, labels } = task;
   return (
-    <Card>
-      <CardHeader className="space-y-3 p-3">
+    <Card className="">
+      <CardHeader className="space-y-3 px-3 py-2">
         {task.image ? (
           <AspectRatio ratio={3 / 2}>
             <Image
@@ -44,12 +44,12 @@ export const TodoCard = ({ task }: TodoCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-3 py-2 space-y-3">
-        {labels && labels.length !== 0 && (
+        {labels.length !== 0 && (
           <div className="flex items-center gap-x-2">
             {labels.map((label) => (
               <Badge
                 key={label.id}
-                className={`text-xs font-semibold px-2 py-1 rounded-lg text-white`}
+                className={`text-xs font-semibold px-2 py-1 rounded-xl text-white`}
                 style={{ backgroundColor: label.color }}
               >
                 {label.name}

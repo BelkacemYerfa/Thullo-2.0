@@ -8,14 +8,7 @@ import { revalidatePath } from "next/cache";
 import { Results } from "@/components/Popups/SearchPopOver";
 import { boardDescriptionSchemaType } from "../../validation/board-description";
 import { Visibility } from "@prisma/client";
-import { Lists } from "../(lobby)/board/[boardId]/page";
-import {
-  Column,
-  InitialData,
-  StoredImage,
-  Task,
-  UniqueIdentifier,
-} from "@/types";
+import { InitialData, StoredImage } from "@/types";
 
 export const verifyUserAuth = async () => {
   const user = await currentUser();
@@ -194,6 +187,7 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
         id: card.id,
         content: card.name,
         comments: card.comments?.length ?? 0,
+        labels: card.labels,
       };
     });
     return acc;

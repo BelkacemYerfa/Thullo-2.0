@@ -46,7 +46,7 @@ export const CardDescriptionForm = ({
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-x-3">
-        <div className="text-[#BDBDBD] flex items-center gap-x-[6px]">
+        <div className="text-[#BDBDBD] flex items-center gap-[0.375rem]">
           <Icons.File className="h-4 w-4" />
           <h3 className="text-xs font-semibold">Description</h3>
         </div>
