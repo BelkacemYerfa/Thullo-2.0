@@ -102,5 +102,5 @@ model Label {
   color    String
   cardId   String @map("cardId") @db.ObjectId
   card     Card @relation(fields: [cardId], references: [id])
-  @@unique([cardId])
+  
 }

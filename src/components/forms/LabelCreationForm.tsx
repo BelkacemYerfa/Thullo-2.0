@@ -81,21 +81,30 @@ export const LabelCreationForm = () => {
           render={({ field }) => (
             <FormItem className="flex items-center justify-center gap-2 flex-wrap space-y-0">
               {Colors.map((color) => (
-                <label
+                <div
                   key={color}
-                  className={`w-[50px] h-7 rounded cursor-pointer`}
-                  style={{ backgroundColor: color }}
+                  className={`relative w-[50px] h-7 rounded cursor-pointer `}
+                  style={{
+                    backgroundColor: color,
+                  }}
                 >
-                  <input
+                  <Input
                     type="radio"
                     className="opacity-0 w-full h-full cursor-pointer border-solid border-2 checked:border-opacity-100 "
                     {...field}
-                    onSelect={() => {
-                      console.log(color);
-                    }}
                     value={color}
                   />
-                </label>
+                  {field.value === color ? (
+                    <div className="absolute inset-0 backdrop-blur bg-white/75 rounded flex items-center justify-center ">
+                      <Icons.Check
+                        className="h-4 w-4"
+                        style={{
+                          stroke: color,
+                        }}
+                      />
+                    </div>
+                  ) : null}
+                </div>
               ))}
             </FormItem>
           )}
