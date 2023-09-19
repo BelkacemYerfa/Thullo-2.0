@@ -20,7 +20,6 @@ export const CommentsList = ({ cardId }: CommentsListProps) => {
   } = useQuery(["comments"], async () => {
     return await getComments(cardId);
   });
-  console.log(comments);
   return (
     <ul className="h-64">
       <ScrollArea className="h-full w-full px-1">

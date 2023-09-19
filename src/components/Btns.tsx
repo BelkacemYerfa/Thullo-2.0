@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { Icons } from "@/components/Icons";
 import { Toggle } from "@/components/ui/toggle";
 import { deleteComment } from "@/app/_actions/card";
+import { useRouter } from "next/navigation";
 
 type DeleteBtnProps = {
   commentId: string;
@@ -11,11 +12,13 @@ type DeleteBtnProps = {
 };
 
 export const DeleteBtn = ({ commentId, cardId }: DeleteBtnProps) => {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const handleDelete = () => {
     startTransition(async () => {
       try {
         await deleteComment(commentId, cardId);
+        router.refresh();
       } catch (error) {
         console.log(error);
       }
@@ -23,7 +26,7 @@ export const DeleteBtn = ({ commentId, cardId }: DeleteBtnProps) => {
   };
   return (
     <Toggle
-      className="rounded-lg justify-start text-sm bg-transparent p-2 hover:bg-[#EB5757] text-[#EB5757]  hover:text-white font-medium "
+      className="rounded-lg flex items-center justify-center text-sm p-2 bg-transparent hover:bg-[#EB5757] text-[#EB5757] hover:text-white font-medium "
       disabled={isPending}
       onClick={handleDelete}
       aria-label="Delete comment"

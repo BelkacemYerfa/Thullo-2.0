@@ -81,3 +81,13 @@ export interface StoredImage {
 export type Boards = Pick<Board, "id" | "name" | "image">[];
 
 export type UniqueIdentifier = string;
+
+export interface ThulloInviteEmailProps {
+  username: string;
+  userImage: string;
+  invitedByUsername: string;
+  invitedByEmail: string;
+  teamName: string;
+  teamImage: string;
+  inviteLink: string;
+}

@@ -9,7 +9,6 @@ import { CardCommentForm } from "@/components/forms/CardCommentForm";
 import { CommentsList } from "@/components/list/CommentsList";
 import { Icons } from "@/components/Icons";
 import { CardAssignedMembers } from "./AddUserCardActions";
-import { CardCoverPopOver } from "./CardCoverPopOver";
 import { CardLabelsPopOver } from "./CardLabelsPopOver";
 import { Button } from "@/components/ui/button";
 import { useEffect, useTransition } from "react";
@@ -64,7 +63,7 @@ export const CardDetailedPopOver = ({
       if (currentCard !== cardId) setIsOpen(false);
       else setIsOpen(true);
     }
-  }, []);
+  }, [searchParams, setIsOpen, cardId]);
   return (
     <Drawer.Root open={isOpen} onOpenChange={handleOpen} shouldScaleBackground>
       <Drawer.Trigger className="cursor-pointer">{taskTitle}</Drawer.Trigger>
@@ -125,7 +124,7 @@ export const CardDetailedPopOver = ({
                       <div className="p-0 relative flex md:flex-col items-center gap-2 w-full">
                         <CardAssignedMembers />
                         <CardLabelsPopOver />
-                        <CardCoverPopOver />
+
                         <Button
                           variant={"destructive"}
                           className="flex justify-start items-center gap-x-[10px] duration-200 w-fit sm:w-full ease-linear rounded-lg text-sm py-3 px-4 bg-[#EB5757] text-white cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"

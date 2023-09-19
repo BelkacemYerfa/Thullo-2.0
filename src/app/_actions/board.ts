@@ -136,6 +136,22 @@ export async function getBoardDescription(
   );
 }
 
+export const getBoardData = async (boardId: string) => {
+  return await client.board.findUnique({
+    where: {
+      id: boardId,
+    },
+    select: {
+      name: true,
+      image: {
+        select: {
+          fileUrl: true,
+        },
+      },
+    },
+  });
+};
+
 export async function getBoardInfo(boardId: string): Promise<InitialData> {
   const board = await client.board.findUnique({
     where: {
