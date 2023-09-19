@@ -1,7 +1,7 @@
 "use client";
 
 import { useIntersection } from "@mantine/hooks";
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 import { BoardCard } from "./card/BoardCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -18,21 +18,20 @@ export const BoardS = ({ initialBoards }: BoardsProps) => {
     root: lastBoardRef.current,
     threshold: 1,
   });
-  const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
-    useInfiniteQuery(
-      ["scrolling-boards"],
-      async ({ pageParam = 1 }) => {
-        const query = `/api/boards?limit=${6}&page=${pageParam}`;
-        const { data } = await axios.get(query);
-        return data as Boards;
+  const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
+    ["scrolling-boards"],
+    async ({ pageParam = 1 }) => {
+      const query = `/api/boards?limit=${4}&page=${pageParam}`;
+      const { data } = await axios.get(query);
+      return data as Boards;
+    },
+    {
+      getNextPageParam: (_, pages) => {
+        return pages.length + 1;
       },
-      {
-        getNextPageParam: (_, pages) => {
-          return pages.length + 1;
-        },
-        initialData: { pages: [initialBoards], pageParams: [1] },
-      }
-    );
+      initialData: { pages: [initialBoards], pageParams: [1] },
+    }
+  );
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -40,7 +39,12 @@ export const BoardS = ({ initialBoards }: BoardsProps) => {
     }
   }, [entry, fetchNextPage]);
 
+  useEffect(() => {
+    refetch();
+  }, [initialBoards]);
+
   const boards = data?.pages.flatMap((page) => page) ?? initialBoards;
+
   return boards.length !== 0 ? (
     <>
       <ul className="flex w-full flex-col items-center justify-center overflow-y-auto p-6 md:grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 pb-5 overflow-hidden ">

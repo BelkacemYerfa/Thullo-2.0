@@ -30,7 +30,7 @@ model Board {
   visibility Visibility @default(PUBLIC)
   description String
   user      String @map("userId") 
-  users     User[]
+  userId    User @relation(fields: [user], references: [id])
   Lists   List[]
 }
 
@@ -88,8 +88,7 @@ model User {
   isAdmin Boolean @default(false)
   image  String
   name     String
-  boardId  String @map("boardId") @db.ObjectId
-  board    Board @relation(fields: [boardId], references: [id])
+  boards   Board[]
   cards    Card[]
   comments Comments[]
 }

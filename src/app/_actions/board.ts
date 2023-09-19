@@ -22,7 +22,7 @@ export async function addBoard(
   }
 ) {
   const user = await verifyUserAuth();
-  const board = await client.board.create({
+  await client.board.create({
     data: {
       name: data.title,
       description: "",
@@ -35,16 +35,23 @@ export async function addBoard(
       user: user.id,
     },
   });
-  await client.user.create({
-    data: {
-      boardId: board.id,
-      isAdmin: true,
-      email: user.emailAddresses[0].emailAddress,
-      name: user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
-      image: user.imageUrl ?? "",
+  const currentUser = await client.user.findUnique({
+    where: {
       id: user.id,
     },
   });
+  if (!currentUser) {
+    await client.user.create({
+      data: {
+        isAdmin: true,
+        email: user.emailAddresses[0].emailAddress,
+        name:
+          user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
+        image: user.imageUrl ?? "",
+        id: user.id,
+      },
+    });
+  }
   revalidatePath("/board");
 }
 

@@ -16,7 +16,6 @@ export default async function Home() {
     where: {
       user: user.id,
     },
-    //you can't use include and select in the same call
     select: {
       id: true,
       name: true,
@@ -29,7 +28,7 @@ export default async function Home() {
     orderBy: {
       createdAt: "desc",
     },
-    take: 6,
+    take: 4,
   });
   return (
     <Shell>
