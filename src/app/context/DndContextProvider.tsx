@@ -28,14 +28,14 @@ export const DndContextProvider = ({
   const reorderColumns = (index: number) => {
     if (!draggingList) return;
     const sourceIndex = initialData.columnOrder.indexOf(draggingList);
-    const destinationIndex = index;
-    console.log(sourceIndex, destinationIndex);
-    if (
-      sourceIndex === destinationIndex ||
-      sourceIndex === destinationIndex - 1
-    ) {
+    let destinationIndex = index;
+
+    if (sourceIndex === destinationIndex - 1) {
       console.log(sourceIndex, destinationIndex, "returning");
       return;
+    }
+    if (sourceIndex < index) {
+      destinationIndex = index - 1;
     }
     initialData.columnOrder.splice(sourceIndex, 1);
     initialData.columnOrder.splice(destinationIndex, 0, draggingList);
@@ -64,10 +64,15 @@ export const DndContextProvider = ({
         ...initialData.columns,
       },
     };
+    console.log(sourceIndex, index);
     const sourceColumn = newState.columns[sourceCol];
     const destinationColumn = newState.columns[destinationCol];
     sourceColumn.taskIds.splice(sourceIndex, 1);
-    destinationColumn.taskIds.splice(index, 0, task.id);
+    let destinationIndex = index;
+    if (sourceCol === destinationCol && sourceIndex < index) {
+      destinationIndex = index - 1;
+    }
+    destinationColumn.taskIds.splice(destinationIndex, 0, task.id);
     task.colId = destinationCol;
     /*Update the db */
     setInitialData(newState);
