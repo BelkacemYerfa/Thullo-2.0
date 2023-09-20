@@ -1,5 +1,9 @@
-import { SearchDataResults } from "@/components/Popups/CardCoverPopOver";
 import { getPlaiceholder } from "plaiceholder";
+
+type SearchDataResults = {
+  image: string;
+  blurDataURL: string;
+};
 
 export const getBase64Url = async (url: string) => {
   try {

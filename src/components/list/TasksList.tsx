@@ -1,69 +1,50 @@
-import {
-  Draggable,
-  Droppable,
-  DraggableProvidedDragHandleProps,
-} from "react-beautiful-dnd";
-import { TodoCard } from "../card/TodoCard";
+import { TodoCard } from "@/components/card/TodoCard";
 import { CardListForm } from "@/components/forms/CardListForm";
 import { ListNameChangeForm } from "@/components/forms/ListNameChangeForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Column, Task } from "@/types";
+import { DropAreaCard } from "@/components/dnd/DropArea";
+import { Fragment } from "react";
+import { useBoardStore } from "@/lib/store/board-store";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 type TasksListProps = {
   column: Column;
   tasks: Task[];
-  dragHandleProps?: DraggableProvidedDragHandleProps | null | undefined;
+  onDrop: (column: Column, index: number) => void;
 };
 
-export const TasksList = ({
-  column,
-  tasks,
-  dragHandleProps,
-}: TasksListProps) => {
+export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
   const { id, title } = column;
+  const { setDraggingList } = useBoardStore();
 
   return (
-    <Droppable droppableId={column.id}>
-      {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-          className={` w-[340px] px-2 h-full rounded-xl `}
-        >
-          <div className="relative h-full flex flex-col gap-y-3">
-            <div
-              className="sticky top-0 z-[4] flex items-center justify-between w-full py-2 px-1 gap-2 "
-              {...dragHandleProps}
-            >
-              <ListNameChangeForm title={title} listId={id} />
-            </div>
-            <ScrollArea className="h-full w-full flex-1 px-3 ">
-              <div className="h-full ">
-                {tasks.map((task, i) => (
-                  <Draggable key={task.id} draggableId={task.id} index={i}>
-                    {(provided, snapshot) => {
-                      return (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.dragHandleProps}
-                          {...provided.draggableProps}
-                          className={`pb-3`}
-                          key={task.id}
-                        >
-                          <TodoCard task={task} />
-                        </div>
-                      );
-                    }}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-
-                <CardListForm listId={id} />
-              </div>
-            </ScrollArea>
-          </div>
+    <div
+      draggable="true"
+      className={`w-[21.25rem] px-2 h-full rounded-xl  cursor-grab active:cursor-grabbing `}
+      onDragStart={(ev) => {
+        setDraggingList(id);
+        ev.dataTransfer.setData("text/html", ev.currentTarget.outerHTML);
+      }}
+      onDragEnd={() => setDraggingList(null)}
+    >
+      <div className="relative h-full flex flex-col gap-y-3">
+        <div className="sticky top-0 z-[4] flex items-center justify-between w-full py-2 px-1 gap-2 ">
+          <ListNameChangeForm title={title} listId={id} />
         </div>
-      )}
-    </Droppable>
+        <ScrollArea className="h-full w-full flex-1 px-3 ">
+          <div className="h-full ">
+            <DropAreaCard onDrop={() => onDrop(column, 0)} />
+            {tasks.map((task, i) => (
+              <Fragment key={task.id}>
+                <TodoCard task={task} />
+                <DropAreaCard onDrop={() => onDrop(column, i)} />
+              </Fragment>
+            ))}
+            <CardListForm listId={id} />
+          </div>
+        </ScrollArea>
+      </div>
+    </div>
   );
 };

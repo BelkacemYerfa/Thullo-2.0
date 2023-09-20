@@ -59,6 +59,7 @@ export interface Task {
   image?: string;
   labels: labels[];
   comments: number;
+  colId: string;
 }
 
 export interface Column {

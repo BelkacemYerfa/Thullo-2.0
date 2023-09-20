@@ -14,6 +14,7 @@ import { CardDetailedPopOver } from "@/components/Popups/CardDetailedPopOver";
 import { AddUserToCard } from "@/components/Popups/AddUserCardActions";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Task } from "@/types";
+import { useBoardStore } from "@/lib/store/board-store";
 
 type TodoCardProps = {
   task: Task;
@@ -22,8 +23,18 @@ type TodoCardProps = {
 export const TodoCard = ({ task }: TodoCardProps) => {
   const { user } = useUser();
   const { comments, id: cardId, content, labels } = task;
+  const { setDraggingCard } = useBoardStore();
+
   return (
-    <Card className="">
+    <Card
+      draggable="true"
+      onDragStart={(ev) => {
+        setDraggingCard(cardId);
+        ev.dataTransfer.setData("text/html", ev.currentTarget.outerHTML);
+      }}
+      onDragEnd={() => setDraggingCard(null)}
+      className="cursor-grab active:cursor-grabbing active:animate-pulse"
+    >
       <CardHeader className="space-y-3 px-3 py-2">
         {task.image ? (
           <AspectRatio ratio={3 / 2}>

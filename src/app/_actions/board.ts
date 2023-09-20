@@ -211,6 +211,7 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
         content: card.name,
         comments: card.comments?.length ?? 0,
         labels: card.labels,
+        colId: list.id,
       };
     });
     return acc;

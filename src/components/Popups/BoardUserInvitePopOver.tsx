@@ -15,7 +15,7 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
 import { sendEmail } from "@/app/_actions/email";
 import { useParams } from "next/navigation";
@@ -32,12 +32,23 @@ export const BoardUserInvitePopOver = () => {
   }, [selectedUsers]);
   const handleUserInvite = () => {
     handleSelectAll();
+    if (!debouncedQuery) return;
+    if (
+      debouncedQuery.match(
+        new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", "gim")
+      )
+    ) {
+      userInviteThroughEmail({
+        username: debouncedQuery,
+      });
+    } else {
+      console.log("username : ", debouncedQuery);
+    }
     setIsOpen(false);
   };
   const userInviteThroughEmail = useCallback(
     async ({ username }: { username: string }) => {
       const boardInfo = await getBoardData(params.boardId as string);
-      console.log("boardInfo : ", boardInfo);
       const mail = await sendEmail({
         username,
         teamName: boardInfo?.name as string,
@@ -48,19 +59,7 @@ export const BoardUserInvitePopOver = () => {
     },
     []
   );
-  useEffect(() => {
-    if (!debouncedQuery) return;
-    if (
-      debouncedQuery.match(
-        new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", "gim")
-      )
-    ) {
-      console.log("email : ", debouncedQuery);
-      userInviteThroughEmail({
-        username: debouncedQuery,
-      });
-    }
-  }, [debouncedQuery, userInviteThroughEmail]);
+
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger
@@ -80,7 +79,7 @@ export const BoardUserInvitePopOver = () => {
         </div>
         <Command className="rounded-lg border border-solid border-[#E0E0E0] shadow-outline-navigation-md ">
           <CommandInput
-            placeholder="Search framework..."
+            placeholder="Invite User or Email"
             onValueChange={setQuery}
             value={query}
           />
@@ -116,7 +115,7 @@ export const BoardUserInvitePopOver = () => {
         </Command>
         <div className="flex justify-center">
           <Button
-            disabled={selectedUsers.length === 0 || !query}
+            disabled={selectedUsers.length === 0 && !query}
             className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
             onClick={handleUserInvite}
           >
