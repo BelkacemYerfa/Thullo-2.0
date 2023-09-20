@@ -38,7 +38,7 @@ export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
             {tasks.map((task, i) => (
               <Fragment key={task.id}>
                 <TodoCard task={task} />
-                <DropAreaCard onDrop={() => onDrop(column, i)} />
+                <DropAreaCard onDrop={() => onDrop(column, i + 1)} />
               </Fragment>
             ))}
             <CardListForm listId={id} />

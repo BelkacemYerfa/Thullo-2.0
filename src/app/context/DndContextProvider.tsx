@@ -30,7 +30,10 @@ export const DndContextProvider = ({
     const sourceIndex = initialData.columnOrder.indexOf(draggingList);
     const destinationIndex = index;
     console.log(sourceIndex, destinationIndex);
-    if (sourceIndex === destinationIndex) {
+    if (
+      sourceIndex === destinationIndex ||
+      sourceIndex === destinationIndex - 1
+    ) {
       console.log(sourceIndex, destinationIndex, "returning");
       return;
     }
@@ -49,7 +52,12 @@ export const DndContextProvider = ({
     const sourceCol = task.colId;
     const sourceIndex = initialData.columns[sourceCol].taskIds.indexOf(task.id);
     const destinationCol = column.id;
-    if (sourceCol === destinationCol && sourceIndex === index) return;
+    if (
+      sourceCol === destinationCol &&
+      (sourceIndex === index || sourceIndex === index - 1)
+    ) {
+      return;
+    }
     const newState: InitialData = {
       ...initialData,
       columns: {
@@ -79,7 +87,7 @@ export const DndContextProvider = ({
           <div key={columnId} className="relative ">
             <div className="relative h-full snap-center pb-2 flex ">
               <TasksList column={column} tasks={tasks} onDrop={onDrop} />
-              <DropAreaList onDrop={() => reorderColumns(index)} />
+              <DropAreaList onDrop={() => reorderColumns(index + 1)} />
             </div>
           </div>
         );
