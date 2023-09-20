@@ -14,10 +14,7 @@ type DndContextProviderProps = {
   db: InitialData;
 };
 
-export const DndContextProvider = ({
-  boardId,
-  db,
-}: DndContextProviderProps) => {
+export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
   const [initialData, setInitialData] = useState<InitialData>(db);
   const { draggingCard, draggingList } = useBoardStore();
   const [colRef] = useAutoAnimate<HTMLDivElement>();

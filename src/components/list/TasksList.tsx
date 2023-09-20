@@ -17,7 +17,7 @@ type TasksListProps = {
 export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
   const { id, title } = column;
   const { setDraggingList } = useBoardStore();
-
+  const [parent, enableAnimation] = useAutoAnimate();
   return (
     <div
       draggable="true"
@@ -32,8 +32,8 @@ export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
         <div className="sticky top-0 z-[4] flex items-center justify-between w-full py-2 px-1 gap-2 ">
           <ListNameChangeForm title={title} listId={id} />
         </div>
-        <ScrollArea className="h-full w-full flex-1 px-3 ">
-          <div className="h-full ">
+        <ScrollArea className="h-full w-full flex-1 px-3">
+          <div className="h-full " ref={parent}>
             <DropAreaCard onDrop={() => onDrop(column, 0)} />
             {tasks.map((task, i) => (
               <Fragment key={task.id}>

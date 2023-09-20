@@ -1,5 +1,5 @@
 import { getBoardInfo, verifyUserAuth } from "@/app/_actions/board";
-import { DndContextProvider } from "@/app/context/DndContextProvider";
+import { DndClient } from "@/components/dnd/DndClient";
 import { Shell } from "@/components/Shell";
 import { NavBar } from "@/components/navigation/Navbar";
 import { BoardSettings } from "@/components/settings/BoardSettings";
@@ -76,7 +76,7 @@ export default async function BoardPage({
         </section>
       </section>
       <section className="flex-1 max-w-[95%] m-auto bg-[#F8F9FD] rounded-t-xl sm:rounded-t-3xl px-2 pt-2 sm:px-4 sm:pt-4 w-full h-full overflow-y-hidden pb-2 ">
-        <DndContextProvider boardId={boardId} db={db} />
+        <DndClient boardId={boardId} db={db} />
       </section>
     </Shell>
   );
