@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "src",
+    "outDir": "dist",
+    "sourceMap": true,
+    "target": "esnext",
+    "noImplicitAny": true
+  },
+  "include": ["./src/**/*", "src/index.ts"]
+}
