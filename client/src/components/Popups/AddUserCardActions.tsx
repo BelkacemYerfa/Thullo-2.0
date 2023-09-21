@@ -22,18 +22,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useState, forwardRef } from "react";
 import { Icons } from "@/components/Icons";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const Users = [
   {
-    id: crypto.randomUUID(),
+    id: "1",
     username: "bylka",
     profilePic:
       "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
   },
   {
-    id: crypto.randomUUID(),
+    id: "2",
     username: "bylka",
     profilePic:
       "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",

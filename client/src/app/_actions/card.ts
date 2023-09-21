@@ -196,7 +196,6 @@ export async function addComment(
       },
     },
   });
-  console.log(comment);
   revalidatePath(`/board/${boardId}`);
 }
 

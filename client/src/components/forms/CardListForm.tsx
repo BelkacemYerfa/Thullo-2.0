@@ -14,6 +14,7 @@ import { addCard } from "@/app/_actions/card";
 import { useRouter } from "next/navigation";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { toast } from "sonner";
+import { useSocketStore } from "@/lib/store/socket-store";
 
 type CardListFormProps = {
   listId: string;
@@ -23,12 +24,13 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
   const btnRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { socket } = useSocketStore();
   const {
     ref,
     rename: isOpen,
     setRename: setIsOpen,
   } = useOutsideClick<HTMLFormElement>();
-  const [parent, enableAnimation] = useAutoAnimate();
+  const [parent] = useAutoAnimate();
   const form = useForm<cardSchemaType>({
     resolver: zodResolver(cardSchema),
     defaultValues: {
@@ -38,6 +40,11 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
   const onSubmit = (data: cardSchemaType) => {
     startTransition(async () => {
       try {
+        if (socket) {
+          socket.emit("card:add", {
+            card: { ...data, listId },
+          });
+        }
         await addCard({ ...data, listId });
         toast.success("Task added successfully");
         setIsOpen(false);

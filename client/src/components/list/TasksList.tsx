@@ -17,7 +17,7 @@ type TasksListProps = {
 export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
   const { id, title } = column;
   const { setDraggingList } = useBoardStore();
-  const [parent, enableAnimation] = useAutoAnimate();
+  const [parent] = useAutoAnimate();
   return (
     <div
       draggable="true"
@@ -34,11 +34,14 @@ export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
         </div>
         <ScrollArea className="h-full w-full flex-1 px-3">
           <div className="h-full " ref={parent}>
-            <DropAreaCard onDrop={() => onDrop(column, 0)} />
+            <DropAreaCard onDrop={() => onDrop(column, 0)} index={0} />
             {tasks.map((task, i) => (
               <Fragment key={task.id}>
                 <TodoCard task={task} />
-                <DropAreaCard onDrop={() => onDrop(column, i + 1)} />
+                <DropAreaCard
+                  onDrop={() => onDrop(column, i + 1)}
+                  index={i + 1}
+                />
               </Fragment>
             ))}
             <CardListForm listId={id} />

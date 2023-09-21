@@ -37,7 +37,7 @@ export async function sendEmail({
         inviteLink,
       }),
     });
-    console.log(response);
+
     return { success: true, response };
   } catch (err) {
     console.log(err);

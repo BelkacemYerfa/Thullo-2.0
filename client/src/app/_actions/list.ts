@@ -15,7 +15,6 @@ export async function addList(data: listNameSchemaType & { id: string }) {
 }
 
 export async function deleteList(id: string) {
-  const speed = performance.now();
   const cards = await client.card.findMany({
     where: {
       listId: id,
@@ -66,8 +65,6 @@ export async function deleteList(id: string) {
       id,
     },
   });
-  const speed2 = performance.now();
-  console.log("deleteList", (speed2 - speed).toFixed(2) + "ms");
 }
 
 export async function updateListName(
