@@ -41,6 +41,7 @@ export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
                 <DropAreaCard
                   onDrop={() => onDrop(column, i + 1)}
                   index={i + 1}
+                  task={task}
                 />
               </Fragment>
             ))}

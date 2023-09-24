@@ -2,17 +2,19 @@
 
 import { useBoardStore } from "@/lib/store/board-store";
 import { useSocketStore } from "@/lib/store/socket-store";
+import { Column, Task } from "@/types";
 import { useState } from "react";
 
 type DropAreaProps = {
   onDrop: () => void;
   index: number;
+  task?: Task;
 };
 
-export const DropAreaCard = ({ onDrop, index }: DropAreaProps) => {
+export const DropAreaCard = ({ onDrop, index, task }: DropAreaProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const { draggingCard } = useBoardStore();
   const { socket } = useSocketStore();
+  const { draggingCard } = useBoardStore();
   const handleDragEnter = () => {
     setIsVisible(true);
   };
@@ -28,15 +30,12 @@ export const DropAreaCard = ({ onDrop, index }: DropAreaProps) => {
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={() => {
-        if (!socket) return;
         socket.emit("card:move", {
-          cardId: draggingCard,
+          colId: task?.colId,
+          draggingCard,
           index,
         });
-        socket.on("dragTaskEmit", (data) => {
-          onDrop();
-          console.log(data);
-        });
+        onDrop();
         handleDragLeave();
       }}
       onDragOver={(e) => e.preventDefault()}
@@ -44,9 +43,15 @@ export const DropAreaCard = ({ onDrop, index }: DropAreaProps) => {
   );
 };
 
-export const DropAreaList = ({ onDrop }: DropAreaProps) => {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+type DropAreaListProps = {
+  onDrop: () => void;
+  index: number;
+};
 
+export const DropAreaList = ({ onDrop, index }: DropAreaListProps) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const { socket } = useSocketStore();
+  const { draggingList } = useBoardStore();
   const handleDragEnter = () => {
     setIsVisible(true);
   };
@@ -61,6 +66,10 @@ export const DropAreaList = ({ onDrop }: DropAreaProps) => {
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={() => {
+        socket.emit("list:move", {
+          draggingList,
+          index,
+        });
         onDrop();
         handleDragLeave();
       }}

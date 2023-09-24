@@ -2,7 +2,7 @@
 
 import { TasksList } from "@/components/list/TasksList";
 
-import { useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { Column, InitialData } from "@/types";
 import { useBoardStore } from "@/lib/store/board-store";
@@ -20,66 +20,84 @@ type DndContextProviderProps = {
 
 export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
   const [initialData, setInitialData] = useState<InitialData>(db);
-  const { draggingCard, draggingList } = useBoardStore();
+  const { draggingCard, draggingList, setDraggingList, setDraggingCard } =
+    useBoardStore();
   const { setSocket } = useSocketStore();
   const [colRef] = useAutoAnimate<HTMLDivElement>();
-  useEffect(() => {
-    setInitialData(db);
-  }, [db]);
 
-  const reorderColumns = (index: number) => {
-    if (!draggingList) return;
+  const reorderColumns = useCallback(
+    (index: number, dragList?: string) => {
+      const wishedDragList = dragList ?? (draggingList as string);
+      if (!wishedDragList) return;
+      const sourceIndex = initialData.columnOrder.indexOf(wishedDragList);
+      let destinationIndex = index;
 
-    const sourceIndex = initialData.columnOrder.indexOf(draggingList);
-    let destinationIndex = index;
+      if (sourceIndex === destinationIndex - 1) return;
+      if (sourceIndex < index) {
+        destinationIndex = index - 1;
+      }
+      initialData.columnOrder.splice(sourceIndex, 1);
+      initialData.columnOrder.splice(destinationIndex, 0, wishedDragList);
+      const newState: InitialData = {
+        ...initialData,
+        columnOrder: [...initialData.columnOrder],
+      };
+      setInitialData(newState);
+    },
+    [initialData, draggingList]
+  );
 
-    if (sourceIndex === destinationIndex - 1) return;
-    if (sourceIndex < index) {
-      destinationIndex = index - 1;
-    }
-    initialData.columnOrder.splice(sourceIndex, 1);
-    initialData.columnOrder.splice(destinationIndex, 0, draggingList);
-    const newState: InitialData = {
-      ...initialData,
-      columnOrder: [...initialData.columnOrder],
-    };
-    setInitialData(newState);
-  };
-
-  const onDrop = (column: Column, index: number) => {
-    if (!draggingCard) return;
-
-    const task = initialData.tasks[draggingCard];
-    const sourceCol = task.colId;
-    const sourceIndex = initialData.columns[sourceCol].taskIds.indexOf(task.id);
-    const destinationCol = column.id;
-    if (
-      sourceCol === destinationCol &&
-      (sourceIndex === index || sourceIndex === index - 1)
-    )
-      return;
-    const newState: InitialData = {
-      ...initialData,
-      columns: {
-        ...initialData.columns,
-      },
-    };
-    const sourceColumn = newState.columns[sourceCol];
-    const destinationColumn = newState.columns[destinationCol];
-    sourceColumn.taskIds.splice(sourceIndex, 1);
-    let destinationIndex = index;
-    if (sourceCol === destinationCol && sourceIndex < index) {
-      destinationIndex = index - 1;
-    }
-    destinationColumn.taskIds.splice(destinationIndex, 0, task.id);
-    task.colId = destinationCol;
-    /*Update the db */
-    setInitialData(newState);
-  };
+  const onDrop = useCallback(
+    (column: Column, index: number, dragCard?: string) => {
+      const wishedDragCard = dragCard ?? (draggingCard as string);
+      if (!wishedDragCard) return;
+      const task = initialData.tasks[wishedDragCard];
+      const sourceCol = task.colId;
+      const sourceIndex = initialData.columns[sourceCol].taskIds.indexOf(
+        task.id
+      );
+      const destinationCol = column.id;
+      if (
+        sourceCol === destinationCol &&
+        (sourceIndex === index || sourceIndex === index - 1)
+      )
+        return;
+      const newState: InitialData = {
+        ...initialData,
+        columns: {
+          ...initialData.columns,
+        },
+      };
+      const sourceColumn = newState.columns[sourceCol];
+      const destinationColumn = newState.columns[destinationCol];
+      sourceColumn.taskIds.splice(sourceIndex, 1);
+      let destinationIndex = index;
+      if (sourceCol === destinationCol && sourceIndex < index) {
+        destinationIndex = index - 1;
+      }
+      destinationColumn.taskIds.splice(destinationIndex, 0, task.id);
+      task.colId = destinationCol;
+      /*Update the db */
+      setInitialData(newState);
+    },
+    [initialData, draggingCard]
+  );
 
   useEffect(() => {
     setSocket(socket);
   }, [setSocket]);
+
+  useEffect(() => {
+    socket.on("card:move", (task) => {
+      onDrop(initialData.columns[task.colId], task.index, task.draggingCard);
+    });
+    socket.on("list:move", (column) => {
+      reorderColumns(column.index, column.draggingList);
+    });
+    return () => {
+      socket.off("card:move");
+    };
+  }, [initialData, reorderColumns, onDrop]);
 
   return (
     <div
