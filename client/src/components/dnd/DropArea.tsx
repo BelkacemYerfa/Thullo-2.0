@@ -8,7 +8,7 @@ import { useState } from "react";
 type DropAreaProps = {
   onDrop: () => void;
   index: number;
-  task?: Task;
+  task: Task;
 };
 
 export const DropAreaCard = ({ onDrop, index, task }: DropAreaProps) => {
@@ -31,7 +31,7 @@ export const DropAreaCard = ({ onDrop, index, task }: DropAreaProps) => {
       onDragLeave={handleDragLeave}
       onDrop={() => {
         socket.emit("card:move", {
-          colId: task?.colId,
+          colId: task.colId,
           draggingCard,
           index,
         });

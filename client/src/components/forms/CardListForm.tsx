@@ -40,12 +40,14 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
   const onSubmit = (data: cardSchemaType) => {
     startTransition(async () => {
       try {
+        const newCard = await addCard({ ...data, listId });
         if (socket) {
           socket.emit("card:add", {
-            card: { ...data, listId },
+            card: {
+              ...newCard,
+            },
           });
         }
-        await addCard({ ...data, listId });
         toast.success("Task added successfully");
         setIsOpen(false);
         form.reset();

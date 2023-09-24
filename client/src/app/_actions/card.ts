@@ -24,7 +24,7 @@ export async function addCard(
   });
   if (!list) throw new Error("Board not found");
 
-  await client.card.create({
+  const newCard = await client.card.create({
     data: {
       name: Info.name,
       description: "",
@@ -32,7 +32,14 @@ export async function addCard(
       userId: user.id,
     },
   });
-  revalidatePath(`/board/${list.boardId}`);
+  const wantedCard = {
+    id: newCard.id,
+    content: newCard.name,
+    colId: newCard.listId,
+    labels: [],
+    comments: 0,
+  };
+  return wantedCard;
 }
 
 export async function deleteCardMutation(cardId: string) {

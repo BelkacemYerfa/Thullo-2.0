@@ -2,9 +2,9 @@
 
 import { TasksList } from "@/components/list/TasksList";
 
-import { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
-import { Column, InitialData } from "@/types";
+import { Column, InitialData, Task } from "@/types";
 import { useBoardStore } from "@/lib/store/board-store";
 import { DropAreaList } from "@/components/dnd/DropArea";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
@@ -20,8 +20,7 @@ type DndContextProviderProps = {
 
 export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
   const [initialData, setInitialData] = useState<InitialData>(db);
-  const { draggingCard, draggingList, setDraggingList, setDraggingCard } =
-    useBoardStore();
+  const { draggingCard, draggingList } = useBoardStore();
   const { setSocket } = useSocketStore();
   const [colRef] = useAutoAnimate<HTMLDivElement>();
 
@@ -83,6 +82,23 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
     [initialData, draggingCard]
   );
 
+  const addCard = useCallback(
+    (card: Task) => {
+      const newState: InitialData = {
+        ...initialData,
+        tasks: {
+          ...initialData.tasks,
+          [card.id]: card,
+        },
+      };
+      if (!newState.columns[card.colId].taskIds.includes(card.id)) {
+        newState.columns[card.colId].taskIds.push(card.id);
+      }
+      setInitialData(newState);
+    },
+    [initialData]
+  );
+
   useEffect(() => {
     setSocket(socket);
   }, [setSocket]);
@@ -94,10 +110,15 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
     socket.on("list:move", (column) => {
       reorderColumns(column.index, column.draggingList);
     });
+    socket.on("card:add", (card) => {
+      addCard(card);
+    });
     return () => {
       socket.off("card:move");
+      socket.off("list:move");
+      socket.off("card:add");
     };
-  }, [initialData, reorderColumns, onDrop]);
+  }, [initialData, reorderColumns, onDrop, addCard]);
 
   return (
     <div

@@ -34,7 +34,11 @@ export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
         </div>
         <ScrollArea className="h-full w-full flex-1 px-3">
           <div className="h-full " ref={parent}>
-            <DropAreaCard onDrop={() => onDrop(column, 0)} index={0} />
+            <DropAreaCard
+              task={tasks[0]}
+              onDrop={() => onDrop(column, 0)}
+              index={0}
+            />
             {tasks.map((task, i) => (
               <Fragment key={task.id}>
                 <TodoCard task={task} />
