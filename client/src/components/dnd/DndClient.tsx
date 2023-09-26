@@ -1,8 +1,7 @@
 "use client";
 
 import { TasksList } from "@/components/list/TasksList";
-
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { Column, InitialData, Task } from "@/types";
 import { useBoardStore } from "@/lib/store/board-store";
@@ -10,6 +9,8 @@ import { DropAreaList } from "@/components/dnd/DropArea";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { io } from "socket.io-client";
 import { useSocketStore } from "@/lib/store/socket-store";
+import { addCard } from "@/lib/DndFunc/card";
+import { useGenerationStore } from "@/lib/store/popups-store";
 
 const socket = io("http://localhost:8000");
 
@@ -19,10 +20,14 @@ type DndContextProviderProps = {
 };
 
 export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
-  const [initialData, setInitialData] = useState<InitialData>(db);
+  const { initialData, setInitialData } = useGenerationStore();
   const { draggingCard, draggingList } = useBoardStore();
   const { setSocket } = useSocketStore();
   const [colRef] = useAutoAnimate<HTMLDivElement>();
+
+  useEffect(() => {
+    setInitialData(db);
+  }, [db, setInitialData]);
 
   const reorderColumns = useCallback(
     (index: number, dragList?: string) => {
@@ -43,7 +48,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       };
       setInitialData(newState);
     },
-    [initialData, draggingList]
+    [initialData, draggingList, setInitialData]
   );
 
   const onDrop = useCallback(
@@ -79,24 +84,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       /*Update the db */
       setInitialData(newState);
     },
-    [initialData, draggingCard]
-  );
-
-  const addCard = useCallback(
-    (card: Task) => {
-      const newState: InitialData = {
-        ...initialData,
-        tasks: {
-          ...initialData.tasks,
-          [card.id]: card,
-        },
-      };
-      if (!newState.columns[card.colId].taskIds.includes(card.id)) {
-        newState.columns[card.colId].taskIds.push(card.id);
-      }
-      setInitialData(newState);
-    },
-    [initialData]
+    [initialData, draggingCard, setInitialData]
   );
 
   useEffect(() => {
@@ -110,15 +98,16 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
     socket.on("list:move", (column) => {
       reorderColumns(column.index, column.draggingList);
     });
-    socket.on("card:add", (card) => {
-      addCard(card);
+    socket.on("card:add", (card: Task) => {
+      const newState = addCard(card, initialData);
+      setInitialData(newState);
     });
     return () => {
       socket.off("card:move");
       socket.off("list:move");
       socket.off("card:add");
     };
-  }, [initialData, reorderColumns, onDrop, addCard]);
+  }, [initialData, reorderColumns, onDrop, setInitialData]);
 
   return (
     <div

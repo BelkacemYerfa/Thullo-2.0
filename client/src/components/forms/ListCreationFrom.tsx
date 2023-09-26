@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cardSchema, cardSchemaType } from "../../validation/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGenerationStore } from "@/lib/store/Store";
+import { useGenerationStore } from "@/lib/store/popups-store";
 import { addList } from "@/app/_actions/list";
 import { useTransition } from "react";
 import { Icons } from "@/components/Icons";

@@ -2,7 +2,7 @@ import { TodoCard } from "@/components/card/TodoCard";
 import { CardListForm } from "@/components/forms/CardListForm";
 import { ListNameChangeForm } from "@/components/forms/ListNameChangeForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Column, Task } from "@/types";
+import { Column, InitialData, Task } from "@/types";
 import { DropAreaCard } from "@/components/dnd/DropArea";
 import { Fragment } from "react";
 import { useBoardStore } from "@/lib/store/board-store";
@@ -12,7 +12,7 @@ type TasksListProps = {
   column: Column;
   tasks: Task[];
   onDrop: (column: Column, index: number) => void;
-  addCard: (card: Task) => void;
+  addCard: (card: Task, initialData: InitialData) => InitialData;
 };
 
 export const TasksList = ({

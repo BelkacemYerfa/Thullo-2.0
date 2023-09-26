@@ -2,7 +2,7 @@
 
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { BoardCreationForm } from "@/components/forms/BoardCreationForm";
-import { useGenerationStore } from "@/lib/store/Store";
+import { useGenerationStore } from "@/lib/store/popups-store";
 import { Icons } from "../Icons";
 
 export const AddBoardPopOver = () => {

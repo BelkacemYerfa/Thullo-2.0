@@ -16,9 +16,9 @@ export const useGenerationStore = create<IStore>((set) => ({
   newList: false,
   setNewList: (newList) => set({ newList }),
   initialData: {
-    columnOrder: [],
-    columns: {},
     tasks: {},
+    columns: {},
+    columnOrder: [],
   },
   setInitialData: (initialData) => set({ initialData }),
 }));

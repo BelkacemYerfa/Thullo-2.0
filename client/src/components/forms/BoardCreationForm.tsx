@@ -9,7 +9,7 @@ import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { BoardFormSchema, BoardFormSchemaType } from "../../validation/search";
 import { UploadImageForm } from "./UploadImageForm";
-import { useGenerationStore } from "@/lib/store/Store";
+import { useGenerationStore } from "@/lib/store/popups-store";
 import { addBoard } from "@/app/_actions/board";
 import { useUploadThing } from "@/lib/uploadthing/uploadthing";
 import { Icons } from "@/components/Icons";

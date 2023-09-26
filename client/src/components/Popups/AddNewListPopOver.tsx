@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { useGenerationStore } from "@/lib/store/Store";
+import { useGenerationStore } from "@/lib/store/popups-store";
 
 type AddNewListPopOverProps = {
   boardId: string;
