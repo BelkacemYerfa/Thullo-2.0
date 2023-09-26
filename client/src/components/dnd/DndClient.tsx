@@ -134,7 +134,12 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
         return (
           <div key={columnId} className="relative ">
             <div className="relative h-full snap-center pb-2 flex ">
-              <TasksList column={column} tasks={tasks} onDrop={onDrop} />
+              <TasksList
+                column={column}
+                tasks={tasks}
+                onDrop={onDrop}
+                addCard={addCard}
+              />
               <DropAreaList
                 onDrop={() => reorderColumns(index + 1)}
                 index={index + 1}

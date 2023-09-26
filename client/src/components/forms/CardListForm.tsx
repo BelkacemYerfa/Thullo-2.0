@@ -15,12 +15,14 @@ import { useRouter } from "next/navigation";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { toast } from "sonner";
 import { useSocketStore } from "@/lib/store/socket-store";
+import { Task } from "@/types";
 
 type CardListFormProps = {
   listId: string;
+  addCardToState: (card: Task) => void;
 };
 
-export const CardListForm = ({ listId }: CardListFormProps) => {
+export const CardListForm = ({ listId, addCardToState }: CardListFormProps) => {
   const btnRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -48,6 +50,7 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
             },
           });
         }
+        addCardToState(newCard);
         toast.success("Task added successfully");
         setIsOpen(false);
         form.reset();
