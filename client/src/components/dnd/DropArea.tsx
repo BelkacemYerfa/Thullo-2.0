@@ -1,6 +1,5 @@
 "use client";
 
-import { addCard } from "@/app/_actions/card";
 import { useBoardStore } from "@/lib/store/board-store";
 import { useSocketStore } from "@/lib/store/socket-store";
 import { Task } from "@/types";

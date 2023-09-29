@@ -14,28 +14,32 @@ import { deleteList } from "@/app/_actions/list";
 import { useTransition } from "react";
 import { Icons } from "@/components/Icons";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useGenerationStore } from "@/lib/store/popups-store";
+import { removeList } from "@/lib/DndFunc/list";
+import { useSocketStore } from "@/lib/store/socket-store";
 
 type ListDeletePopOverProps = {
   listId: string;
 };
 
 export const ListDeletePopOver = ({ listId }: ListDeletePopOverProps) => {
-  const router = useRouter();
   const {
     ref: DialogRef,
     rename: isDialogOpen,
     setRename: setIsDialogOpen,
   } = useOutsideClick<HTMLDivElement>();
+  const { initialData, setInitialData } = useGenerationStore();
+  const { socket } = useSocketStore();
   const [isPending, startTransition] = useTransition();
   const handleDelete = () => {
+    socket.emit("list:delete", listId);
+    setInitialData(removeList(listId, initialData));
+    toast.error("List deleted successfully");
+    setIsDialogOpen(false);
     startTransition(async () => {
       try {
         await deleteList(listId);
-        toast.error("List deleted successfully");
-        setIsDialogOpen(false);
-        router.refresh();
       } catch (error) {
         console.log(error);
       }

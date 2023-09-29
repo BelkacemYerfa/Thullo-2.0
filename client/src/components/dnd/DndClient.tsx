@@ -11,6 +11,7 @@ import { io } from "socket.io-client";
 import { useSocketStore } from "@/lib/store/socket-store";
 import { addCard, removeCard } from "@/lib/DndFunc/card";
 import { useGenerationStore } from "@/lib/store/popups-store";
+import { addList, editListName, removeList } from "@/lib/DndFunc/list";
 
 const socket = io("http://localhost:8000");
 
@@ -92,11 +93,10 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
   }, [setSocket]);
 
   useEffect(() => {
+    if (!socket) return;
+    //card
     socket.on("card:move", (task) => {
       onDrop(initialData.columns[task.colId], task.index, task.draggingCard);
-    });
-    socket.on("list:move", (column) => {
-      reorderColumns(column.index, column.draggingList);
     });
     socket.on("card:add", (card: Task) => {
       const newState = addCard(card, initialData);
@@ -106,10 +106,30 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       const newState = removeCard(cardId, initialData);
       setInitialData(newState);
     });
+    //list
+    socket.on("list:move", (column) => {
+      reorderColumns(column.index, column.draggingList);
+    });
+    socket.on("list:add", (column: Column) => {
+      const newState = addList(column, initialData);
+      setInitialData(newState);
+    });
+    socket.on("list:delete", (columnId: string) => {
+      const newState = removeList(columnId, initialData);
+      setInitialData(newState);
+    });
+    socket.on("list:edit", (list) => {
+      const newState = editListName(list.name, list.id, initialData);
+      setInitialData(newState);
+    });
     return () => {
       socket.off("card:move");
-      socket.off("list:move");
       socket.off("card:add");
+      socket.off("card:delete");
+      socket.off("list:move");
+      socket.off("list:add");
+      socket.off("list:delete");
+      socket.off("list:edit");
     };
   }, [initialData, reorderColumns, onDrop, setInitialData]);
 
@@ -127,12 +147,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
         return (
           <div key={columnId} className="relative ">
             <div className="relative h-full snap-center pb-2 flex ">
-              <TasksList
-                column={column}
-                tasks={tasks}
-                onDrop={onDrop}
-                addCard={addCard}
-              />
+              <TasksList column={column} tasks={tasks} onDrop={onDrop} />
               <DropAreaList
                 onDrop={() => reorderColumns(index + 1)}
                 index={index + 1}

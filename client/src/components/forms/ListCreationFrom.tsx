@@ -7,18 +7,23 @@ import { Button } from "@/components/ui/button";
 import { cardSchema, cardSchemaType } from "../../validation/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGenerationStore } from "@/lib/store/popups-store";
-import { addList } from "@/app/_actions/list";
+import { createList } from "@/app/_actions/list";
 import { useTransition } from "react";
 import { Icons } from "@/components/Icons";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Column } from "@/types";
+import ObjectID from "bson-objectid";
+import { useSocketStore } from "@/lib/store/socket-store";
+import { addList } from "@/lib/DndFunc/list";
 
 type ListCreationFormProps = {
   boardId: string;
 };
 
 export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
-  const { setNewList } = useGenerationStore();
+  const { setNewList, initialData, setInitialData } = useGenerationStore();
+  const { socket } = useSocketStore();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<cardSchemaType>({
@@ -28,12 +33,19 @@ export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
     },
   });
   const onSubmit = (data: cardSchemaType) => {
+    const objId = new ObjectID().toHexString();
+    const newList: Column = {
+      id: objId,
+      title: data.name,
+      taskIds: [],
+    };
+    socket.emit("list:add", { list: { ...newList } });
+    setInitialData(addList(newList, initialData));
+    toast.success("List added successfully");
+    setNewList(false);
     startTransition(async () => {
       try {
-        await addList({ ...data, id: boardId });
-        toast.success("List added successfully");
-        setNewList(false);
-        router.refresh();
+        await createList({ ...data, boardId, listId: objId });
       } catch (error) {
         console.log(error);
       }

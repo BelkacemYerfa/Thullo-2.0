@@ -14,10 +14,13 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { ListDeletePopOver } from "@/components/Popups/ListDeletePopOver";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { updateListName } from "@/app/_actions/list";
 import { experimental_useOptimistic as useOptimistic } from "react";
+import { useSocketStore } from "@/lib/store/socket-store";
+import { useGenerationStore } from "@/lib/store/popups-store";
+import { editListName } from "@/lib/DndFunc/list";
 
 type ListNameChangeFormProps = {
   title: string;
@@ -29,29 +32,33 @@ export const ListNameChangeForm = ({
   listId,
   ...props
 }: ListNameChangeFormProps) => {
-  const [name, setName] = useState<string>(title);
-  const [optimisticData, setOptimisticData] = useOptimistic({
-    name: name,
-    pending: false,
-  });
+  const [isPending, startTransition] = useTransition();
+  const { socket } = useSocketStore();
+  const { initialData, setInitialData } = useGenerationStore();
   const { ref, rename, setRename } = useOutsideClick<HTMLFormElement>();
   const form = useForm<listNameSchemaType>({
     resolver: zodResolver(listNameSchema),
-    defaultValues: { name: name },
+    defaultValues: { name: title },
   });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleRename = () => {
     setRename(true);
     setIsOpen(false);
   };
-  const onSubmit = async (data: listNameSchemaType) => {
-    setOptimisticData({
+  const onSubmit = (data: listNameSchemaType) => {
+    socket.emit("list:edit", {
+      id: listId,
       name: data.name,
-      pending: true,
     });
+    setInitialData(editListName(data.name, listId, initialData));
     setRename(false);
-    await updateListName({ ...data, id: listId });
-    setName(data.name);
+    startTransition(async () => {
+      try {
+        await updateListName({ ...data, id: listId });
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   return rename ? (
@@ -67,11 +74,7 @@ export const ListNameChangeForm = ({
             name="name"
             render={({ field }) => (
               <FormItem className="w-full">
-                <Input
-                  placeholder={optimisticData.name}
-                  className="w-full "
-                  {...field}
-                />
+                <Input placeholder={title} className="w-full " {...field} />
               </FormItem>
             )}
           />
@@ -89,10 +92,10 @@ export const ListNameChangeForm = ({
       <h3
         {...props}
         className={`text-sm text-[#333333] font-medium ${
-          optimisticData.pending ? "opacity-50" : ""
+          isPending ? "opacity-50" : ""
         } `}
       >
-        {optimisticData.name}
+        {title}
       </h3>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger aria-label="open list settings">

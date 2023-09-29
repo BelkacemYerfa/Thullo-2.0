@@ -4,12 +4,15 @@ import client from "@/lib/prismaDb";
 import { verifyUserAuth } from "./board";
 import { listNameSchemaType } from "../../validation/list-name";
 
-export async function addList(data: listNameSchemaType & { id: string }) {
+export async function createList(
+  data: listNameSchemaType & { boardId: string; listId: string }
+) {
   const user = await verifyUserAuth();
   await client.list.create({
     data: {
+      id: data.listId,
       name: data.name,
-      boardId: data.id,
+      boardId: data.boardId,
     },
   });
 }

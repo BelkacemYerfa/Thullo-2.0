@@ -12,15 +12,9 @@ type TasksListProps = {
   column: Column;
   tasks: Task[];
   onDrop: (column: Column, index: number) => void;
-  addCard: (card: Task, initialData: InitialData) => InitialData;
 };
 
-export const TasksList = ({
-  column,
-  tasks,
-  onDrop,
-  addCard,
-}: TasksListProps) => {
+export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
   const { id, title } = column;
   const { setDraggingList } = useBoardStore();
   const [parent] = useAutoAnimate();
@@ -55,7 +49,7 @@ export const TasksList = ({
                 />
               </Fragment>
             ))}
-            <CardListForm listId={id} addCardToState={addCard} />
+            <CardListForm listId={id} />
           </div>
         </ScrollArea>
       </div>
