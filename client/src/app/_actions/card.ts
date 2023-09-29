@@ -8,9 +8,10 @@ import { boardDescriptionSchemaType } from "../../validation/board-description";
 import { labelCreationSchemaType } from "../../validation/label-creation";
 import { comments, labels, Card, User, Task } from "@/types";
 
-export async function addCard(
+export async function createCard(
   Info: cardSchemaType & {
     listId: string;
+    id: string;
   }
 ) {
   const user = await verifyUserAuth();
@@ -26,6 +27,7 @@ export async function addCard(
 
   const newCard = await client.card.create({
     data: {
+      id: Info.id,
       name: Info.name,
       description: "",
       listId: Info.listId,

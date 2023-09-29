@@ -10,22 +10,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cardSchema, cardSchemaType } from "../../validation/card";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { addCard } from "@/app/_actions/card";
-import { useRouter } from "next/navigation";
+import { createCard } from "@/app/_actions/card";
+import { addCard } from "@/lib/DndFunc/card";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { toast } from "sonner";
 import { useSocketStore } from "@/lib/store/socket-store";
-import { InitialData, Task } from "@/types";
 import { useGenerationStore } from "@/lib/store/popups-store";
+import ObjectID from "bson-objectid";
+import { Task } from "@/types";
 
 type CardListFormProps = {
   listId: string;
-  addCardToState: (card: Task, initialData: InitialData) => InitialData;
 };
 
-export const CardListForm = ({ listId, addCardToState }: CardListFormProps) => {
+export const CardListForm = ({ listId }: CardListFormProps) => {
   const btnRef = useRef<HTMLButtonElement>(null);
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { socket } = useSocketStore();
   const { initialData, setInitialData } = useGenerationStore();
@@ -42,21 +41,28 @@ export const CardListForm = ({ listId, addCardToState }: CardListFormProps) => {
     },
   });
   const onSubmit = (data: cardSchemaType) => {
+    const objId = new ObjectID().toHexString();
+    const newCard: Task = {
+      content: data.name,
+      colId: listId,
+      id: objId,
+      description: "",
+      comments: [],
+      labels: [],
+      image: "",
+    };
+    socket.emit("card:add", {
+      card: {
+        ...newCard,
+      },
+    });
+    setInitialData(addCard(newCard, initialData));
+    toast.success("Task added successfully");
+    setIsOpen(false);
     startTransition(async () => {
       try {
-        const newCard = await addCard({ ...data, listId });
-        if (socket) {
-          socket.emit("card:add", {
-            card: {
-              ...newCard,
-            },
-          });
-        }
-        setInitialData(addCardToState(newCard, initialData));
-        toast.success("Task added successfully");
-        setIsOpen(false);
+        await createCard({ ...data, listId, id: objId });
         form.reset();
-        router.refresh();
       } catch (error) {
         console.log(error);
       }
