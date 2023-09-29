@@ -11,15 +11,27 @@ import {
 } from "../../validation/board-description";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
-import { useSearchParams, useRouter } from "next/navigation";
+import {
+  useSearchParams,
+  useRouter,
+  useParams,
+  redirect,
+} from "next/navigation";
 import { useTransition } from "react";
-import { addComment } from "@/app/_actions/card";
+import { createComment } from "@/app/_actions/card";
 import { Icons } from "@/components/Icons";
+import { useSocketStore } from "@/lib/store/socket-store";
+import { useGenerationStore } from "@/lib/store/popups-store";
+import ObjectID from "bson-objectid";
+import { addComment } from "@/lib/DndFunc/card";
+import { verifyUserAuth } from "@/app/_actions/board";
 
 export const CardCommentForm = () => {
   const { user } = useUser();
+  const params = useParams();
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const { socket } = useSocketStore();
+  const { initialData, setInitialData } = useGenerationStore();
   const [isPending, startTransition] = useTransition();
   const form = useForm<boardDescriptionSchemaType>({
     resolver: zodResolver(boardDescriptionSchema),
@@ -27,12 +39,36 @@ export const CardCommentForm = () => {
       description: "",
     },
   });
-  const onSubmit = (data: boardDescriptionSchemaType) => {
+  const onSubmit = async (data: boardDescriptionSchemaType) => {
     const cardId = searchParams.get("cardId") as string;
+    const objId = new ObjectID().toHexString();
+    if (!user) redirect("/sing-in");
+    const newComment = {
+      id: objId,
+      text: data.description,
+      createdAt: new Date(),
+      userId: user.id,
+      user: {
+        id: user.id,
+        name:
+          user?.username ?? user?.emailAddresses[0].emailAddress.split("@")[0],
+        image: user.imageUrl,
+        boardId: params.boarId as string,
+        email: user?.emailAddresses[0].emailAddress,
+        commentId: objId,
+      },
+    };
+    socket.emit("comment:add", {
+      data: {
+        cardId,
+        comment: newComment,
+      },
+    });
+    setInitialData(addComment(cardId, newComment, initialData));
     startTransition(async () => {
       try {
-        await addComment({ ...data, cardId });
-        router.refresh();
+        await createComment({ ...data, cardId, commentId: objId });
+        form.reset();
       } catch (error) {
         console.log(error);
       }

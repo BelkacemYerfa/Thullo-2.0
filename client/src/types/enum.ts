@@ -7,7 +7,7 @@ enum SocketCardEvents {
 
 enum SocketColumnEvents {
   COLUMN_ADD = "column:add",
-  COLUMN_UPDATE = "column:update",
+  COLUMN_EDIT = "column:edit",
   COLUMN_DELETE = "column:delete",
   COLUMN_MOVE = "column:move",
 }

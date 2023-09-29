@@ -181,15 +181,17 @@ export async function getComments(cardId: string): Promise<comments[]> {
   }));
 }
 
-export async function addComment(
+export async function createComment(
   data: boardDescriptionSchemaType & {
     cardId: string;
+    commentId: string;
   }
 ) {
   const user = await verifyUserAuth();
   const boardId = await getBoardBasedOnCard(data.cardId);
-  const comment = await client.comments.create({
+  await client.comments.create({
     data: {
+      id: data.commentId,
       text: data.description,
       userId: user.id,
       cardId: data.cardId,
@@ -202,23 +204,19 @@ export async function addComment(
     data: {
       comments: {
         connect: {
-          id: comment.id,
+          id: data.commentId,
         },
       },
     },
   });
-  revalidatePath(`/board/${boardId}`);
 }
 
-export async function deleteComment(commentId: string, cardId: string) {
-  const boardId = await getBoardBasedOnCard(cardId);
-
+export async function deleteComment(commentId: string) {
   await client.comments.delete({
     where: {
       id: commentId,
     },
   });
-  revalidatePath(`/board/${boardId}?cardId=${cardId}`);
 }
 
 //labels section

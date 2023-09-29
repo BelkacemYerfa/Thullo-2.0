@@ -9,7 +9,12 @@ import { DropAreaList } from "@/components/dnd/DropArea";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { io } from "socket.io-client";
 import { useSocketStore } from "@/lib/store/socket-store";
-import { addCard, removeCard } from "@/lib/DndFunc/card";
+import {
+  addCard,
+  addComment,
+  removeCard,
+  removeComment,
+} from "@/lib/DndFunc/card";
 import { useGenerationStore } from "@/lib/store/popups-store";
 import { addList, editListName, removeList } from "@/lib/DndFunc/list";
 
@@ -122,6 +127,18 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       const newState = editListName(list.name, list.id, initialData);
       setInitialData(newState);
     });
+    socket.on("comment:add", (data) => {
+      const newState = addComment(data.cardId, data.comment, initialData);
+      setInitialData(newState);
+    });
+    socket.on("comment:delete", (comment) => {
+      const newState = removeComment(
+        comment.cardId,
+        comment.commentId,
+        initialData
+      );
+      setInitialData(newState);
+    });
     return () => {
       socket.off("card:move");
       socket.off("card:add");
@@ -130,6 +147,8 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       socket.off("list:add");
       socket.off("list:delete");
       socket.off("list:edit");
+      socket.off("comment:add");
+      socket.off("comment:delete");
     };
   }, [initialData, reorderColumns, onDrop, setInitialData]);
 

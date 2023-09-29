@@ -173,6 +173,7 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
                   id: true,
                   user: {
                     select: {
+                      id: true,
                       name: true,
                       image: true,
                     },
@@ -181,6 +182,7 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
                   text: true,
                   createdAt: true,
                 },
+                take: 3,
               },
               labels: {
                 select: {

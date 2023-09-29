@@ -4,7 +4,9 @@ import { useTransition } from "react";
 import { Icons } from "@/components/Icons";
 import { Toggle } from "@/components/ui/toggle";
 import { deleteComment } from "@/app/_actions/card";
-import { useRouter } from "next/navigation";
+import { useGenerationStore } from "@/lib/store/popups-store";
+import { useSocketStore } from "@/lib/store/socket-store";
+import { removeComment } from "@/lib/DndFunc/card";
 
 type DeleteBtnProps = {
   commentId: string;
@@ -12,13 +14,20 @@ type DeleteBtnProps = {
 };
 
 export const DeleteBtn = ({ commentId, cardId }: DeleteBtnProps) => {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { initialData, setInitialData } = useGenerationStore();
+  const { socket } = useSocketStore();
   const handleDelete = () => {
+    socket.emit("comment:delete", {
+      data: {
+        cardId,
+        commentId,
+      },
+    });
+    setInitialData(removeComment(cardId, commentId, initialData));
     startTransition(async () => {
       try {
-        await deleteComment(commentId, cardId);
-        router.refresh();
+        await deleteComment(commentId);
       } catch (error) {
         console.log(error);
       }

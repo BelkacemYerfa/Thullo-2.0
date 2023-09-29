@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useUser } from "@clerk/nextjs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { comments } from "@/types";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 type CommentsListProps = {
   cardId: string;
@@ -13,11 +14,11 @@ type CommentsListProps = {
 
 export const CommentsList = ({ cardId, comments }: CommentsListProps) => {
   const { user } = useUser();
-
+  const [parent] = useAutoAnimate();
   return (
     <ul className="h-64">
       <ScrollArea className="h-full w-full px-1">
-        <li className="space-y-4 px-2">
+        <li className="space-y-4 px-2" ref={parent}>
           {false ? (
             [...Array(3)].map((_, i) => (
               <div key={i} className="space-y-2">
