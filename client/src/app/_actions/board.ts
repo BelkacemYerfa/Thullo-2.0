@@ -166,9 +166,20 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
             select: {
               id: true,
               name: true,
+              description: true,
+              image: true,
               comments: {
                 select: {
                   id: true,
+                  user: {
+                    select: {
+                      name: true,
+                      image: true,
+                    },
+                  },
+                  userId: true,
+                  text: true,
+                  createdAt: true,
                 },
               },
               labels: {
@@ -207,10 +218,9 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
   const tasks = board.Lists.reduce((acc: any, list) => {
     list.cards.forEach((card) => {
       acc[card.id] = {
+        ...card,
         id: card.id,
         content: card.name,
-        comments: card.comments?.length ?? 0,
-        labels: card.labels,
         colId: list.id,
       };
     });

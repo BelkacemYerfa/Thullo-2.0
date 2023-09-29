@@ -29,7 +29,9 @@ socket.on("connect", (socket) => {
   socket.on("card:move", (data) => {
     socket.broadcast.emit("card:move", data);
   });
-  socket.on("card:delete", (data) => {});
+  socket.on("card:delete", (data) => {
+    socket.broadcast.emit("card:delete", data);
+  });
   socket.on("card:edit", (data) => {});
   socket.on("card:add", (data) => {
     socket.broadcast.emit("card:add", data.card);

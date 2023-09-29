@@ -9,7 +9,7 @@ import { DropAreaList } from "@/components/dnd/DropArea";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { io } from "socket.io-client";
 import { useSocketStore } from "@/lib/store/socket-store";
-import { addCard } from "@/lib/DndFunc/card";
+import { addCard, removeCard } from "@/lib/DndFunc/card";
 import { useGenerationStore } from "@/lib/store/popups-store";
 
 const socket = io("http://localhost:8000");
@@ -27,7 +27,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
 
   useEffect(() => {
     setInitialData(db);
-  }, [db, setInitialData]);
+  }, [setInitialData]);
 
   const reorderColumns = useCallback(
     (index: number, dragList?: string) => {
@@ -100,6 +100,10 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
     });
     socket.on("card:add", (card: Task) => {
       const newState = addCard(card, initialData);
+      setInitialData(newState);
+    });
+    socket.on("card:delete", (cardId: string) => {
+      const newState = removeCard(cardId, initialData);
       setInitialData(newState);
     });
     return () => {

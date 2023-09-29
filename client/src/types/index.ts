@@ -58,7 +58,8 @@ export interface Task {
   content: string;
   image?: string;
   labels: labels[];
-  comments: number;
+  description: string;
+  comments: comments[];
   colId: string;
 }
 

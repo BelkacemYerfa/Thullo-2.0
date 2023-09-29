@@ -7,15 +7,14 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
+import { labels } from "@/types";
 
 type CardLabelsListProps = {
   cardId: string;
+  labels: labels[];
 };
 
-export const CardLabelsList = ({ cardId }: CardLabelsListProps) => {
-  const { data: labels, isLoading } = useQuery(["labels", cardId], async () => {
-    return await getLabels(cardId);
-  });
+export const CardLabelsList = ({ cardId, labels }: CardLabelsListProps) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const handleDeleteLabel = (id: string) => {
@@ -32,7 +31,7 @@ export const CardLabelsList = ({ cardId }: CardLabelsListProps) => {
   return (
     labels?.length !== 0 && (
       <div className="space-y-2">
-        {isLoading ? (
+        {false ? (
           <>
             <Skeleton className="h-4 w-20" />
             <ul className="flex items-center gap-2 flex-wrap w-full">

@@ -2,29 +2,23 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DeleteBtn } from "@/components/Btns";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getComments } from "@/app/_actions/card";
-import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { comments } from "@/types";
 
 type CommentsListProps = {
   cardId: string;
+  comments: comments[];
 };
 
-export const CommentsList = ({ cardId }: CommentsListProps) => {
+export const CommentsList = ({ cardId, comments }: CommentsListProps) => {
   const { user } = useUser();
-  const {
-    data: comments,
-    isLoading,
-    refetch,
-  } = useQuery(["comments"], async () => {
-    return await getComments(cardId);
-  });
+
   return (
     <ul className="h-64">
       <ScrollArea className="h-full w-full px-1">
         <li className="space-y-4 px-2">
-          {isLoading ? (
+          {false ? (
             [...Array(3)].map((_, i) => (
               <div key={i} className="space-y-2">
                 <div className="w-full flex gap-2">

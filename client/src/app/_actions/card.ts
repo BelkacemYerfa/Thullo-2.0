@@ -6,7 +6,7 @@ import { verifyUserAuth } from "./board";
 import { revalidatePath } from "next/cache";
 import { boardDescriptionSchemaType } from "../../validation/board-description";
 import { labelCreationSchemaType } from "../../validation/label-creation";
-import { comments, labels, Card, User } from "@/types";
+import { comments, labels, Card, User, Task } from "@/types";
 
 export async function addCard(
   Info: cardSchemaType & {
@@ -32,12 +32,14 @@ export async function addCard(
       userId: user.id,
     },
   });
-  const wantedCard = {
+  const wantedCard: Task = {
+    ...newCard,
     id: newCard.id,
     content: newCard.name,
     colId: newCard.listId,
     labels: [],
-    comments: 0,
+    comments: [],
+    image: newCard.image ?? "",
   };
   return wantedCard;
 }

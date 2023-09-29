@@ -18,13 +18,13 @@ import { useBoardStore } from "@/lib/store/board-store";
 
 type TodoCardProps = {
   task: Task;
+  listName: string;
 };
 
-export const TodoCard = ({ task }: TodoCardProps) => {
+export const TodoCard = ({ task, listName }: TodoCardProps) => {
   const { user } = useUser();
-  const { comments, id: cardId, content, labels } = task;
+  const { comments, id: cardId, content, labels, description, image } = task;
   const { setDraggingCard } = useBoardStore();
-
   return (
     <Card
       draggable="true"
@@ -63,7 +63,15 @@ export const TodoCard = ({ task }: TodoCardProps) => {
           </AspectRatio>
         ) : null}
         <CardTitle className="text-base font-normal p-0 group w-fit flex flex-col -space-y-[2.5px] items-center">
-          <CardDetailedPopOver cardId={cardId} taskTitle={content} />
+          <CardDetailedPopOver
+            labels={labels}
+            comments={comments}
+            cardId={cardId}
+            description={description}
+            taskTitle={content}
+            image={image}
+            listName={listName}
+          />
           <div className="w-0 h-[1px] bg-[#828282] group-hover:w-full duration-200 ease-linear" />
         </CardTitle>
       </CardHeader>
@@ -100,7 +108,7 @@ export const TodoCard = ({ task }: TodoCardProps) => {
           <div className="flex items-center gap-x-2">
             <div className="flex items-center gap-x-1 text-[#BDBDBD]">
               <Icons.MessageCircle className="h-5 w-5 " />
-              <span>{comments}</span>
+              <span>{comments.length}</span>
             </div>
             {/* <div className="flex items-center gap-x-1 text-[#BDBDBD]">
               <Icons.Paperclip className="h-5 w-5 " />

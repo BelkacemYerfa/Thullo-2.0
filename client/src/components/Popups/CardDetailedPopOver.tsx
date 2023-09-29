@@ -14,28 +14,39 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useTransition } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { deleteCardMutation, getCardInfoWithList } from "@/app/_actions/card";
+import { deleteCardMutation } from "@/app/_actions/card";
 import { toast } from "sonner";
 import { CardLabelsList } from "../list/CardLabelsList";
+import { comments, labels } from "@/types";
+import { useSocketStore } from "@/lib/store/socket-store";
+import { useGenerationStore } from "@/lib/store/popups-store";
+import { removeCard } from "@/lib/DndFunc/card";
 
 type CardDetailedPopOverProps = {
   taskTitle: string;
   cardId: string;
+  description: string;
+  comments: comments[];
+  labels: labels[];
+  image: string | undefined;
+  listName: string;
 };
-
 export const CardDetailedPopOver = ({
   taskTitle,
   cardId,
+  description,
+  image,
+  comments,
+  labels,
+  listName,
 }: CardDetailedPopOverProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const { data: card } = useQuery(["card", cardId], async () => {
-    return await getCardInfoWithList(cardId);
-  });
+  const { socket } = useSocketStore();
+  const { initialData, setInitialData } = useGenerationStore();
   const { rename: isOpen, setRename: setIsOpen } =
     useOutsideClick<HTMLDivElement>();
   const handleOpen = () => {
@@ -46,12 +57,16 @@ export const CardDetailedPopOver = ({
     router.push(`${pathname}?${currentPath.toString()}`);
   };
   const deleteCard = () => {
+    if (!socket) return;
+    socket.emit("card:delete", cardId);
+    setInitialData(removeCard(cardId, initialData));
+    handleOpen();
+    // Optimistic UI
+    //check this later for adding card also without awaiting for the server response
     startTransition(async () => {
       try {
         await deleteCardMutation(cardId);
         toast.error("Task deleted successfully");
-        handleOpen();
-        router.refresh();
       } catch (error) {
         console.log(error);
       }
@@ -80,11 +95,11 @@ export const CardDetailedPopOver = ({
                 </Link>
               </div>
               <div className=" max-w-[95%] mx-auto max-h-full space-y-6 mt-2 ">
-                {card?.image ? (
+                {image ? (
                   <AspectRatio ratio={16 / 5}>
                     <Image
-                      src={card.image}
-                      alt={`${card.name} picture `}
+                      src={image}
+                      alt={`${name} picture `}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className=" rounded-xl object-cover "
@@ -100,19 +115,17 @@ export const CardDetailedPopOver = ({
                       </Drawer.Title>
                       <p className="text-xs text-[#BDBDBD] font-semibold">
                         In list{" "}
-                        <span className="text-[#333333]">
-                          {card?.list.name}
-                        </span>
+                        <span className="text-[#333333]">{listName}</span>
                       </p>
                     </div>
-                    <CardLabelsList cardId={cardId} />
+                    <CardLabelsList labels={labels} cardId={cardId} />
                     <CardDescriptionForm
                       cardId={cardId}
-                      description={card?.description}
+                      description={description}
                     />
                     <div className="space-y-4">
                       <CardCommentForm />
-                      <CommentsList cardId={cardId} />
+                      <CommentsList comments={comments} cardId={cardId} />
                     </div>
                   </div>
                   <div className="basis-full md:basis-1/4 space-y-2">
