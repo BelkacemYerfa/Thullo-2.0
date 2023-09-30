@@ -57,6 +57,9 @@ socket.on("connect", (socket) => {
   socket.on("label:delete", (data) => {
     socket.broadcast.emit("label:delete", data.data);
   });
+  socket.on("card:description", (data) => {
+    socket.broadcast.emit("card:description", data.data);
+  });
 });
 
 server.listen(8000, () => {

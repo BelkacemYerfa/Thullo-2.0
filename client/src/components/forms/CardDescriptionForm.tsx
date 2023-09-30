@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem } from "../ui/form";
@@ -11,11 +11,13 @@ import {
   boardDescriptionSchemaType,
 } from "../../validation/board-description";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { updateCardDescription } from "@/app/_actions/card";
+import { useSocketStore } from "@/lib/store/socket-store";
+import { useGenerationStore } from "@/lib/store/popups-store";
+import { editDescription } from "@/lib/DndFunc/card";
 
 type CardDescriptionFormProps = {
-  description: string | undefined;
+  description: string;
   cardId: string;
 };
 
@@ -23,21 +25,27 @@ export const CardDescriptionForm = ({
   description,
   cardId,
 }: CardDescriptionFormProps) => {
-  const {
-    ref: formRef,
-    rename: isDescriptionFormOpen,
-    setRename: setIsDescriptionFormOpen,
-  } = useOutsideClick<HTMLFormElement>();
+  const [isDescriptionFormOpen, setIsDescriptionFormOpen] = useState(false);
+  const { initialData, setInitialData } = useGenerationStore();
+  const { socket } = useSocketStore();
   const [isPending, startTransition] = useTransition();
   const form = useForm<boardDescriptionSchemaType>({
     resolver: zodResolver(boardDescriptionSchema),
     defaultValues: { description },
   });
   const onSubmit = (data: boardDescriptionSchemaType) => {
+    const description = data.description;
+    socket.emit("card:description", {
+      data: {
+        cardId,
+        description,
+      },
+    });
+    setInitialData(editDescription(description, cardId, initialData));
+    setIsDescriptionFormOpen(!isDescriptionFormOpen);
     startTransition(async () => {
       try {
         await updateCardDescription({ ...data, cardId });
-        setIsDescriptionFormOpen(!isDescriptionFormOpen);
       } catch (error) {
         console.log(error);
       }
@@ -63,7 +71,9 @@ export const CardDescriptionForm = ({
       </div>
       <>
         {description !== "" && !isDescriptionFormOpen ? (
-          <p className="max-w-full break-all">{description}</p>
+          <p className="max-w-full break-all max-h-[20rem] overflow-y-auto">
+            {description}
+          </p>
         ) : (
           <Form {...form}>
             <form
@@ -86,9 +96,6 @@ export const CardDescriptionForm = ({
                   className="flex items-center gap-2 rounded-xl bg-[#219653] hover:bg-[#219653] py-1 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm"
                   disabled={isPending || !form.formState.isValid}
                 >
-                  {isPending ? (
-                    <Icons.Loader2 className="h-4 w-4 animate-spin" />
-                  ) : null}
                   Save
                 </Button>
                 <Button

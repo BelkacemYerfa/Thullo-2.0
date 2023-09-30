@@ -30,6 +30,24 @@ export const removeCard = (cardId: string, initialData: InitialData) => {
   return newState;
 };
 
+export const editDescription = (
+  description: string,
+  cardId: string,
+  initialData: InitialData
+) => {
+  const newState: InitialData = {
+    ...initialData,
+    tasks: {
+      ...initialData.tasks,
+      [cardId]: {
+        ...initialData.tasks[cardId],
+        description: description,
+      },
+    },
+  };
+  return newState;
+};
+
 //comments
 
 export const addComment = (

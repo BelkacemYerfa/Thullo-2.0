@@ -50,7 +50,6 @@ export const CardDetailedPopOver = ({
   const { rename: isOpen, setRename: setIsOpen } =
     useOutsideClick<HTMLDivElement>();
   const handleOpen = () => {
-    setIsOpen(!isOpen);
     const currentPath = new URLSearchParams(searchParams?.toString());
     if (isOpen) currentPath.delete("cardId");
     else currentPath.set("cardId", cardId);
@@ -61,8 +60,6 @@ export const CardDetailedPopOver = ({
     socket.emit("card:delete", cardId);
     setInitialData(removeCard(cardId, initialData));
     handleOpen();
-    // Optimistic UI
-    //check this later for adding card also without awaiting for the server response
     startTransition(async () => {
       try {
         await deleteCardMutation(cardId);

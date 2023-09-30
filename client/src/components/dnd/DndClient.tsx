@@ -13,6 +13,7 @@ import {
   addCard,
   addComment,
   addLabel,
+  editDescription,
   removeCard,
   removeComment,
   removeLabel,
@@ -147,6 +148,14 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
     });
     socket.on("label:delete", (label) => {
       const newState = removeLabel(label.cardId, label.labelId, initialData);
+      setInitialData(newState);
+    });
+    socket.on("card:description", (data) => {
+      const newState = editDescription(
+        data.description,
+        data.cardId,
+        initialData
+      );
       setInitialData(newState);
     });
     return () => {
