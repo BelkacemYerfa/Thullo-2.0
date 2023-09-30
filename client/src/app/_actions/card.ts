@@ -238,20 +238,20 @@ export async function getLabels(
   });
 }
 
-export async function addLabel(
+export async function createLabel(
   data: labelCreationSchemaType & {
     cardId: string;
+    id: string;
   }
 ) {
-  const boardId = await getBoardBasedOnCard(data.cardId);
   await client.label.create({
     data: {
+      id: data.id,
       name: data.name,
       color: data.color,
       cardId: data.cardId,
     },
   });
-  revalidatePath(`/board/${boardId}?cardId=${data.cardId}`);
 }
 
 export async function deleteLabel(labelId: string, cardId: string) {

@@ -12,8 +12,10 @@ import { useSocketStore } from "@/lib/store/socket-store";
 import {
   addCard,
   addComment,
+  addLabel,
   removeCard,
   removeComment,
+  removeLabel,
 } from "@/lib/DndFunc/card";
 import { useGenerationStore } from "@/lib/store/popups-store";
 import { addList, editListName, removeList } from "@/lib/DndFunc/list";
@@ -139,6 +141,14 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       );
       setInitialData(newState);
     });
+    socket.on("label:add", (data) => {
+      const newState = addLabel(data.cardId, data.label, initialData);
+      setInitialData(newState);
+    });
+    socket.on("label:delete", (label) => {
+      const newState = removeLabel(label.cardId, label.labelId, initialData);
+      setInitialData(newState);
+    });
     return () => {
       socket.off("card:move");
       socket.off("card:add");
@@ -149,6 +159,8 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       socket.off("list:edit");
       socket.off("comment:add");
       socket.off("comment:delete");
+      socket.off("label:add");
+      socket.off("label:delete");
     };
   }, [initialData, reorderColumns, onDrop, setInitialData]);
 

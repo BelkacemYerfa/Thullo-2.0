@@ -109,9 +109,6 @@ export const CardCommentForm = () => {
               className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-xl px-6 py-2 disabled:bg-[#BDBDBD] flex items-center gap-2 disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm"
               disabled={isPending}
             >
-              {isPending ? (
-                <Icons.Loader2 className="h-4 w-4 animate-spin" />
-              ) : null}
               Comment
             </Button>
           </div>

@@ -78,7 +78,7 @@ export const TodoCard = ({ task, listName }: TodoCardProps) => {
       <CardContent className="px-3 py-2 space-y-3">
         {labels.length !== 0 && (
           <div className="flex items-center gap-x-2">
-            {labels.map((label) => (
+            {labels.slice(0, 3).map((label) => (
               <Badge
                 key={label.id}
                 className={`text-xs font-semibold px-2 py-1 rounded-xl text-white`}

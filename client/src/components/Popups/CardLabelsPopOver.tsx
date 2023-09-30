@@ -6,8 +6,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { labels } from "@/types";
 
-export const CardLabelsPopOver = () => {
+type CardLabelsPopOverProps = {
+  labels: labels[];
+};
+
+export const CardLabelsPopOver = ({ labels }: CardLabelsPopOverProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="w-fit sm:w-full">
@@ -24,7 +29,7 @@ export const CardLabelsPopOver = () => {
           <h3 className="text-[#4F4F4F] font-semibold">Labels</h3>
           <p className="text-[#828282]"> Select a name and a color</p>
         </div>
-        <LabelCreationForm />
+        <LabelCreationForm labels={labels} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

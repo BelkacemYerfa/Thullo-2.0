@@ -83,7 +83,7 @@ export const addLabel = (
       ...initialData.tasks,
       [cardId]: {
         ...initialData.tasks[cardId],
-        labels: [...initialData.tasks[cardId].labels, label],
+        labels: [...initialData.tasks[cardId]?.labels, label],
       },
     },
   };

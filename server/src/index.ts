@@ -45,6 +45,18 @@ socket.on("connect", (socket) => {
   socket.on("list:add", (data) => {
     socket.broadcast.emit("list:add", data.list);
   });
+  socket.on("comment:add", (data) => {
+    socket.broadcast.emit("comment:add", data.data);
+  });
+  socket.on("comment:delete", (data) => {
+    socket.broadcast.emit("comment:delete", data.data);
+  });
+  socket.on("label:add", (data) => {
+    socket.broadcast.emit("label:add", data.data);
+  });
+  socket.on("label:delete", (data) => {
+    socket.broadcast.emit("label:delete", data.data);
+  });
 });
 
 server.listen(8000, () => {

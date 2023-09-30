@@ -13,9 +13,13 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/Icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { addLabel, getLabels } from "@/app/_actions/card";
+import { createLabel } from "@/app/_actions/card";
 import { useSearchParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useSocketStore } from "@/lib/store/socket-store";
+import { useGenerationStore } from "@/lib/store/popups-store";
+import ObjectID from "bson-objectid";
+import { labels } from "@/types";
+import { addLabel } from "@/lib/DndFunc/card";
 
 const Colors = [
   "#219653",
@@ -37,9 +41,15 @@ type BadgeType = {
   color: string;
 };
 
-export const LabelCreationForm = () => {
+type LabelCreationFormProps = {
+  labels: labels[];
+};
+
+export const LabelCreationForm = ({ labels }: LabelCreationFormProps) => {
   const searchParams = useSearchParams();
   const cardId = searchParams.get("cardId") as string;
+  const { socket } = useSocketStore();
+  const { initialData, setInitialData } = useGenerationStore();
   const [isPending, startTransition] = useTransition();
   const form = useForm<labelCreationSchemaType>({
     resolver: zodResolver(labelCreationSchema),
@@ -48,13 +58,24 @@ export const LabelCreationForm = () => {
       color: "",
     },
   });
-  const { data: labels, isLoading } = useQuery(["labels", cardId], async () => {
-    return await getLabels(cardId);
-  });
   const onSubmit = (data: labelCreationSchemaType) => {
+    const objId = new ObjectID().toHexString();
+    const newLabel: labels = {
+      id: objId,
+      name: data.name,
+      color: data.color,
+    };
+    socket.emit("label:add", {
+      data: {
+        cardId,
+        label: newLabel,
+      },
+    });
+    setInitialData(addLabel(cardId, newLabel, initialData));
     startTransition(async () => {
       try {
-        await addLabel({ ...data, cardId });
+        await createLabel({ ...data, cardId, id: objId });
+        form.reset();
       } catch (error) {
         console.log(error);
       }
@@ -109,7 +130,7 @@ export const LabelCreationForm = () => {
             </FormItem>
           )}
         />
-        {isLoading ? (
+        {false ? (
           <div className="space-y-2">
             <div className="flex items-center gap-x-2 ">
               <Skeleton className="h-4 w-4" />

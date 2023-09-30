@@ -136,8 +136,7 @@ export const CardDetailedPopOver = ({
                     <div className="flex flex-row items-center md:flex-col gap-3 ">
                       <div className="p-0 relative flex md:flex-col items-center gap-2 w-full">
                         <CardAssignedMembers />
-                        <CardLabelsPopOver />
-
+                        <CardLabelsPopOver labels={labels} />
                         <Button
                           variant={"destructive"}
                           className="flex justify-start items-center gap-x-[10px] duration-200 w-fit sm:w-full ease-linear rounded-lg text-sm py-3 px-4 bg-[#EB5757] text-white cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"

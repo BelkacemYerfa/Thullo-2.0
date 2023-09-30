@@ -8,6 +8,9 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
 import { labels } from "@/types";
+import { useSocketStore } from "@/lib/store/socket-store";
+import { useGenerationStore } from "@/lib/store/popups-store";
+import { removeLabel } from "@/lib/DndFunc/card";
 
 type CardLabelsListProps = {
   cardId: string;
@@ -15,14 +18,20 @@ type CardLabelsListProps = {
 };
 
 export const CardLabelsList = ({ cardId, labels }: CardLabelsListProps) => {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { socket } = useSocketStore();
+  const { initialData, setInitialData } = useGenerationStore();
   const handleDeleteLabel = (id: string) => {
+    socket.emit("label:delete", {
+      data: {
+        cardId,
+        labelId: id,
+      },
+    });
+    setInitialData(removeLabel(cardId, id, initialData));
     startTransition(async () => {
       try {
         await deleteLabel(id, cardId);
-        toast.error("Label deleted successfully");
-        router.refresh();
       } catch (error) {
         console.log(error);
       }
@@ -63,11 +72,7 @@ export const CardLabelsList = ({ cardId, labels }: CardLabelsListProps) => {
                       onClick={() => handleDeleteLabel(label.id)}
                       disabled={isPending}
                     >
-                      {isPending ? (
-                        <Icons.Loader2 className="w-3 h-3 animate-spin " />
-                      ) : (
-                        <Icons.X className="w-3 h-3" />
-                      )}
+                      <Icons.X className="w-3 h-3" />
                     </Button>
                   </li>
                 ))}
