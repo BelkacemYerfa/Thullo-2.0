@@ -59,11 +59,11 @@ export const CardDetailedPopOver = ({
     if (!socket) return;
     socket.emit("card:delete", cardId);
     setInitialData(removeCard(cardId, initialData));
+    toast.error("Task deleted successfully");
     handleOpen();
     startTransition(async () => {
       try {
         await deleteCardMutation(cardId);
-        toast.error("Task deleted successfully");
       } catch (error) {
         console.log(error);
       }

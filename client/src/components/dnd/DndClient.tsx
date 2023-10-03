@@ -1,7 +1,7 @@
 "use client";
 
 import { TasksList } from "@/components/list/TasksList";
-import { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { Column, InitialData, Task } from "@/types";
 import { useBoardStore } from "@/lib/store/board-store";
@@ -20,6 +20,9 @@ import {
 } from "@/lib/DndFunc/card";
 import { useGenerationStore } from "@/lib/store/popups-store";
 import { addList, editListName, removeList } from "@/lib/DndFunc/list";
+import { useMounted } from "@/hooks/useMounted";
+import { ContextLoader } from "@/components/loaders/ContextLoader";
+import { Icons } from "../Icons";
 
 const socket = io("http://localhost:8000");
 
@@ -29,6 +32,7 @@ type DndContextProviderProps = {
 };
 
 export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
+  const [isMounted] = useMounted();
   const { initialData, setInitialData } = useGenerationStore();
   const { draggingCard, draggingList } = useBoardStore();
   const { setSocket } = useSocketStore();
@@ -36,7 +40,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
 
   useEffect(() => {
     setInitialData(db);
-  }, [setInitialData]);
+  }, []);
 
   const reorderColumns = useCallback(
     (index: number, dragList?: string) => {
@@ -173,7 +177,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
     };
   }, [initialData, reorderColumns, onDrop, setInitialData]);
 
-  return (
+  return isMounted ? (
     <div
       className="h-full flex snap-x snap-mandatory md:snap-none  relative overflow-x-auto "
       ref={colRef}
@@ -197,6 +201,10 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
         );
       })}
       <AddNewListPopOver boardId={boardId} />
+    </div>
+  ) : (
+    <div className="flex items-center justify-center h-full">
+      <Icons.Loader2 className="h-10 w-10 animate-spin" />
     </div>
   );
 };
