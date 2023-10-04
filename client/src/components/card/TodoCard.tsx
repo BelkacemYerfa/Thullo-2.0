@@ -29,18 +29,6 @@ export const TodoCard = ({ task, listName }: TodoCardProps) => {
     <Card
       draggable="true"
       id={cardId}
-      onTouchStart={(e) => {
-        const touch = e.touches[0];
-        const target = touch.target as HTMLElement;
-        const parentElement = target.parentElement as HTMLElement;
-        if (parentElement.getAttribute("draggable")) {
-          const cardId = parentElement.id;
-          if (cardId) {
-            setDraggingCard(cardId);
-          }
-        }
-      }}
-      onTouchEnd={() => setDraggingCard(null)}
       onDragStart={(ev) => {
         setDraggingCard(cardId);
         ev.dataTransfer.setData("text/html", ev.currentTarget.outerHTML);

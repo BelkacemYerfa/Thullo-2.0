@@ -5,9 +5,11 @@ interface IStore {
   boardCard: boolean;
   newList: boolean;
   initialData: InitialData;
+  isCardDetailOpen: boolean;
   setBoardCard: (boardCard: boolean) => void;
   setNewList: (newList: boolean) => void;
   setInitialData: (initialData: InitialData) => void;
+  setIsCardDetailOpen: (isCardDetailOpen: boolean) => void;
 }
 
 export const useGenerationStore = create<IStore>((set) => ({
@@ -21,4 +23,6 @@ export const useGenerationStore = create<IStore>((set) => ({
     columnOrder: [],
   },
   setInitialData: (initialData) => set({ initialData }),
+  isCardDetailOpen: false,
+  setIsCardDetailOpen: (isCardDetailOpen) => set({ isCardDetailOpen }),
 }));

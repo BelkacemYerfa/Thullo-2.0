@@ -23,6 +23,7 @@ import { addList, editListName, removeList } from "@/lib/DndFunc/list";
 import { useMounted } from "@/hooks/useMounted";
 import { ContextLoader } from "@/components/loaders/ContextLoader";
 import { Icons } from "../Icons";
+import { useSearchParams } from "next/navigation";
 
 const socket = io("http://localhost:8000");
 
@@ -35,6 +36,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
   const [isMounted] = useMounted();
   const { initialData, setInitialData } = useGenerationStore();
   const { draggingCard, draggingList } = useBoardStore();
+  const params = useSearchParams();
   const { setSocket } = useSocketStore();
   const [colRef] = useAutoAnimate<HTMLDivElement>();
 
@@ -95,6 +97,12 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       destinationColumn.taskIds.splice(destinationIndex, 0, task.id);
       task.colId = destinationCol;
       /*Update the db */
+      const cardId = params.get("cardId");
+      if (cardId) {
+        /*
+         TODO : make the card doesn't close when changing it's position
+        */
+      }
       setInitialData(newState);
     },
     [initialData, draggingCard, setInitialData]
@@ -203,8 +211,6 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       <AddNewListPopOver boardId={boardId} />
     </div>
   ) : (
-    <div className="flex items-center justify-center h-full">
-      <Icons.Loader2 className="h-10 w-10 animate-spin" />
-    </div>
+    <ContextLoader />
   );
 };

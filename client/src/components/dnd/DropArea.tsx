@@ -16,7 +16,7 @@ export const DropAreaCard = ({ onDrop, index, task }: DropAreaProps) => {
   const { socket } = useSocketStore();
   const { draggingCard } = useBoardStore();
   const handleDragEnter = () => {
-    setIsVisible(true);
+    draggingCard ? setIsVisible(true) : setIsVisible(false);
   };
   const handleDragLeave = () => {
     setIsVisible(false);
@@ -51,9 +51,9 @@ type DropAreaListProps = {
 export const DropAreaList = ({ onDrop, index }: DropAreaListProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const { socket } = useSocketStore();
-  const { draggingList } = useBoardStore();
+  const { draggingList, draggingCard } = useBoardStore();
   const handleDragEnter = () => {
-    setIsVisible(true);
+    draggingList && !draggingCard ? setIsVisible(true) : setIsVisible(false);
   };
   const handleDragLeave = () => {
     setIsVisible(false);

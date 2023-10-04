@@ -46,7 +46,7 @@ export const CardDetailedPopOver = ({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const { socket } = useSocketStore();
-  const { initialData, setInitialData } = useGenerationStore();
+  const { initialData, setInitialData , isCardDetailOpen } = useGenerationStore();
   const { rename: isOpen, setRename: setIsOpen } =
     useOutsideClick<HTMLDivElement>();
   const handleOpen = () => {
