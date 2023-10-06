@@ -36,7 +36,7 @@ export const TodoCard = ({ task, listName }: TodoCardProps) => {
       onDragEnd={() => setDraggingCard(null)}
       className="cursor-grab active:cursor-grabbing active:animate-pulse"
     >
-      <CardHeader className="space-y-3 px-3 py-2">
+      <CardHeader className="space-y-3 px-3 py-2 justify-start ">
         {task.image ? (
           <AspectRatio ratio={3 / 2}>
             <Image
@@ -50,7 +50,7 @@ export const TodoCard = ({ task, listName }: TodoCardProps) => {
             />
           </AspectRatio>
         ) : null}
-        <CardTitle className="text-base font-normal p-0 group w-fit flex flex-col -space-y-[2.5px] items-center">
+        <CardTitle className="text-base font-normal p-0 group -space-y-[2.5px] hover:underline ">
           <CardDetailedPopOver
             labels={labels}
             comments={comments}
@@ -60,7 +60,6 @@ export const TodoCard = ({ task, listName }: TodoCardProps) => {
             image={image}
             listName={listName}
           />
-          <div className="w-0 h-[1px] bg-[#828282] group-hover:w-full duration-200 ease-linear" />
         </CardTitle>
       </CardHeader>
       <CardContent className="px-3 py-2 space-y-3">

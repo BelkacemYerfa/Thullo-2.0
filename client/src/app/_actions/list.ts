@@ -3,16 +3,18 @@
 import client from "@/lib/prismaDb";
 import { verifyUserAuth } from "./board";
 import { listNameSchemaType } from "../../validation/list-name";
+import { InitialData } from "@/types";
 
 export async function createList(
-  data: listNameSchemaType & { boardId: string; listId: string }
+  data: listNameSchemaType & { boardId: string; listId: string; index: string }
 ) {
-  const user = await verifyUserAuth();
+  await verifyUserAuth();
   await client.list.create({
     data: {
       id: data.listId,
       name: data.name,
       boardId: data.boardId,
+      index: data.index,
     },
   });
 }
@@ -95,3 +97,19 @@ export async function getBoardBasedOnList(listId: string) {
   if (!list) throw new Error("List not found");
   return list.boardId;
 }
+
+export const updateListIndex = (initialData: InitialData) => {
+  //working on
+  initialData.columnOrder.forEach(async (listId, index) => {
+    await client.list.update({
+      where: {
+        id: listId,
+      },
+      data: {
+        index: index.toString(),
+      },
+    });
+
+    console.log("updated");
+  });
+};

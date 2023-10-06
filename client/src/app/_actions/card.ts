@@ -6,12 +6,13 @@ import { verifyUserAuth } from "./board";
 import { revalidatePath } from "next/cache";
 import { boardDescriptionSchemaType } from "../../validation/board-description";
 import { labelCreationSchemaType } from "../../validation/label-creation";
-import { comments, labels, Card, User, Task } from "@/types";
+import { comments, labels, Card, User, Task, InitialData } from "@/types";
 
 export async function createCard(
   Info: cardSchemaType & {
     listId: string;
     id: string;
+    index: string;
   }
 ) {
   const user = await verifyUserAuth();
@@ -32,6 +33,7 @@ export async function createCard(
       description: "",
       listId: Info.listId,
       userId: user.id,
+      index: Info.index,
     },
   });
   const wantedCard: Task = {
@@ -42,12 +44,12 @@ export async function createCard(
     labels: [],
     comments: [],
     image: newCard.image ?? "",
+    index: newCard.index,
   };
   return wantedCard;
 }
 
 export async function deleteCardMutation(cardId: string) {
-  const boardId = await getBoardBasedOnCard(cardId);
   await client.comments.deleteMany({
     where: {
       cardId: cardId,
@@ -58,7 +60,6 @@ export async function deleteCardMutation(cardId: string) {
       id: cardId,
     },
   });
-  revalidatePath(`/board/${boardId}`);
 }
 
 //for the update of the info of the card
@@ -72,6 +73,20 @@ export async function updateCardName() {
     },
   });
 }
+
+export const updateCardIndex = (initialData: InitialData, dest: string) => {
+  initialData.columns[dest].taskIds.forEach(async (cardId, index) => {
+    await client.card.update({
+      where: {
+        id: cardId,
+      },
+      data: {
+        index: index.toString(),
+        listId: dest,
+      },
+    });
+  });
+};
 
 export async function getCardInfoWithList(cardId: string): Promise<Card> {
   const card = await client.card.findUnique({
@@ -135,7 +150,6 @@ export async function updateCardDescription(
     cardId: string;
   }
 ) {
-  const boardId = await getBoardBasedOnCard(data.cardId);
   await client.card.update({
     where: {
       id: data.cardId,
@@ -144,7 +158,6 @@ export async function updateCardDescription(
       description: data.description,
     },
   });
-  revalidatePath(`/board/${boardId}?cardId=${data.cardId}`);
 }
 
 //comments section
@@ -188,7 +201,6 @@ export async function createComment(
   }
 ) {
   const user = await verifyUserAuth();
-  const boardId = await getBoardBasedOnCard(data.cardId);
   await client.comments.create({
     data: {
       id: data.commentId,
@@ -255,11 +267,9 @@ export async function createLabel(
 }
 
 export async function deleteLabel(labelId: string, cardId: string) {
-  const boardId = await getBoardBasedOnCard(cardId);
   await client.label.delete({
     where: {
       id: labelId,
     },
   });
-  revalidatePath(`/board/${boardId}?cardId=${cardId}`);
 }

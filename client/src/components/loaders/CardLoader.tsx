@@ -6,7 +6,7 @@ export const CardLoader = () => {
       <Skeleton className="w-40 h-5" />
       <div className="flex items-center gap-2">
         {[...Array(3)].map((_, i) => (
-          <Skeleton key={i} className=" h-4 w-16 " />
+          <Skeleton key={i} className="h-4 w-16" />
         ))}
       </div>
       <div className="flex items-center gap-2">

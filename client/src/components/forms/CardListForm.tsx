@@ -42,6 +42,7 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
   });
   const onSubmit = (data: cardSchemaType) => {
     const objId = new ObjectID().toHexString();
+    const currentIndex = initialData.columns[listId]?.taskIds.length;
     const newCard: Task = {
       content: data.name,
       colId: listId,
@@ -50,6 +51,7 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
       comments: [],
       labels: [],
       image: "",
+      index: String(currentIndex),
     };
     socket.emit("card:add", {
       card: {
@@ -61,7 +63,12 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
     setIsOpen(false);
     startTransition(async () => {
       try {
-        await createCard({ ...data, listId, id: objId });
+        await createCard({
+          ...data,
+          listId,
+          id: objId,
+          index: String(currentIndex),
+        });
         form.reset();
       } catch (error) {
         console.log(error);
@@ -106,8 +113,9 @@ export const CardListForm = ({ listId }: CardListFormProps) => {
               <div className="flex items-center gap-2">
                 <Button
                   type="submit"
+                  size={"sm"}
                   className={cn(
-                    "flex items-center gap-2 rounded-xl bg-[#219653] hover:bg-[#219653] py-1 px-3 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm"
+                    "flex items-center gap-2 rounded-xl bg-[#219653] hover:bg-[#219653] px-3 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm"
                   )}
                   disabled={isPending || !form.formState.isValid}
                 >

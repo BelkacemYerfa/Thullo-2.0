@@ -22,8 +22,9 @@ import { useGenerationStore } from "@/lib/store/popups-store";
 import { addList, editListName, removeList } from "@/lib/DndFunc/list";
 import { useMounted } from "@/hooks/useMounted";
 import { ContextLoader } from "@/components/loaders/ContextLoader";
-import { Icons } from "../Icons";
 import { useSearchParams } from "next/navigation";
+import { updateListIndex } from "@/app/_actions/list";
+import { updateCardIndex } from "@/app/_actions/card";
 
 const socket = io("http://localhost:8000");
 
@@ -61,6 +62,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
         ...initialData,
         columnOrder: [...initialData.columnOrder],
       };
+      updateListIndex(newState);
       setInitialData(newState);
     },
     [initialData, draggingList, setInitialData]
@@ -97,12 +99,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       destinationColumn.taskIds.splice(destinationIndex, 0, task.id);
       task.colId = destinationCol;
       /*Update the db */
-      const cardId = params.get("cardId");
-      if (cardId) {
-        /*
-         TODO : make the card doesn't close when changing it's position
-        */
-      }
+      updateCardIndex(newState, destinationCol);
       setInitialData(newState);
     },
     [initialData, draggingCard, setInitialData]

@@ -61,12 +61,14 @@ export interface Task {
   description: string;
   comments: comments[];
   colId: string;
+  index: string;
 }
 
 export interface Column {
   id: string;
   title: string;
   taskIds: string[];
+  index: string;
 }
 
 export interface InitialData {

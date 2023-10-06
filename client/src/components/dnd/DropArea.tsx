@@ -30,8 +30,9 @@ export const DropAreaCard = ({ onDrop, index, task }: DropAreaProps) => {
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={() => {
+        console.log(task?.colId);
         socket.emit("card:move", {
-          colId: task.colId,
+          colId: task?.colId,
           draggingCard,
           index,
         });

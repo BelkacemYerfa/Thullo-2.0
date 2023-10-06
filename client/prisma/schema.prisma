@@ -52,6 +52,7 @@ model List {
   boardId   String @map("boardId") @db.ObjectId
   cards     Card[]
   board     Board @relation(fields: [boardId], references: [id])
+  index String
 }
 
 model Card {
@@ -67,6 +68,7 @@ model Card {
   labels     Label[]
   userId     String @map("userId")
   user     User @relation(fields: [userId], references: [id])
+  index String
 }
 
 model Comments {
@@ -101,5 +103,4 @@ model Label {
   color    String
   cardId   String @map("cardId") @db.ObjectId
   card     Card @relation(fields: [cardId], references: [id])
-  
 }

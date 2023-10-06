@@ -46,7 +46,8 @@ export const CardDetailedPopOver = ({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const { socket } = useSocketStore();
-  const { initialData, setInitialData , isCardDetailOpen } = useGenerationStore();
+  const { initialData, setInitialData, isCardDetailOpen } =
+    useGenerationStore();
   const { rename: isOpen, setRename: setIsOpen } =
     useOutsideClick<HTMLDivElement>();
   const handleOpen = () => {
@@ -78,7 +79,9 @@ export const CardDetailedPopOver = ({
   }, [searchParams, setIsOpen, cardId]);
   return (
     <Drawer.Root open={isOpen} onOpenChange={handleOpen} shouldScaleBackground>
-      <Drawer.Trigger className="cursor-pointer">{taskTitle}</Drawer.Trigger>
+      <Drawer.Trigger className="cursor-pointer text-start ">
+        {taskTitle}
+      </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed z-[5] inset-0 bg-black/40 " />
         <Drawer.Content className="bg-white/90 backdrop-blur-sm absolute z-[7] h-[85%] md:h-[90%] w-full bottom-0 left-0 right-0 rounded-t-xl overflow-hidden ">

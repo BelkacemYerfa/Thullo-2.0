@@ -24,7 +24,6 @@ type ListCreationFormProps = {
 export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
   const { setNewList, initialData, setInitialData } = useGenerationStore();
   const { socket } = useSocketStore();
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<cardSchemaType>({
     resolver: zodResolver(cardSchema),
@@ -34,10 +33,13 @@ export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
   });
   const onSubmit = (data: cardSchemaType) => {
     const objId = new ObjectID().toHexString();
+    const currentIndex = initialData.columnOrder.length;
+
     const newList: Column = {
       id: objId,
       title: data.name,
       taskIds: [],
+      index: String(currentIndex),
     };
     socket.emit("list:add", { list: { ...newList } });
     setInitialData(addList(newList, initialData));
@@ -45,7 +47,12 @@ export const ListCreationForm = ({ boardId }: ListCreationFormProps) => {
     setNewList(false);
     startTransition(async () => {
       try {
-        await createList({ ...data, boardId, listId: objId });
+        await createList({
+          ...data,
+          boardId,
+          listId: objId,
+          index: String(currentIndex),
+        });
       } catch (error) {
         console.log(error);
       }

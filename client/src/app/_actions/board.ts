@@ -192,8 +192,10 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
                 },
                 take: 3,
               },
+              index: true,
             },
           },
+          index: true,
         },
       },
     },
@@ -204,14 +206,21 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
   }
 
   // Create an array to hold the columns in the desired order
-  const columnOrder = board.Lists.map((list) => list.id);
-
+  const columnOrder = board.Lists.sort((prev, curr) => {
+    return parseInt(prev.index) - parseInt(curr.index);
+  }).map((list) => list.id);
   // Create an object to hold columns and their associated taskIds
+
   const columns = board.Lists.reduce((acc: any, list) => {
     acc[list.id] = {
       id: list.id,
       title: list.name,
-      taskIds: list.cards.map((card) => card.id),
+      taskIds: list.cards
+        .sort((prev, curr) => {
+          return parseInt(prev.index) - parseInt(curr.index);
+        })
+        .map((card) => card.id),
+      index: list.index,
     };
     return acc;
   }, {});
@@ -224,6 +233,7 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
         id: card.id,
         content: card.name,
         colId: list.id,
+        index: card.index,
       };
     });
     return acc;
