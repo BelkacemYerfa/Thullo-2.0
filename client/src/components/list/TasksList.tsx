@@ -2,8 +2,8 @@ import { TodoCard } from "@/components/card/TodoCard";
 import { CardListForm } from "@/components/forms/CardListForm";
 import { ListNameChangeForm } from "@/components/forms/ListNameChangeForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Column, InitialData, Task } from "@/types";
-import { DropAreaCard } from "@/components/dnd/DropArea";
+import { Column, Task } from "@/types";
+import { Placeholder } from "@/components/dnd/DropArea";
 import { Fragment } from "react";
 import { useBoardStore } from "@/lib/store/board-store";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
@@ -22,6 +22,7 @@ export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
     <div
       draggable="true"
       className={`w-[21.25rem] px-2 h-full rounded-xl  cursor-grab active:cursor-grabbing `}
+      id={`list-${id}`}
       onDragStart={(ev) => {
         setDraggingList(id);
         ev.dataTransfer.setData("text/html", ev.currentTarget.outerHTML);
@@ -33,18 +34,15 @@ export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
           <ListNameChangeForm title={title} listId={id} />
         </div>
         <ScrollArea className="h-full w-full flex-1 px-3">
-          <div className="h-full " ref={parent}>
-            <DropAreaCard
-              task={tasks[0]}
-              onDrop={() => onDrop(column, 0)}
-              index={0}
-            />
+          <div className="h-full space-y-3 " ref={parent}>
             {tasks.map((task, i) => (
               <Fragment key={task.id}>
                 <TodoCard task={task} listName={title} />
-                <DropAreaCard
-                  onDrop={() => onDrop(column, i + 1)}
-                  index={i + 1}
+                {i}
+                <Placeholder
+                  type="card"
+                  onDrop={() => onDrop(column, i)}
+                  index={i}
                   task={task}
                 />
               </Fragment>

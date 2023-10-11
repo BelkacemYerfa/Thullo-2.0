@@ -28,7 +28,7 @@ export const TodoCard = ({ task, listName }: TodoCardProps) => {
   return (
     <Card
       draggable="true"
-      id={cardId}
+      id={`card-${cardId}`}
       onDragStart={(ev) => {
         setDraggingCard(cardId);
         ev.dataTransfer.setData("text/html", ev.currentTarget.outerHTML);

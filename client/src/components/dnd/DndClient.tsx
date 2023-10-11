@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { AddNewListPopOver } from "@/components/Popups/AddNewListPopOver";
 import { Column, InitialData, Task } from "@/types";
 import { useBoardStore } from "@/lib/store/board-store";
-import { DropAreaList } from "@/components/dnd/DropArea";
+import { Placeholder } from "@/components/dnd/DropArea";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { io } from "socket.io-client";
 import { useSocketStore } from "@/lib/store/socket-store";
@@ -51,11 +51,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       if (!wishedDragList) return;
       const sourceIndex = initialData.columnOrder.indexOf(wishedDragList);
       let destinationIndex = index;
-
-      if (sourceIndex === destinationIndex - 1) return;
-      if (sourceIndex < index) {
-        destinationIndex = index - 1;
-      }
+      if (sourceIndex === destinationIndex) return;
       initialData.columnOrder.splice(sourceIndex, 1);
       initialData.columnOrder.splice(destinationIndex, 0, wishedDragList);
       const newState: InitialData = {
@@ -77,11 +73,10 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       const sourceIndex = initialData.columns[sourceCol].taskIds.indexOf(
         task.id
       );
+      let destinationIndex = index;
       const destinationCol = column.id;
-      if (
-        sourceCol === destinationCol &&
-        (sourceIndex === index || sourceIndex === index - 1)
-      )
+      console.log(sourceIndex, destinationIndex);
+      if (sourceIndex === destinationIndex && sourceCol === destinationCol)
         return;
       const newState: InitialData = {
         ...initialData,
@@ -92,13 +87,8 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       const sourceColumn = newState.columns[sourceCol];
       const destinationColumn = newState.columns[destinationCol];
       sourceColumn.taskIds.splice(sourceIndex, 1);
-      let destinationIndex = index;
-      if (sourceCol === destinationCol && sourceIndex < index) {
-        destinationIndex = index - 1;
-      }
       destinationColumn.taskIds.splice(destinationIndex, 0, task.id);
       task.colId = destinationCol;
-      /*Update the db */
       updateCardIndex(newState, destinationCol);
       setInitialData(newState);
     },
@@ -184,10 +174,9 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
 
   return isMounted ? (
     <div
-      className="h-full flex snap-x snap-mandatory md:snap-none  relative overflow-x-auto "
+      className="h-full w-full flex snap-x snap-mandatory md:snap-none  relative overflow-x-auto "
       ref={colRef}
     >
-      <DropAreaList onDrop={() => reorderColumns(0)} index={0} />
       {initialData.columnOrder.map((columnId, index) => {
         const column = initialData.columns[columnId];
         const tasks = column.taskIds.map(
@@ -197,9 +186,10 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
           <div key={columnId} className="relative ">
             <div className="relative h-full snap-center pb-2 flex ">
               <TasksList column={column} tasks={tasks} onDrop={onDrop} />
-              <DropAreaList
-                onDrop={() => reorderColumns(index + 1)}
-                index={index + 1}
+              <Placeholder
+                type="list"
+                onDrop={() => reorderColumns(index)}
+                index={index}
               />
             </div>
           </div>

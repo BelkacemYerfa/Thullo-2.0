@@ -109,7 +109,5 @@ export const updateListIndex = (initialData: InitialData) => {
         index: index.toString(),
       },
     });
-
-    console.log("updated");
   });
 };
