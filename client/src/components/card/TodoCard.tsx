@@ -30,11 +30,12 @@ export const TodoCard = ({ task, listName }: TodoCardProps) => {
       draggable="true"
       id={`card-${cardId}`}
       onDragStart={(ev) => {
+        ev.dataTransfer.effectAllowed = "move";
         setDraggingCard(cardId);
         ev.dataTransfer.setData("text/html", ev.currentTarget.outerHTML);
       }}
       onDragEnd={() => setDraggingCard(null)}
-      className="cursor-grab active:cursor-grabbing active:animate-pulse"
+      className="cursor-grab active:cursor-grabbing z-[3]"
     >
       <CardHeader className="space-y-3 px-3 py-2 justify-start ">
         {task.image ? (

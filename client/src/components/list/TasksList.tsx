@@ -4,9 +4,9 @@ import { ListNameChangeForm } from "@/components/forms/ListNameChangeForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Column, Task } from "@/types";
 import { Placeholder } from "@/components/dnd/DropArea";
-import { Fragment } from "react";
 import { useBoardStore } from "@/lib/store/board-store";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useSocketStore } from "@/lib/store/socket-store";
 
 type TasksListProps = {
   column: Column;
@@ -34,18 +34,23 @@ export const TasksList = ({ column, tasks, onDrop }: TasksListProps) => {
           <ListNameChangeForm title={title} listId={id} />
         </div>
         <ScrollArea className="h-full w-full flex-1 px-3">
-          <div className="h-full space-y-3 " ref={parent}>
+          <div className="h-full " ref={parent}>
+            <Placeholder
+              type="card"
+              onDrop={() => onDrop(column, 0)}
+              index={0}
+              task={tasks[0]}
+            />
             {tasks.map((task, i) => (
-              <Fragment key={task.id}>
+              <div key={task.id} className="relative">
                 <TodoCard task={task} listName={title} />
-                {i}
                 <Placeholder
                   type="card"
-                  onDrop={() => onDrop(column, i)}
-                  index={i}
+                  onDrop={() => onDrop(column, i + 1)}
+                  index={i + 1}
                   task={task}
                 />
-              </Fragment>
+              </div>
             ))}
             <CardListForm listId={id} />
           </div>

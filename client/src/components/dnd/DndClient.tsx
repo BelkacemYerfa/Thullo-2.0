@@ -75,7 +75,7 @@ export const DndClient = ({ boardId, db }: DndContextProviderProps) => {
       );
       let destinationIndex = index;
       const destinationCol = column.id;
-      console.log(sourceIndex, destinationIndex);
+
       if (sourceIndex === destinationIndex && sourceCol === destinationCol)
         return;
       const newState: InitialData = {
