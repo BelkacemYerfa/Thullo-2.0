@@ -34,16 +34,17 @@ export const Placeholder = (props: PlaceholderProps) => {
     return (
       <div
         className={`${
-          draggingList && !draggingCard ? "absolute" : "hidden"
+          draggingList && !draggingCard ? "absolute inset-0 " : "hidden"
         } w-full before:absolute before:rounded-xl ${
           isVisible
             ? "before:border before:border-dashed before:inset-2 before:border-zinc-200 z-[2] p-2 "
             : " border-none "
         } `}
         style={{
-          height: draggingList
-            ? document.getElementById(`list-${draggingList}`)?.offsetHeight
-            : "0px",
+          height:
+            draggingList && !draggingCard
+              ? document.getElementById(`list-${draggingList}`)?.offsetHeight
+              : "0px",
         }}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
