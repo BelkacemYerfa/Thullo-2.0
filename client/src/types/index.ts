@@ -56,7 +56,7 @@ export interface labels {
 export interface Task {
   id: string;
   content: string;
-  image?: string;
+  image: string | null;
   labels: labels[];
   description: string;
   comments: comments[];

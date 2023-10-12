@@ -19,6 +19,7 @@ import {
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useQuery } from "@tanstack/react-query";
 import { DescriptionLoader } from "../loaders/DescriptionLoader";
+import { useSocketStore } from "@/lib/store/socket-store";
 
 type BoardDescriptionFormProps = {
   boardId: string;
@@ -27,6 +28,7 @@ type BoardDescriptionFormProps = {
 export const BoardDescriptionForm = ({
   boardId,
 }: BoardDescriptionFormProps) => {
+  const { socket } = useSocketStore();
   const [isPending, startTransition] = useTransition();
   const {
     ref,
@@ -43,6 +45,13 @@ export const BoardDescriptionForm = ({
     },
   });
   const onSubmit = (data: boardDescriptionSchemaType) => {
+    socket.emit("board:description", {
+      data: {
+        boardId,
+        description: data.description,
+      },
+    });
+    form.reset();
     startTransition(async () => {
       try {
         await updateBoardDescription({ ...data, id: boardId });

@@ -65,10 +65,10 @@ export const CardCommentForm = () => {
       },
     });
     setInitialData(addComment(cardId, newComment, initialData));
+    form.reset();
     startTransition(async () => {
       try {
         await createComment({ ...data, cardId, commentId: objId });
-        form.reset();
       } catch (error) {
         console.log(error);
       }

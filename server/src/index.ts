@@ -60,6 +60,9 @@ socket.on("connect", (socket) => {
   socket.on("card:description", (data) => {
     socket.broadcast.emit("card:description", data.data);
   });
+  socket.on("board:description", (data) => {
+    socket.broadcast.emit("board:description", data.data);
+  });
 });
 
 server.listen(8000, () => {

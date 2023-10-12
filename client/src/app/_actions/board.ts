@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { Results } from "@/components/Popups/SearchPopOver";
 import { boardDescriptionSchemaType } from "../../validation/board-description";
 import { Visibility } from "@prisma/client";
-import { InitialData, StoredImage } from "@/types";
+import { Column, InitialData, StoredImage, Task } from "@/types";
 
 export const verifyUserAuth = async () => {
   const user = await currentUser();
@@ -153,6 +153,7 @@ export const getBoardData = async (boardId: string) => {
 };
 
 export async function getBoardInfo(boardId: string): Promise<InitialData> {
+  console.time("getBoardInfo");
   const board = await client.board.findUnique({
     where: {
       id: boardId,
@@ -208,35 +209,43 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
   // Create an array to hold the columns in the desired order
   const columnOrder = board.Lists.sort((prev, curr) => {
     return parseInt(prev.index) - parseInt(curr.index);
-  }).map((list) => list.id);
+  }).flatMap((list) => list.id);
   // Create an object to hold columns and their associated taskIds
-
-  const columns = board.Lists.reduce((acc: any, list) => {
-    acc[list.id] = {
+  const columns: { [key: string]: Column } = {};
+  const tasks: { [key: string]: Task } = {};
+  // Create an object to hold tasks
+  board.Lists.reduce((_: any, list) => {
+    columns[list.id] = {
       id: list.id,
       title: list.name,
       taskIds: list.cards
         .sort((prev, curr) => {
           return parseInt(prev.index) - parseInt(curr.index);
         })
-        .map((card) => card.id),
+        .flatMap((card) => card.id),
       index: list.index,
     };
-    return acc;
-  }, {});
-
-  // Create an object to hold tasks
-  const tasks = board.Lists.reduce((acc: any, list) => {
     list.cards.forEach((card) => {
-      acc[card.id] = {
+      tasks[card.id] = {
         ...card,
         id: card.id,
         content: card.name,
         colId: list.id,
         index: card.index,
+        comments: card.comments.map((comment) => {
+          return {
+            ...comment,
+            user: {
+              ...comment.user,
+              image: comment.user.image ?? "",
+              commentId: comment.id,
+              boardId: board.id,
+              email: "",
+            },
+          };
+        }),
       };
     });
-    return acc;
   }, {});
 
   const db: InitialData = {
@@ -244,6 +253,6 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
     columns,
     tasks,
   };
-
+  console.timeEnd("getBoardInfo");
   return db;
 }
