@@ -93,6 +93,7 @@ model User {
   boards   Board[]
   cards    Card[]
   comments Comments[]
+  Colleagues Colleagues[]
 }
 
 model Label {
@@ -103,4 +104,15 @@ model Label {
   color    String
   cardId   String @map("cardId") @db.ObjectId
   card     Card @relation(fields: [cardId], references: [id])
+}
+
+model Colleagues {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name     String
+  email    String
+  image String?
+  userId     String @map("userId")
+  user     User @relation(fields: [userId], references: [id])
 }

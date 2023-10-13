@@ -15,21 +15,28 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { useCallback, useState } from "react";
+import { startTransition, useCallback, useState, useTransition } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
 import { sendEmail } from "@/app/_actions/email";
 import { useParams } from "next/navigation";
 import { getBoardData } from "@/app/_actions/board";
 
-export const BoardUserInvitePopOver = () => {
-  const params = useParams();
+type BoardUserInvitePopOverProps = {
+  Colleagues: any;
+};
+
+export const BoardUserInvitePopOver = ({
+  Colleagues,
+}: BoardUserInvitePopOverProps) => {
+  const { boardId } = useParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [query, setQuery] = useState<string>("");
   const debouncedQuery = useDebounce(query, 500);
-  const handleSelectAll = useCallback(() => {
+  const handleSelectAll = () => {
     console.log("users : ", selectedUsers);
-  }, [selectedUsers]);
+  };
   const handleUserInvite = () => {
     handleSelectAll();
     if (!debouncedQuery) return;
@@ -38,27 +45,30 @@ export const BoardUserInvitePopOver = () => {
         new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", "gim")
       )
     ) {
-      userInviteThroughEmail({
-        username: debouncedQuery,
+      startTransition(async () => {
+        try {
+          await userInviteThroughEmail({
+            username: debouncedQuery,
+          });
+          setIsOpen(false);
+          setQuery("");
+        } catch (err) {
+          console.log(err);
+        }
       });
     } else {
       console.log("username : ", debouncedQuery);
     }
-    setIsOpen(false);
   };
-  const userInviteThroughEmail = useCallback(
-    async ({ username }: { username: string }) => {
-      const boardInfo = await getBoardData(params.boardId as string);
-      const mail = await sendEmail({
-        username,
-        teamName: boardInfo?.name as string,
-        teamImage: boardInfo?.image?.[0].fileUrl as string,
-        inviteLink: `http://localhost:3000/boards/${params.boardId}`,
-      });
-      console.log(mail);
-    },
-    []
-  );
+  const userInviteThroughEmail = async ({ username }: { username: string }) => {
+    const boardInfo = await getBoardData(boardId as string);
+    await sendEmail({
+      username,
+      teamName: boardInfo?.name as string,
+      teamImage: boardInfo?.image?.[0].fileUrl as string,
+      inviteLink: `http://localhost:3000/board/${boardId}`,
+    });
+  };
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -79,7 +89,7 @@ export const BoardUserInvitePopOver = () => {
         </div>
         <Command className="rounded-lg border border-solid border-[#E0E0E0] shadow-outline-navigation-md ">
           <CommandInput
-            placeholder="Invite User or Email"
+            placeholder="Username or Email"
             onValueChange={setQuery}
             value={query}
           />
@@ -115,10 +125,11 @@ export const BoardUserInvitePopOver = () => {
         </Command>
         <div className="flex justify-center">
           <Button
-            disabled={selectedUsers.length === 0 && !query}
-            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm "
+            disabled={(selectedUsers.length === 0 && !query) || isPending}
+            className="bg-[#2F80ED] hover:bg-[#2F80ED] rounded-lg px-6 py-2 disabled:bg-[#BDBDBD] disabled:cursor-not-allowed disabled:hover:bg-[#BDBDBD] disabled:opacity-70 text-sm flex items-center gap-2 "
             onClick={handleUserInvite}
           >
+            {isPending && <Icons.Loader2 className="h-5 w-5 animate-spin" />}{" "}
             Invite
           </Button>
         </div>

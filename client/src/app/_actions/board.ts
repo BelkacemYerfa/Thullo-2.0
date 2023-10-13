@@ -153,7 +153,6 @@ export const getBoardData = async (boardId: string) => {
 };
 
 export async function getBoardInfo(boardId: string): Promise<InitialData> {
-  console.time("getBoardInfo");
   const board = await client.board.findUnique({
     where: {
       id: boardId,
@@ -247,12 +246,31 @@ export async function getBoardInfo(boardId: string): Promise<InitialData> {
       };
     });
   }, {});
-
   const db: InitialData = {
     columnOrder,
     columns,
     tasks,
   };
-  console.timeEnd("getBoardInfo");
   return db;
 }
+
+export const getBoardCollaborators = async (boardId: string) => {};
+
+export const getBoardColleagues = async () => {
+  const user = await verifyUserAuth();
+  return await client.user.findUnique({
+    where: {
+      id: user.id,
+    },
+    select: {
+      Colleagues: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
+        take: 5,
+      },
+    },
+  });
+};

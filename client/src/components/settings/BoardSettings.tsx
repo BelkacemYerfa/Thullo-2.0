@@ -4,6 +4,7 @@ import { BoardUserInvitePopOver } from "@/components/Popups/BoardUserInvitePopOv
 import { BoardSheet } from "@/components/sheet/BoardSheet";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Visibility } from "@prisma/client";
+import { getBoardColleagues } from "@/app/_actions/board";
 
 type BoardSettingsProps = {
   boardId: string;
@@ -24,7 +25,8 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
       visibility: true,
     },
   });
-
+  const data: any = await getBoardColleagues();
+  console.log(data.Colleagues);
   return (
     <section className="flex items-center justify-between w-full">
       <div className="flex items-center gap-4">
@@ -73,7 +75,7 @@ export const BoardSettings = async ({ boardId }: BoardSettingsProps) => {
               ) : null
             )}
           </div>
-          <BoardUserInvitePopOver />
+          <BoardUserInvitePopOver Colleagues={[]} />
         </div>
       </div>
 
