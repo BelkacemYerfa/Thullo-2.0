@@ -1,13 +1,21 @@
-import { getBoardInfo, verifyUserAuth } from "@/app/_actions/board";
+import {
+  getBoardColleagues,
+  getBoardInfo,
+  verifyUserAuth,
+} from "@/app/_actions/board";
 import { DndClient } from "@/components/dnd/DndClient";
 import { Shell } from "@/components/Shell";
 import { NavBar } from "@/components/navigation/Navbar";
 import { BoardSettings } from "@/components/settings/BoardSettings";
 import client from "@/lib/prismaDb";
+import jsonwebtoken, { Jwt, JwtPayload } from "jsonwebtoken";
 import { notFound, redirect } from "next/navigation";
 import { Card, List } from "@/types";
 
 type BoardPageProps = {
+  searchParams: {
+    [key: string]: string;
+  };
   params: {
     boardId: string;
   };
@@ -53,6 +61,7 @@ export async function generateMetadata({
 }
 
 export default async function BoardPage({
+  searchParams,
   params: { boardId },
 }: BoardPageProps) {
   const user = await verifyUserAuth();
@@ -66,7 +75,27 @@ export default async function BoardPage({
     },
   });
   if (!board) notFound();
+  const data: any = await getBoardColleagues();
+  console.log(data.Colleagues);
+  if (
+    !data.Colleagues.includes({
+      id: user.id,
+    })
+  ) {
+    if (searchParams.invite) {
+      const dec = jsonwebtoken.verify(
+        searchParams.token,
+        process.env.JWT_SECRET!
+      );
+      const { exp } = dec as JwtPayload;
+      if (Date.now() / 1000 > (exp as number)) return redirect("/board");
+      //update the database by adding this user to colleagues
+    } else {
+      return redirect("/board");
+    }
+  }
   const db = await getBoardInfo(boardId);
+
   return (
     <Shell>
       <section className="w-full space-y-5">

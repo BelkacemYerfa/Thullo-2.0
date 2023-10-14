@@ -4,21 +4,29 @@ import { Resend } from "resend";
 import { verifyUserAuth } from "./board";
 import { ThulloInviteEmail } from "@/components/email/ThulloEmail";
 import { ThulloInviteEmailProps } from "@/types";
+import jsonwebtoken from "jsonwebtoken";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 type ThulloInviteEmail = Pick<
   ThulloInviteEmailProps,
-  "username" | "teamName" | "teamImage" | "inviteLink"
+  "username" | "teamName" | "teamImage" | "boardId"
 >;
 export async function sendEmail({
   username,
   teamName,
   teamImage,
-  inviteLink,
+  boardId,
 }: ThulloInviteEmail) {
   const user = await verifyUserAuth();
   const email = user.emailAddresses[0].emailAddress;
+  const createTokenForEmail = jsonwebtoken.sign(
+    { boardId },
+    process.env.JWT_SECRET!,
+    {
+      expiresIn: "1d",
+    }
+  );
   try {
     const response = await resend.sendEmail({
       from: "onboarding@resend.dev",
@@ -34,7 +42,7 @@ export async function sendEmail({
         invitedByEmail: "onboarding@resend.dev",
         teamName,
         teamImage,
-        inviteLink,
+        inviteLink: `http://localhost:3000/board/${boardId}?invite=true&token=${createTokenForEmail}`,
       }),
     });
 

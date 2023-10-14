@@ -94,4 +94,5 @@ export interface ThulloInviteEmailProps {
   teamName: string;
   teamImage: string;
   inviteLink: string;
+  boardId?: string;
 }

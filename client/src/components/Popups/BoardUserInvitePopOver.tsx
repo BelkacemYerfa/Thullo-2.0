@@ -20,6 +20,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { sendEmail } from "@/app/_actions/email";
 import { useParams } from "next/navigation";
 import { getBoardData } from "@/app/_actions/board";
+import axios from "axios";
 
 type BoardUserInvitePopOverProps = {
   Colleagues: any;
@@ -66,7 +67,6 @@ export const BoardUserInvitePopOver = ({
       username,
       teamName: boardInfo?.name as string,
       teamImage: boardInfo?.image?.[0].fileUrl as string,
-      inviteLink: `http://localhost:3000/board/${boardId}`,
     });
   };
 
